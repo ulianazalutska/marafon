@@ -1,4 +1,9 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import type { PanInfo, Variants } from "framer-motion";
 import { images } from "@/lib/images";
 
 const projects = [
@@ -10,41 +15,160 @@ const projects = [
   { area: "40 м²", seats: "10 місць", series: "Signature", note: "Приватний кінозал" },
 ];
 
-export default function PortfolioSection() {
+const SWIPE_DISTANCE = 100;
+const SWIPE_VELOCITY = 450;
+
+// Фото завжди сидить в межах свого блоку праворуч (без стрічки на всю
+// ширину). "Наступне" завжди визирає статичною смужкою праворуч.
+//
+// Обидва напрямки — суцільний "штовхаючий" рух: нове фото заїжджає з того
+// самого місця, де щойно було старе (або де визирала смужка-підгляд), а
+// старе одночасно їде в протилежний бік і зникає геть за межі екрана. Рухи
+// дзеркальні одне одному, тому вперед і назад виглядають однаково плавно.
+const slideVariants: Variants = {
+  enter: (dir: "next" | "prev") =>
+    dir === "next"
+      ? { x: "108%", scale: 1, opacity: 1, zIndex: 20 }
+      : { x: "-260%", scale: 1, opacity: 1, zIndex: 20 },
+  center: {
+    x: 0,
+    scale: 1,
+    opacity: 1,
+    zIndex: 20,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  },
+  exit: (dir: "next" | "prev") => ({
+    x: dir === "next" ? "-260%" : "108%",
+    scale: 1,
+    opacity: 1,
+    zIndex: 5,
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
+function Slide({
+  index,
+  total,
+  direction,
+  onCommit,
+}: {
+  index: number;
+  total: number;
+  direction: "next" | "prev";
+  onCommit: (dir: "next" | "prev") => void;
+}) {
+  const p = projects[index];
+
+  const handleDragEnd = (
+    _event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
+    const goNext = info.offset.x < -SWIPE_DISTANCE || info.velocity.x < -SWIPE_VELOCITY;
+    const goPrev = info.offset.x > SWIPE_DISTANCE || info.velocity.x > SWIPE_VELOCITY;
+
+    if (goNext && index < total - 1) onCommit("next");
+    else if (goPrev && index > 0) onCommit("prev");
+  };
+
   return (
-    <section id="portfolio" className="bg-brown-950 py-24 text-cream md:py-32">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <div className="mb-14 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <h2 className="max-w-xl text-3xl font-medium md:text-4xl">
-            Понад 120 реалізованих кінозалів по Україні
-          </h2>
-          <p className="max-w-sm text-cream/60">
-            Кожен проєкт — індивідуальна конфігурація під кімнату клієнта.
+    <motion.div
+      className="absolute inset-0 cursor-grab active:cursor-grabbing"
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.5}
+      dragMomentum={false}
+      onDragEnd={handleDragEnd}
+      custom={direction}
+      variants={slideVariants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+    >
+      <Image
+        src={images.portfolioCarousel[index]}
+        alt={`Кінозал ${p.area}, ${p.seats}`}
+        fill
+        draggable={false}
+        sizes="(min-width: 768px) 55vw, 90vw"
+        className="pointer-events-none object-cover"
+      />
+    </motion.div>
+  );
+}
+
+export default function PortfolioSection() {
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
+  const total = projects.length;
+
+  const handleCommit = (dir: "next" | "prev") => {
+    setDirection(dir);
+    setIndex((i) => (dir === "next" ? Math.min(i + 1, total - 1) : Math.max(i - 1, 0)));
+  };
+
+  const current = projects[index];
+
+  return (
+    <section
+      id="portfolio"
+      className="relative overflow-hidden bg-brown-950 py-24 text-cream md:py-32"
+    >
+      <div className="flex flex-col gap-10 md:flex-row">
+        {/* Фіксований текстовий блок зліва */}
+        <div className="relative z-30 flex shrink-0 flex-col justify-between gap-10 px-6 md:h-[517px] md:w-[515px] md:px-0 md:pl-10">
+          <div>
+            <h2 className="max-w-xl text-3xl font-medium md:text-4xl">
+              Понад 120 реалізованих кінозалів по Україні
+            </h2>
+            <p className="mt-4 max-w-sm text-cream/60">
+              Кожен проєкт — індивідуальна конфігурація під кімнату клієнта.
+            </p>
+          </div>
+          <p className="text-sm tabular-nums text-cream/50">
+            {String(index + 1).padStart(2, "0")} з {String(total).padStart(2, "0")}
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p, i) => (
-            <div
-              key={i}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl"
-            >
-              <Image
-                src={images.portfolio[i]}
-                alt={`Кінозал ${p.area}, ${p.seats}`}
-                fill
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brown-950/90 via-brown-950/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-5">
-                <p className="text-sm text-cream/70">{p.note}</p>
-                <p className="mt-1 text-sm tracking-wide">
-                  {p.area} · {p.seats} · {p.series}
-                </p>
+        {/* Фото тримається праворуч, у своєму блоці. При переході вилітає вліво. */}
+        <div className="min-w-0 flex-1 px-6 md:px-0">
+          <div className="relative h-[58vh] w-[90%] md:h-[517px] md:w-[787px]">
+            {/* Наступне фото визирає статичною смужкою праворуч */}
+            {index + 1 < total && (
+              <div className="absolute inset-0 z-0 translate-x-[108%] overflow-hidden">
+                <Image
+                  src={images.portfolioCarousel[index + 1]}
+                  alt=""
+                  fill
+                  draggable={false}
+                  sizes="200px"
+                  className="pointer-events-none object-cover"
+                />
               </div>
-            </div>
-          ))}
+            )}
+
+            <AnimatePresence initial={false} custom={direction}>
+              <Slide
+                key={index}
+                index={index}
+                total={total}
+                direction={direction}
+                onCommit={handleCommit}
+              />
+            </AnimatePresence>
+          </div>
+
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.p
+              key={index}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3 }}
+              className="mt-4 text-sm text-cream/70"
+            >
+              {current.note} · {current.area} · {current.seats} · {current.series}
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
     </section>

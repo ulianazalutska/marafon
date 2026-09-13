@@ -1,6 +1,9 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import IntroOverlay from "@/components/IntroOverlay";
+import CreateForYouSection from "@/components/CreateForYouSection";
+import StackedIntro from "@/components/StackedIntro";
+import PanoramaSection from "@/components/PanoramaSection";
 import CatalogSection from "@/components/CatalogSection";
 import PortfolioSection from "@/components/PortfolioSection";
 import TechnologySection from "@/components/TechnologySection";
@@ -17,8 +20,12 @@ export default function Home() {
       <Header />
       <IntroOverlay />
       <main>
-        <Hero />
+        <StackedIntro>
+          <Hero />
+          <CreateForYouSection />
+        </StackedIntro>
         <CatalogSection />
+        <PanoramaSection />
         <PortfolioSection />
         <TechnologySection />
         <ProcessSection />

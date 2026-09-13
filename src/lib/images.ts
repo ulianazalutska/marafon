@@ -19,6 +19,22 @@ export const images = {
     main: "/production/main.png",
     detail: "/production/detail.png",
   },
+  panorama: "/panorama/panorama.png",
+  processFinale: "/process/finale.png",
+  technology: [
+    "/technology/1.png",
+    "/technology/2.png",
+    "/technology/3.png",
+    "/technology/4.png",
+  ],
+  portfolioCarousel: [
+    "/portfolio-carousel/1.png",
+    "/portfolio-carousel/2.png",
+    "/portfolio-carousel/3.png",
+    "/portfolio-carousel/4.png",
+    "/portfolio-carousel/5.png",
+    "/portfolio-carousel/6.png",
+  ],
   material: "https://images.unsplash.com/photo-1708962000105-849e984e69a8",
 };
 
