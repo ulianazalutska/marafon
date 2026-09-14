@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { UniqueAccordion } from "@/components/ui/interactive-accordion";
 
 const faq = [
@@ -38,10 +41,16 @@ const items = faq.map((item, i) => ({
 export default function FaqSection() {
   return (
     <section className="bg-cream py-24 md:py-32">
-      <div className="mx-auto max-w-3xl px-6 md:px-10">
+      <motion.div
+        className="mx-auto max-w-3xl px-6 md:px-10"
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
         <h2 className="mb-14 text-3xl font-medium md:text-4xl">FAQ</h2>
         <UniqueAccordion items={items} />
-      </div>
+      </motion.div>
     </section>
   );
 }

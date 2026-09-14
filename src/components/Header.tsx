@@ -23,12 +23,39 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
+    // lastY — це "зафіксована" точка відліку, вона зсувається лише коли
+    // напрямок підтверджено (пройдено HYSTERESIS px). Порівняння з
+    // попереднім event'ом (замість зафіксованої точки) на трекпадах/
+    // інерційному скролі тремтить (+1/-1px між кадрами) і колір блимає.
+    const HYSTERESIS = 8;
     let lastY = window.scrollY;
-    const onScroll = () => {
+    let ticking = false;
+
+    const update = () => {
       const y = window.scrollY;
-      setScrollingUp(y < lastY - 2 && y > 40);
-      lastY = y;
+      if (y <= 2) {
+        // Біля самого верху скрол завжди трактуємо як "вгору" — інакше
+        // пружний overscroll/незначний джиттер може випадково зчитатись
+        // як рух вниз і колір зникне саме там, де він найпотрібніший.
+        setScrollingUp(true);
+        lastY = y;
+      } else if (y < lastY - HYSTERESIS) {
+        setScrollingUp(true);
+        lastY = y;
+      } else if (y > lastY + HYSTERESIS) {
+        setScrollingUp(false);
+        lastY = y;
+      }
+      ticking = false;
     };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -40,7 +67,10 @@ export default function Header() {
 
   const scale = useTransform(scrollY, [0, threshold], [9, 1]);
   const logoY = useTransform(scrollY, [0, threshold], [travel, 0]);
-  const strokeWidth = useTransform(scrollY, [0, threshold], [1.2, 0]);
+  // The stroke is meant to keep the small header-size logo (scale: 1)
+  // crisp — at scale: 9 it's scaled up right along with the text and
+  // reads as a heavy, bold outline, so it must be ~0 there instead.
+  const strokeWidth = useTransform(scrollY, [0, threshold], [0, 1.2]);
 
   // Один прогрес-колір (світлий над темним hero → темний над світлим
   // контентом) — використовується і для лого, і для лінків/кнопки.

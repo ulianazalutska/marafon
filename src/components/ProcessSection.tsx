@@ -17,36 +17,62 @@ const steps = [
   {
     n: "01",
     title: "Заміряємо кімнату",
-    text: "Самостійно за інструкцією або виїзд майстра для точних замірів простору.",
+    text: "Самостійно за нашою інструкцією або виїзд майстра для точних замірів простору — врахуємо кожен виступ, двері й вентиляцію, щоб крісла стали як влиті.",
     image: images.portfolio[3],
     bg: "bg-cream",
   },
   {
     n: "02",
     title: "Збираєте конфігурацію",
-    text: "Серія, кількість місць, оздоблення, функції — все під ваш інтер'єр.",
+    text: "Серія, кількість місць, розкладка рядів, оздоблення та функції — все під ваш інтер'єр і бюджет, з живою консультацією дизайнера на кожному кроці.",
     image: images.production.detail,
     bg: "bg-cream-dim",
   },
   {
     n: "03",
     title: "Отримуєте готовий зал",
-    text: "Виготовлення і монтаж за 4–6 тижнів, під ключ.",
+    text: "Виготовлення і монтаж за 4–6 тижнів, під ключ — привозимо, збираємо на місці та показуємо, як користуватися всіма функціями крісел.",
     image: images.portfolio[0],
     bg: "bg-cream",
   },
 ];
 
-const TOTAL_PANELS = steps.length + 1;
+const TOTAL_PANELS = steps.length;
+
+// Every panel after the first permanently rides up by cumulative overlap,
+// but that translate doesn't shrink normal document flow — the stack's
+// wrapper is still as tall as all panels stacked with no overlap at all.
+// Without correcting for it, whatever comes right after the stack sits
+// that leftover height too low, leaving a blank gap before it. Shrinking
+// the wrapper by the final panel's total ride distance closes that gap.
+const STACK_HEIGHT_VH = 100 + (TOTAL_PANELS - 1) * (100 - OVERLAP_VH);
 
 export default function ProcessSection() {
+  const introRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
   const overlayRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const finalTextRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          introRef.current,
+          { autoAlpha: 0, y: 24 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: introRef.current,
+              start: "top 82%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+
       const panels = panelRefs.current;
 
       panels.forEach((panel, i) => {
@@ -73,11 +99,9 @@ export default function ProcessSection() {
         // This panel rides up over the ones before it as it scrolls in.
         // The ramp spans from the very first panel's arrival all the way
         // to this panel's own arrival, so the touching edges stay
-        // consistent no matter how many panels are stacked. The very last
-        // panel is excluded: it has no successor to hide its overshoot, so
-        // giving it the same ride-up would scroll it fully out of view
-        // before the next section arrives, leaving a bare gap between them.
-        if (i > 0 && i < TOTAL_PANELS - 1) {
+        // consistent no matter how many panels are stacked. Every panel
+        // but the first gets the same treatment, including the last one.
+        if (i > 0) {
           gsap.fromTo(
             panel,
             { y: 0 },
@@ -89,7 +113,7 @@ export default function ProcessSection() {
                 start: "top top",
                 endTrigger: panel,
                 end: "top top",
-                scrub: true,
+                scrub: 0.7,
               },
             }
           );
@@ -106,80 +130,74 @@ export default function ProcessSection() {
               trigger: nextPanel,
               start: "top bottom",
               end: "top top",
-              scrub: true,
+              scrub: 0.7,
             },
           });
         }
       });
-
-      // Final panel's text/button rise in gently once it takes over the screen.
-      if (finalTextRef.current) {
-        gsap.fromTo(
-          finalTextRef.current,
-          { yPercent: 30, opacity: 0 },
-          {
-            yPercent: 0,
-            opacity: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: panels[TOTAL_PANELS - 1],
-              start: "top 60%",
-              end: "top 10%",
-              scrub: true,
-            },
-          }
-        );
-      }
     });
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section className="bg-cream py-24 md:pt-32 md:pb-0">
-      <div className="mx-auto max-w-7xl px-6 pb-10 md:px-10">
-        <div className="grid gap-6 md:grid-cols-2 md:items-start md:gap-10">
-          <h2 className="text-3xl font-medium md:text-4xl">Як це працює</h2>
-          <p className="text-lg text-brown-700 md:max-w-md md:justify-self-end md:text-right md:text-xl">
-            Від виміру кімнати до готового кінозалу — три прості кроки.
+    <section className="bg-cream py-20 md:pt-24 md:pb-0">
+      <div className="w-full px-6 pb-16 md:px-10 md:pb-24">
+        <div
+          ref={introRef}
+          className="flex flex-col justify-between gap-6 md:flex-row md:items-start"
+        >
+          <h2 className="max-w-3xl text-6xl leading-[1.05] font-bold md:text-8xl">
+            Як це працює покроково
+          </h2>
+          <p className="max-w-lg text-lg text-brown-700 md:pt-3 md:text-2xl">
+            Від виміру кімнати до готового кінозалу — три прості кроки, які
+            ми проходимо разом із вами: точний замір простору, підбір
+            конфігурації під ваш інтер&apos;єр і бюджет, а тоді виготовлення
+            та монтаж під ключ.
           </p>
         </div>
       </div>
 
-      <div className="w-full border-t border-gray-300" />
-
-      <div className="relative mt-14">
+      <div className="relative" style={{ height: `${STACK_HEIGHT_VH}vh` }}>
         {steps.map((s, i) => (
           <div
             key={s.n}
             ref={(el) => {
               panelRefs.current[i] = el;
             }}
-            className={`relative flex h-screen w-full flex-col justify-center gap-10 overflow-hidden px-6 py-14 will-change-transform md:flex-row md:items-center md:px-10 ${s.bg}`}
+            className={`relative flex h-screen w-full flex-col overflow-hidden border-t border-gray-300 pt-10 pb-8 will-change-transform md:pt-14 md:pb-12 ${s.bg}`}
             style={{ zIndex: i + 1 }}
           >
-            <div className="md:w-2/5">
-              <span className="text-7xl leading-none font-medium text-brown-300/40 md:text-9xl">
-                {s.n}
-              </span>
-              <h3 className="mt-6 text-2xl font-medium md:text-3xl">{s.title}</h3>
-              <p className="mt-3 max-w-sm text-brown-700">{s.text}</p>
-            </div>
+            <div className="flex h-full w-full flex-col justify-center px-6 md:px-10">
+              <div className="grid gap-4 md:grid-cols-2 md:gap-10">
+                <h3 className="text-3xl font-medium md:text-5xl">{s.title}</h3>
+                <p className="max-w-2xl text-lg text-brown-700 md:text-2xl">
+                  {s.text}
+                </p>
+              </div>
 
-            <div className="relative h-[45vh] flex-1 overflow-hidden rounded-2xl md:h-[60vh]">
-              <div
-                ref={(el) => {
-                  imageRefs.current[i] = el;
-                }}
-                className="absolute -top-[10%] left-0 h-[120%] w-full will-change-transform"
-              >
-                <Image
-                  src={s.image}
-                  alt={s.title}
-                  fill
-                  sizes="(min-width: 768px) 55vw, 100vw"
-                  className="object-cover"
-                />
+              <div className="mt-[15vh] grid items-end gap-4 md:grid-cols-2 md:gap-10">
+                <span className="text-9xl leading-none font-medium text-brown-300/40 md:text-[13rem]">
+                  {s.n}
+                </span>
+
+                <div className="relative aspect-[8/5] w-[70%] max-w-lg overflow-hidden md:w-[50%]">
+                  <div
+                    ref={(el) => {
+                      imageRefs.current[i] = el;
+                    }}
+                    className="absolute -top-[10%] left-0 h-[120%] w-full will-change-transform"
+                  >
+                    <Image
+                      src={s.image}
+                      alt={s.title}
+                      fill
+                      sizes="(min-width: 768px) 34vw, 45vw"
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -193,49 +211,6 @@ export default function ProcessSection() {
             )}
           </div>
         ))}
-
-        <div
-          ref={(el) => {
-            panelRefs.current[steps.length] = el;
-          }}
-          className="relative flex h-screen w-full items-center justify-center overflow-hidden will-change-transform"
-          style={{ zIndex: TOTAL_PANELS }}
-        >
-          <div
-            ref={(el) => {
-              imageRefs.current[steps.length] = el;
-            }}
-            className="absolute -top-[10%] left-0 h-[120%] w-full will-change-transform"
-          >
-            <Image
-              src={images.processFinale}
-              alt="Домашній кінозал VELLARO на заході сонця"
-              fill
-              sizes="100vw"
-              className="object-cover"
-              priority={false}
-            />
-          </div>
-
-          <div className="absolute inset-0 bg-gradient-to-t from-brown-950/80 via-transparent to-brown-950/20" />
-
-          <div
-            ref={finalTextRef}
-            className="relative flex flex-col items-center gap-8 px-6 text-center"
-          >
-            <h3 className="max-w-3xl text-4xl leading-[1.05] font-medium text-cream md:text-6xl lg:text-7xl">
-              Кінозал, який
-              <br />
-              <span className="italic">відчувається</span> як вдома
-            </h3>
-            <a
-              href="#contact"
-              className="rounded-full bg-cream px-8 py-4 text-sm tracking-wide text-brown-950 transition-colors hover:bg-white"
-            >
-              Замовити дзвінок
-            </a>
-          </div>
-        </div>
       </div>
     </section>
   );

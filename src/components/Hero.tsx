@@ -2,7 +2,7 @@ import { images } from "@/lib/images";
 
 export default function Hero() {
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-brown-950">
+    <section className="relative h-screen w-full overflow-hidden">
       <video
         src="/hero-video.mp4"
         poster={images.hero}

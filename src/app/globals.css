@@ -26,6 +26,12 @@
   --font-sans: var(--font-sans);
 }
 
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
 body {
   background: var(--color-cream);
   color: var(--color-ink);

@@ -1,5 +1,12 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { images } from "@/lib/images";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type Item = {
   label: string;
@@ -18,14 +25,93 @@ const items: Item[] = [
 ];
 
 export default function CreateForYouSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const rowsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          eyebrowRef.current,
+          { autoAlpha: 0, y: 14 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        const rows = rowsRef.current
+          ? Array.from(rowsRef.current.children)
+          : [];
+        gsap.fromTo(
+          rows,
+          { autoAlpha: 0, y: 36 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.9,
+            stagger: 0.08,
+            ease: "power3.out",
+            delay: 0.1,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 72%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        const roundels = rowsRef.current
+          ? rowsRef.current.querySelectorAll("[data-roundel]")
+          : [];
+        if (roundels.length) {
+          gsap.fromTo(
+            roundels,
+            { autoAlpha: 0, scale: 0.92 },
+            {
+              autoAlpha: 1,
+              scale: 1,
+              duration: 0.7,
+              stagger: 0.08,
+              ease: "power2.out",
+              delay: 0.1,
+              scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 72%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="create" className="bg-cream py-24 md:py-32">
+    <section
+      id="create"
+      ref={sectionRef}
+      className="bg-cream py-24 md:py-32"
+    >
       <div className="mx-auto max-w-5xl px-6 text-center md:px-10">
-        <p className="mb-10 text-sm tracking-[0.3em] text-brown-700 uppercase">
+        <p
+          ref={eyebrowRef}
+          className="mb-10 text-sm tracking-[0.3em] text-brown-700 uppercase"
+        >
           Ми створимо для вас
         </p>
 
-        <div className="flex flex-col items-center">
+        <div ref={rowsRef} className="flex flex-col items-center">
           {items.map((item) => (
             <div
               key={item.label}
@@ -33,6 +119,7 @@ export default function CreateForYouSection() {
             >
               {item.image && item.side === "left" && (
                 <span
+                  data-roundel
                   className={`relative shrink-0 overflow-hidden bg-brown-300/30 ${
                     item.shape === "circle"
                       ? "h-14 w-14 rounded-full md:h-24 md:w-24"
@@ -55,6 +142,7 @@ export default function CreateForYouSection() {
 
               {item.image && item.side === "right" && (
                 <span
+                  data-roundel
                   className={`relative shrink-0 overflow-hidden bg-brown-300/30 ${
                     item.shape === "circle"
                       ? "h-14 w-14 rounded-full md:h-24 md:w-24"

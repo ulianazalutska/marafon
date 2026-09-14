@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { mosaicImages } from "@/lib/images";
 import { mosaicLayout } from "@/lib/mosaicLayout";
 
 const LOGO_TEXT = "VELLARO";
+const SEEN_KEY = "vellaro-intro-seen";
 
 export default function IntroOverlay() {
   const [visible, setVisible] = useState(true);
@@ -14,7 +15,21 @@ export default function IntroOverlay() {
   const typeRef = useRef<HTMLHeadingElement>(null);
   const mosaicRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // Only the first load of a browser session sees the intro. Reloads and
+    // in-session navigation (including landing on a #hash URL, where the
+    // browser's own scroll-to-anchor can otherwise race this overlay's
+    // scroll lock) skip straight to the page. This hides it by directly
+    // mutating the DOM (not React state) so it happens synchronously
+    // before paint without triggering a server/client hydration mismatch
+    // — the server has no sessionStorage to know this in advance, so it
+    // always renders the overlay markup; this is what removes it again on
+    // repeat visits.
+    if (sessionStorage.getItem(SEEN_KEY) === "true") {
+      if (overlayRef.current) overlayRef.current.style.display = "none";
+      return;
+    }
+
     document.body.style.overflow = "hidden";
 
     const ctx = gsap.context(() => {
@@ -24,12 +39,27 @@ export default function IntroOverlay() {
       const otherTiles = tiles.slice(1);
 
       const tl = gsap.timeline({
+        paused: true,
         delay: 0.3,
         onComplete: () => {
           document.body.style.overflow = "";
+          sessionStorage.setItem(SEEN_KEY, "true");
           setVisible(false);
         },
       });
+
+      // Wait for the custom font (Ranade, loaded in layout.tsx) before
+      // starting: the "VELLARO" wordmark fades in via opacity almost
+      // immediately, and without this it can render in the browser's bold
+      // fallback font for a moment before swapping to the intended thin,
+      // letter-spaced style once the font finishes downloading — a visible
+      // jump. document.fonts.ready resolves immediately if fonts are
+      // already cached, so repeat loads aren't delayed by this.
+      if (document.fonts?.ready) {
+        document.fonts.ready.then(() => tl.play());
+      } else {
+        tl.play();
+      }
 
       tl.to(letters, { opacity: 1, duration: 0.04, stagger: 0.06 })
         .to({}, { duration: 0.3 })

@@ -21,7 +21,28 @@ export default function StackedIntro({ children }: { children: ReactNode }) {
       });
     });
 
-    return () => ctx.revert();
+    // The overlay panel that covers the pinned Hero contains lazy-loaded
+    // images; if any are still loading when the trigger above measures
+    // its end position, the page grows after the fact and the pin release
+    // point drifts out of sync — the pinned Hero briefly shows through at
+    // the seam. Re-measuring once every image has settled keeps it exact.
+    const images = Array.from(document.images);
+    const pending = images.filter((img) => !img.complete);
+    let remaining = pending.length;
+    const onImageLoad = () => {
+      remaining -= 1;
+      if (remaining === 0) ScrollTrigger.refresh();
+    };
+    if (pending.length === 0) {
+      ScrollTrigger.refresh();
+    } else {
+      pending.forEach((img) => img.addEventListener("load", onImageLoad, { once: true }));
+    }
+
+    return () => {
+      ctx.revert();
+      pending.forEach((img) => img.removeEventListener("load", onImageLoad));
+    };
   }, []);
 
   return (

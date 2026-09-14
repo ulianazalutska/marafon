@@ -56,11 +56,11 @@ export default function ProductionSection() {
     <section
       id="production"
       ref={sectionRef}
-      className="relative overflow-hidden bg-brown-950 py-24 text-cream md:py-32"
+      className="relative overflow-hidden bg-cream py-24 text-ink md:py-32"
     >
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 md:grid-cols-2 md:gap-20 md:px-10">
         <div ref={collageRef} className="relative">
-          <div className="relative aspect-[4/5] w-[78%] overflow-hidden rounded-2xl">
+          <div className="relative aspect-[4/5] w-[78%] overflow-hidden">
             <Image
               src={images.production.main}
               alt="Майстер VELLARO за роботою"
@@ -69,7 +69,7 @@ export default function ProductionSection() {
               className="object-cover"
             />
           </div>
-          <div className="absolute right-0 bottom-0 aspect-[4/3] w-[58%] translate-x-[8%] translate-y-[12%] overflow-hidden rounded-2xl shadow-2xl ring-8 ring-brown-950">
+          <div className="absolute right-0 bottom-0 aspect-[4/3] w-[58%] translate-x-[8%] translate-y-[12%] overflow-hidden shadow-2xl ring-8 ring-cream">
             <Image
               src={images.production.detail}
               alt="Інструменти та матеріали в майстерні VELLARO"
@@ -81,13 +81,13 @@ export default function ProductionSection() {
         </div>
 
         <div ref={textRef}>
-          <p className="mb-4 text-sm tracking-[0.3em] text-brown-300 uppercase">
+          <p className="mb-4 text-sm tracking-[0.3em] text-brown-500 uppercase">
             Про виробництво
           </p>
           <h2 className="mb-6 text-3xl font-medium md:text-4xl">
             Цех, а не конвеєр
           </h2>
-          <p className="max-w-md text-cream/70">
+          <p className="max-w-md text-brown-700">
             VELLARO — команда столярів і оббивників у Києві. Кожне крісло
             робимо під конкретне замовлення: каркас із масиву бука, механізми
             сертифікованих європейських постачальників, оббивка вручну, шов за

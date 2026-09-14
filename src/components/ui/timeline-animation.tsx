@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, type Variants } from "framer-motion";
-import { ElementType, ReactNode, RefObject, createElement } from "react";
+import { ElementType, ReactNode, RefObject, createElement, useMemo } from "react";
 
 interface TimelineContentProps {
   children: ReactNode;
@@ -32,7 +32,10 @@ export function TimelineContent({
   ...props
 }: TimelineContentProps) {
   const isInView = useInView(timelineRef, { once: true, amount: 0.3 });
-  const MotionComponent = motion.create(as as ElementType);
+  const MotionComponent = useMemo(
+    () => motion.create(as as ElementType),
+    [as]
+  );
 
   return createElement(
     MotionComponent,

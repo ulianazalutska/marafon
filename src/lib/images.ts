@@ -20,6 +20,7 @@ export const images = {
     detail: "/production/detail.png",
   },
   panorama: "/panorama/panorama.png",
+  panorama2: "/panorama/panorama-2.png",
   processFinale: "/process/finale.png",
   technology: [
     "/technology/1.png",
@@ -27,6 +28,8 @@ export const images = {
     "/technology/3.png",
     "/technology/4.png",
   ],
+  technologyBanner: "/technology/banner.png",
+  technologySketch: "/technology/sketch.png",
   portfolioCarousel: [
     "/portfolio-carousel/1.png",
     "/portfolio-carousel/2.png",

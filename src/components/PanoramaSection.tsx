@@ -8,7 +8,23 @@ import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function PanoramaSection() {
+type PanoramaSectionProps = {
+  image?: string;
+  alt?: string;
+  title?: React.ReactNode;
+};
+
+export default function PanoramaSection({
+  image = images.panorama,
+  alt = "Атмосфера домашнього кінозалу VELLARO",
+  title = (
+    <>
+      Атмосфера <span className="italic">вашого</span>
+      <br />
+      кінозалу
+    </>
+  ),
+}: PanoramaSectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageWrapRef = useRef<HTMLDivElement>(null);
 
@@ -36,12 +52,12 @@ export default function PanoramaSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-[60vh] w-full overflow-hidden bg-brown-950"
+      className="relative h-[60vh] w-full overflow-hidden"
     >
       <div ref={imageWrapRef} className="absolute inset-0 h-[124%] -top-[12%]">
         <Image
-          src={images.panorama}
-          alt="Атмосфера домашнього кінозалу VELLARO"
+          src={image}
+          alt={alt}
           fill
           sizes="100vw"
           className="object-cover"
@@ -50,13 +66,13 @@ export default function PanoramaSection() {
 
       <div className="absolute inset-0 bg-gradient-to-t from-brown-950/80 via-transparent to-brown-950/20" />
 
-      <div className="absolute inset-x-0 bottom-0 px-6 pb-8 md:px-10 md:pb-12">
-        <p className="max-w-2xl text-2xl leading-tight font-light text-cream md:text-4xl">
-          Атмосфера <span className="italic">вашого</span>
-          <br />
-          кінозалу
-        </p>
-      </div>
+      {title && (
+        <div className="absolute inset-x-0 bottom-0 px-6 pb-8 md:px-10 md:pb-12">
+          <p className="max-w-2xl text-2xl leading-tight font-light text-cream md:text-4xl">
+            {title}
+          </p>
+        </div>
+      )}
     </section>
   );
 }

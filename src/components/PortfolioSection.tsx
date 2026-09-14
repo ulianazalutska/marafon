@@ -1,10 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { PanInfo, Variants } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { images } from "@/lib/images";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   { area: "28 м²", seats: "5 місць", series: "Comfort", note: "Сім'я з двома дітьми" },
@@ -101,6 +105,51 @@ export default function PortfolioSection() {
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const total = projects.length;
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          textRef.current,
+          { autoAlpha: 0, x: -40 },
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 70%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        gsap.fromTo(
+          stageRef.current,
+          { autoAlpha: 0, scale: 0.96 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 1,
+            delay: 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 70%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const handleCommit = (dir: "next" | "prev") => {
     setDirection(dir);
     setIndex((i) => (dir === "next" ? Math.min(i + 1, total - 1) : Math.max(i - 1, 0)));
@@ -111,27 +160,34 @@ export default function PortfolioSection() {
   return (
     <section
       id="portfolio"
-      className="relative overflow-hidden bg-brown-950 py-24 text-cream md:py-32"
+      ref={sectionRef}
+      className="relative overflow-hidden bg-cream py-24 text-ink md:py-32"
     >
       <div className="flex flex-col gap-10 md:flex-row">
         {/* Фіксований текстовий блок зліва */}
-        <div className="relative z-30 flex shrink-0 flex-col justify-between gap-10 px-6 md:h-[517px] md:w-[515px] md:px-0 md:pl-10">
+        <div
+          ref={textRef}
+          className="relative z-30 flex shrink-0 flex-col justify-between gap-10 px-6 md:h-[517px] md:w-[515px] md:px-0 md:pl-10"
+        >
           <div>
             <h2 className="max-w-xl text-3xl font-medium md:text-4xl">
               Понад 120 реалізованих кінозалів по Україні
             </h2>
-            <p className="mt-4 max-w-sm text-cream/60">
+            <p className="mt-4 max-w-sm text-brown-700">
               Кожен проєкт — індивідуальна конфігурація під кімнату клієнта.
             </p>
           </div>
-          <p className="text-sm tabular-nums text-cream/50">
+          <p className="text-sm tabular-nums text-brown-500">
             {String(index + 1).padStart(2, "0")} з {String(total).padStart(2, "0")}
           </p>
         </div>
 
         {/* Фото тримається праворуч, у своєму блоці. При переході вилітає вліво. */}
         <div className="min-w-0 flex-1 px-6 md:px-0">
-          <div className="relative h-[58vh] w-[90%] md:h-[517px] md:w-[787px]">
+          <div
+            ref={stageRef}
+            className="relative h-[58vh] w-[90%] md:h-[517px] md:w-[787px]"
+          >
             {/* Наступне фото визирає статичною смужкою праворуч */}
             {index + 1 < total && (
               <div className="absolute inset-0 z-0 translate-x-[108%] overflow-hidden">
@@ -164,7 +220,7 @@ export default function PortfolioSection() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.3 }}
-              className="mt-4 text-sm text-cream/70"
+              className="mt-4 text-sm text-brown-700"
             >
               {current.note} · {current.area} · {current.seats} · {current.series}
             </motion.p>

@@ -1,5 +1,12 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { images } from "@/lib/images";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const series = [
   {
@@ -32,10 +39,65 @@ const series = [
 ];
 
 export default function CatalogSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          headingRef.current,
+          { autoAlpha: 0, y: 24 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: headingRef.current,
+              start: "top 82%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        const cards = gridRef.current
+          ? Array.from(gridRef.current.children)
+          : [];
+        gsap.fromTo(
+          cards,
+          { autoAlpha: 0, y: 32 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: "top 78%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="catalog" className="bg-cream py-24 md:py-32">
+    <section
+      id="catalog"
+      ref={sectionRef}
+      className="relative z-10 bg-cream py-24 md:py-32"
+    >
       <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <div className="mb-14 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div
+          ref={headingRef}
+          className="mb-14 flex flex-col justify-between gap-4 md:flex-row md:items-end"
+        >
           <h2 className="max-w-xl text-3xl font-medium md:text-4xl">
             Три серії — під ваш зал і бюджет
           </h2>
@@ -44,7 +106,7 @@ export default function CatalogSection() {
           </p>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div ref={gridRef} className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {series.map((item) => (
             <div key={item.key} className="flex flex-col">
               <a

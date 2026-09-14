@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,85 +18,102 @@ const swatches = [
   { name: "Тканина Stone", color: "#8c8577" },
 ];
 
-const panels = [
-  {
-    eyebrow: "01",
-    title: "Технології в кожному кріслі",
-    text: "Плавний електропривід, підігрів і масаж керуються одним дотиком — усе сховано в оббивці, нічого зайвого на очах.",
-    body: (
-      <ul className="mt-8 grid grid-cols-2 gap-3">
-        {["Електропривід", "Підігрів", "Масаж", "Підсвітка"].map((f) => (
-          <li
-            key={f}
-            className="rounded-xl border border-brown-300/50 px-4 py-3 text-sm text-brown-800"
-          >
-            {f}
-          </li>
-        ))}
-      </ul>
-    ),
-  },
-  {
-    eyebrow: "02",
-    title: "Продумано для комфорту",
-    text: "Бездротова зарядка та столик-підсклянник під рукою — крісло само підлаштовується під вечір перегляду.",
-    body: (
-      <ul className="mt-8 grid grid-cols-2 gap-3">
-        {["Бездротова зарядка", "Столик-підсклянник"].map((f) => (
-          <li
-            key={f}
-            className="rounded-xl border border-brown-300/50 px-4 py-3 text-sm text-brown-800"
-          >
-            {f}
-          </li>
-        ))}
-      </ul>
-    ),
-  },
-  {
-    eyebrow: "03",
-    title: "Матеріали преміумкласу",
-    text: "Шкіра, оксамит і тканина — кожна фактура підібрана так, щоб залишатися бездоганною роками.",
-    body: (
-      <div className="mt-8 grid grid-cols-2 gap-3">
-        {swatches.map((s) => (
-          <div
-            key={s.name}
-            className="flex items-center gap-3 rounded-xl bg-brown-800/5 px-3 py-3 text-xs text-brown-800"
-          >
-            <span
-              className="h-5 w-5 shrink-0 rounded-full ring-1 ring-black/10"
-              style={{ backgroundColor: s.color }}
-            />
-            {s.name}
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    eyebrow: "04",
-    title: "Кожне крісло — під ваш інтер'єр",
-    text: "40+ варіантів оздоблення дають змогу зібрати кінозал, що виглядає так, ніби його створювали саме під вашу кімнату.",
-    body: (
-      <p className="mt-8 inline-block rounded-full border border-brown-300/60 px-5 py-2 text-sm tracking-wide text-brown-700 uppercase">
-        40+ варіантів оздоблення
-      </p>
-    ),
-  },
+const techSpecs = [
+  { label: "Електропривід", value: "Плавне розкладання одним дотиком" },
+  { label: "Підігрів", value: "Три рівні тепла в спинці й сидінні" },
+  { label: "Масаж", value: "Вбудовані вібромотори, кілька програм" },
+  { label: "Підсвітка", value: "Контурна LED-підсвітка основи" },
+  { label: "Гаджети", value: "Бездротова зарядка, столик-підсклянник" },
 ];
+
+const materialSpecs = [
+  { label: "Матеріали", value: "Шкіра, оксамит, тканина" },
+  { label: "Оздоблення", value: "40+ варіантів під ваш інтер'єр" },
+];
+
+const SLIDE_VH = 90;
 
 export default function TechnologySection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [activeSwatch, setActiveSwatch] = useState<string | null>(null);
+
+  // Легкий пружинний "доганяючий" лаг для обох колонок — власне відчуття
+  // плавної інерції в межах цієї секції, без підключення smooth-scroll на
+  // весь сайт (це ризикувало б зламати pin-ефекти в StackedIntro/ProcessSection).
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 60,
+    damping: 20,
+    mass: 0.4,
+  });
+  const leftLagY = useTransform(smoothProgress, [0, 1], [26, -26]);
+  const rightLagY = useTransform(smoothProgress, [0, 1], [26, -26]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.fromTo(
+        contentRef.current,
+        { autoAlpha: 0, y: 36 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: contentRef.current,
+            start: "top 78%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      const rows = contentRef.current?.querySelectorAll(".spec-row");
+      if (rows?.length) {
+        gsap.fromTo(
+          rows,
+          { autoAlpha: 0, y: 14 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.06,
+            ease: "power2.out",
+            delay: 0.15,
+            scrollTrigger: {
+              trigger: contentRef.current,
+              start: "top 78%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 768px)", () => {
-        panels.forEach((_, i) => {
+        gsap.fromTo(
+          imageRefs.current[0],
+          { autoAlpha: 0, scale: 1.05 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 1.1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        images.technology.forEach((_, i) => {
           if (i === 0) return;
           gsap.fromTo(
             imageRefs.current[i],
@@ -104,10 +122,10 @@ export default function TechnologySection() {
               yPercent: 0,
               ease: "none",
               scrollTrigger: {
-                trigger: panelRefs.current[i],
-                start: "top 80%",
-                end: "top 20%",
-                scrub: true,
+                trigger: triggerRefs.current[i],
+                start: "top bottom",
+                end: "top top",
+                scrub: 0.6,
               },
             }
           );
@@ -119,72 +137,176 @@ export default function TechnologySection() {
   }, []);
 
   return (
-    <section
-      id="technology"
-      ref={sectionRef}
-      className="bg-cream py-24 md:py-32"
-    >
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <h2 className="max-w-md text-3xl font-medium md:text-4xl">
-          Технології та оздоблення
-        </h2>
+    <section id="technology" ref={sectionRef} className="bg-white">
+      {/* Банер-хіро: фото на всю ширину + великий заголовок поверх */}
+      <div className="relative h-[38vh] min-h-[280px] w-full overflow-hidden md:h-[42vh]">
+        <Image
+          src={images.technologyBanner}
+          alt="Технології та оздоблення VELLARO"
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-brown-950/80 via-brown-950/20 to-transparent" />
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-6 pb-10 md:px-10 md:pb-14">
+          <span className="text-sm tracking-[0.2em] text-cream/90 uppercase">
+            Технології та оздоблення
+          </span>
+          <h2 className="mt-3 text-6xl leading-[0.95] font-medium text-cream md:text-8xl">
+            Оздоблення
+          </h2>
+        </div>
+      </div>
 
-        <div className="mt-14 grid gap-14 md:grid-cols-2 md:items-start md:gap-16">
-          <div>
-            {panels.map((p, i) => (
-              <div
-                key={p.title}
-                ref={(el) => {
-                  panelRefs.current[i] = el;
-                }}
-                className="flex min-h-[70vh] flex-col justify-center py-10 md:min-h-[85vh]"
-              >
-                <span className="text-sm tracking-wide text-brown-500">
-                  {p.eyebrow}
-                </span>
-                <h3 className="mt-3 text-2xl font-medium text-ink md:text-3xl">
-                  {p.title}
-                </h3>
-                <p className="mt-4 max-w-md text-brown-700">{p.text}</p>
+      <div className="mx-auto max-w-7xl px-6 pb-16 md:px-10 md:pb-24">
+        <div className="grid items-start gap-x-8 md:grid-cols-2">
+          {/* Ліва колонка: спек-картка моделі. Зовнішній div лишається для
+              GSAP fade-in (contentRef), внутрішній motion.div — для
+              незалежного пружинного лагу від скролу. */}
+          <div ref={contentRef} className="pt-12 pb-24 md:pt-16">
+          <motion.div style={{ y: leftLagY }}>
+            <h3 className="text-2xl font-medium text-ink md:text-3xl">
+              Технології в кожному кріслі
+            </h3>
+            <span className="mt-6 block text-sm text-brown-500">
+              що всередині:
+            </span>
+            <p className="mt-2 max-w-md text-brown-700">
+              Плавний електропривід, підігрів і масаж керуються одним
+              дотиком — усе сховано в оббивці, нічого зайвого на очах.
+            </p>
 
-                {/* Мобільна версія: фото одразу під текстом панелі */}
-                <div className="relative mt-8 aspect-[4/5] w-full overflow-hidden rounded-2xl md:hidden">
-                  <Image
-                    src={images.technology[i]}
-                    alt={p.title}
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                  />
+            <div className="mt-10">
+              {techSpecs.map((s) => (
+                <div
+                  key={s.label}
+                  className="spec-row flex items-baseline justify-between border-b border-brown-300/40 py-4"
+                >
+                  <span className="text-sm font-medium text-ink">
+                    {s.label}:
+                  </span>
+                  <span className="text-sm text-brown-700">{s.value}</span>
                 </div>
+              ))}
+            </div>
 
-                {p.body}
+            {/* Технічне креслення моделі */}
+            <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden">
+              <Image
+                src={images.technologySketch}
+                alt="Технічне креслення крісла VELLARO"
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+
+            {/* Мобільна версія: одне фото під текстом, без sticky-стеку */}
+            <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden md:hidden">
+              <Image
+                src={images.technology[0]}
+                alt="Крісло VELLARO"
+                fill
+                sizes="100vw"
+                className="object-cover"
+              />
+            </div>
+
+            <h3 className="mt-16 text-2xl font-medium text-ink md:text-3xl">
+              Матеріали та оздоблення
+            </h3>
+            <span className="mt-6 block text-sm text-brown-500">
+              з чого зроблено:
+            </span>
+            <p className="mt-2 max-w-md text-brown-700">
+              Шкіра, оксамит і тканина — кожна фактура підібрана так, щоб
+              залишатися бездоганною роками. 40+ варіантів оздоблення дають
+              змогу зібрати крісло, що виглядає так, ніби його створювали
+              саме під вашу кімнату.
+            </p>
+
+            <div className="mt-10">
+              {materialSpecs.map((s) => (
+                <div
+                  key={s.label}
+                  className="spec-row flex items-baseline justify-between border-b border-brown-300/40 py-4"
+                >
+                  <span className="text-sm font-medium text-ink">
+                    {s.label}:
+                  </span>
+                  <span className="text-sm text-brown-700">{s.value}</span>
+                </div>
+              ))}
+
+              <div className="spec-row flex items-center justify-between py-4">
+                <span className="text-sm font-medium text-ink">Колір:</span>
+                <div className="flex gap-2">
+                  {swatches.map((s) => {
+                    const active = activeSwatch === s.name;
+                    return (
+                      <button
+                        key={s.name}
+                        type="button"
+                        title={s.name}
+                        onClick={() =>
+                          setActiveSwatch(active ? null : s.name)
+                        }
+                        className={`h-6 w-6 shrink-0 rounded-full ring-1 ring-black/10 transition-transform duration-200 ${
+                          active ? "scale-110 ring-2 ring-ink/40" : ""
+                        }`}
+                        style={{ backgroundColor: s.color }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            ))}
+            </div>
+          </motion.div>
           </div>
 
-          {/* Desktop: sticky overlapping image stack */}
-          <div className="hidden md:sticky md:top-24 md:block md:h-[70vh]">
-            <div className="relative h-full w-full overflow-hidden rounded-2xl">
-              {panels.map((p, i) => (
+          {/* Права колонка: один sticky-контейнер, фото зсуваються одне
+              поверх іншого через GSAP scrub (чистий CSS sticky тут не
+              працює — StackedIntro огортає весь контент після Hero у
+              overflow-hidden, що ламає position:sticky для проміжних
+              контейнерів). */}
+          <div
+            className="relative hidden md:-mt-32 md:block"
+            style={{ height: `${images.technology.length * SLIDE_VH}vh` }}
+          >
+            {images.technology.map((_, i) => (
+              <div
+                key={`trigger-${i}`}
+                ref={(el) => {
+                  triggerRefs.current[i] = el;
+                }}
+                className="absolute inset-x-0"
+                style={{ top: `${i * SLIDE_VH}vh`, height: `${SLIDE_VH}vh` }}
+              />
+            ))}
+
+            <motion.div
+              style={{ y: rightLagY }}
+              className="sticky top-24 h-[70vh] w-full overflow-hidden shadow-xl"
+            >
+              {images.technology.map((src, i) => (
                 <div
-                  key={p.title}
+                  key={src}
                   ref={(el) => {
                     imageRefs.current[i] = el;
                   }}
-                  className="absolute inset-0 overflow-hidden"
+                  className="absolute inset-0"
                   style={{ zIndex: i + 1 }}
                 >
                   <Image
-                    src={images.technology[i]}
-                    alt={p.title}
+                    src={src}
+                    alt={`Крісло VELLARO — ракурс ${i + 1}`}
                     fill
                     sizes="50vw"
                     className="object-cover"
                   />
                 </div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
