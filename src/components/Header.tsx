@@ -90,11 +90,7 @@ export default function Header() {
   const ctaText = scrollingUp ? "#1c140d" : progressColorInverse;
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 h-20 transition-colors duration-300 ${
-        scrollingUp ? "bg-brown-900" : "bg-transparent"
-      }`}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 h-20 bg-transparent">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 md:px-10">
         <nav className="hidden items-center gap-8 text-sm tracking-wide md:flex">
           {links.map((link) => (
