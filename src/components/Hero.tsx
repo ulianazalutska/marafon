@@ -80,20 +80,20 @@ export default function Hero() {
       </div>
 
       {/* Гардеробна, створена під ваш простір */}
-      <div className="absolute" style={{ left: "4.7%", top: "62.5%" }}>
-        <p className="text-[20px] leading-[1.35] font-medium text-white">
+      <div className="absolute" style={{ left: "15%", top: "48%" }}>
+        <p className="text-[19px] leading-[1.35] font-medium tracking-[0.02em] text-white">
           Гардеробна, створена під
           <br />
           ваш простір і спосіб життя
         </p>
         <a
           href="#contact"
-          className="mt-6 inline-flex items-center gap-3 rounded-full bg-accent py-3.5 pr-3.5 pl-6 text-[15px] text-white transition-opacity hover:opacity-90"
+          className="mt-6 inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[7px] pl-[10px] text-[19px] font-normal text-white transition-opacity hover:opacity-90"
         >
           Підібрати гардеробну
-          <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/70">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M7 17 17 7M7 7h10v10" />
+          <span className="flex h-[31px] w-[31px] items-center justify-center rounded-full bg-white">
+            <svg width="13.67" height="13.67" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="#AF957C" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
         </a>
