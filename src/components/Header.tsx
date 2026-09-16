@@ -13,13 +13,17 @@ const links = [
 export default function Header() {
   const { scrollY } = useScroll();
   const [viewportHeight, setViewportHeight] = useState(900);
+  const [viewportWidth, setViewportWidth] = useState(1440);
   const [scrollingUp, setScrollingUp] = useState(false);
 
   useEffect(() => {
-    const setVh = () => setViewportHeight(window.innerHeight);
-    setVh();
-    window.addEventListener("resize", setVh);
-    return () => window.removeEventListener("resize", setVh);
+    const setViewport = () => {
+      setViewportHeight(window.innerHeight);
+      setViewportWidth(window.innerWidth);
+    };
+    setViewport();
+    window.addEventListener("resize", setViewport);
+    return () => window.removeEventListener("resize", setViewport);
   }, []);
 
   useEffect(() => {
@@ -63,18 +67,33 @@ export default function Header() {
   // Дистанція скролу, за яку лого доїжджає з hero в хедер — без pin,
   // без spacer, лише pure transform на одному елементі (дешево, не лагає).
   const threshold = Math.max(viewportHeight * 0.55, 320);
-  const travel = Math.max(viewportHeight * 0.78 - 24, 260);
 
-  const scale = useTransform(scrollY, [0, threshold], [9, 1]);
-  const logoY = useTransform(scrollY, [0, threshold], [travel, 0]);
-  // The stroke is meant to keep the small header-size logo (scale: 1)
-  // crisp — at scale: 9 it's scaled up right along with the text and
-  // reads as a heavy, bold outline, so it must be ~0 there instead.
-  const strokeWidth = useTransform(scrollY, [0, threshold], [0, 1.2]);
+  // Лого — це той самий великий білий напис ARMADERO, що на hero (лівий
+  // нижній кут, 14.5vw, tracking 0.18em): він і "їде" в хедер, а не окрема
+  // копія, що з'являється поверх нього. Позиція/розмір інтерпольовані як
+  // пікселі (не transform: scale) — так рядок лишається чітким на будь-
+  // якому кроці й точно приземляється по центру h-20 шапки.
+  const heroFontSize = viewportWidth * 0.145;
+  const heroLeft = viewportWidth * 0.086;
+  const heroTop = viewportHeight - heroFontSize * 1.1;
+  const heroTracking = heroFontSize * 0.18;
 
-  // Один прогрес-колір для лого й лінків — hero тепер світлий (не темний
-  // кінозал), тож і над hero, і над білим контентом текст лишається темним
-  // (#362f2b), просто трохи глибшає до #1c140d, коли сторінка проскролена.
+  const headerFontSize = 20;
+  const headerTracking = headerFontSize * 0.3;
+  const headerWidth = 8 * headerFontSize * 0.9; // наближена ширина "ARMADERO" при цьому трекінгу
+  const headerLeft = viewportWidth / 2 - headerWidth / 2;
+  const headerTop = 40 - headerFontSize / 2;
+
+  const logoFontSize = useTransform(scrollY, [0, threshold], [heroFontSize, headerFontSize]);
+  const logoLeft = useTransform(scrollY, [0, threshold], [heroLeft, headerLeft]);
+  const logoTop = useTransform(scrollY, [0, threshold], [heroTop, headerTop]);
+  const logoTracking = useTransform(scrollY, [0, threshold], [heroTracking, headerTracking]);
+  const logoColor = useTransform(scrollY, [0, threshold], ["#ffffff", "#362f2b"]);
+
+  // Один прогрес-колір для навлінків/телефону — hero тепер світлий (не
+  // темний кінозал), тож і над hero, і над білим контентом текст лишається
+  // темним (#362f2b), просто трохи глибшає до #1c140d, коли сторінка
+  // проскролена.
   const progressColor = useTransform(
     scrollY,
     [0, threshold],
@@ -83,10 +102,9 @@ export default function Header() {
 
   const uiColor = scrollingUp ? "#362f2b" : progressColor;
 
-  // Лого й телефон з'являються в шапці лише після того, як прокручено
-  // hero — на самому hero бренд вже показаний окремим написом ARMADERO
-  // внизу секції, тож дублювати його великим по центру не потрібно.
-  const chromeOpacity = useTransform(scrollY, [0, threshold * 0.4], [0, 1]);
+  // Телефон з'являється в шапці лише після того, як лого доїхало на своє
+  // місце — просте fade без зміни масштабу/позиції.
+  const phoneOpacity = useTransform(scrollY, [0, threshold * 0.4], [0, 1]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-20 bg-transparent">
@@ -104,27 +122,24 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="pointer-events-none fixed inset-x-0 top-0 flex h-20 items-center justify-center">
-          <motion.p
-            id="header-logo"
-            style={{
-              scale,
-              y: logoY,
-              opacity: chromeOpacity,
-              color: uiColor,
-              WebkitTextStrokeWidth: strokeWidth,
-              WebkitTextStrokeColor: uiColor,
-            }}
-            className="pointer-events-none text-center font-logo text-xl leading-none font-light tracking-[0.3em] whitespace-nowrap"
-          >
-            ARMADERO
-          </motion.p>
-        </div>
+        <motion.p
+          id="header-logo"
+          style={{
+            fontSize: logoFontSize,
+            left: logoLeft,
+            top: logoTop,
+            letterSpacing: logoTracking,
+            color: logoColor,
+          }}
+          className="pointer-events-none fixed z-50 leading-none font-medium whitespace-nowrap font-logo"
+        >
+          ARMADERO
+        </motion.p>
 
         <div className="flex items-center gap-5">
           <motion.a
             href="tel:+380000000000"
-            style={{ color: uiColor, opacity: chromeOpacity }}
+            style={{ color: uiColor, opacity: phoneOpacity }}
             className="hidden items-center gap-2 text-sm tracking-wide md:flex"
           >
             <svg

@@ -97,19 +97,6 @@ export default function Hero() {
           </span>
         </a>
       </div>
-
-      {/* Вордмарк */}
-      <p
-        className="absolute font-logo leading-none font-medium whitespace-nowrap text-white"
-        style={{
-          left: "8.6%",
-          bottom: "0%",
-          fontSize: "14.5vw",
-          letterSpacing: "0.18em",
-        }}
-      >
-        ARMADERO
-      </p>
     </section>
   );
 }
