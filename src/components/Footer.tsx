@@ -138,7 +138,7 @@ export default function Footer() {
       </div>
 
       <div className="overflow-hidden border-b border-brown-300/60 py-6 md:py-10">
-        <p className="text-center text-[22vw] leading-none font-medium tracking-tight whitespace-nowrap text-ink/10 sm:text-[20vw] md:text-[15vw]">
+        <p className="text-center font-logo text-[22vw] leading-none font-medium tracking-tight whitespace-nowrap text-ink/10 sm:text-[20vw] md:text-[15vw]">
           VELLARO
         </p>
       </div>

@@ -2,6 +2,8 @@
 // для hero. Решта вже реальні згенеровані фото VELLARO.
 export const images = {
   hero: "/hero/hero-img.png",
+  heroPreviewVideo: "/hero/preview.mp4",
+  heroPreviewPoster: "/hero/preview-poster.jpg",
   catalog: {
     lite: "/catalog/lite.png",
     comfort: "/catalog/comfort.png",

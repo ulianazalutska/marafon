@@ -72,22 +72,21 @@ export default function Header() {
   // reads as a heavy, bold outline, so it must be ~0 there instead.
   const strokeWidth = useTransform(scrollY, [0, threshold], [0, 1.2]);
 
-  // Один прогрес-колір (світлий над темним hero → темний над світлим
-  // контентом) — використовується і для лого, і для лінків/кнопки.
+  // Один прогрес-колір для лого й лінків — hero тепер світлий (не темний
+  // кінозал), тож і над hero, і над білим контентом текст лишається темним
+  // (#362f2b), просто трохи глибшає до #1c140d, коли сторінка проскролена.
   const progressColor = useTransform(
     scrollY,
     [0, threshold],
-    ["#faf6f0", "#1c140d"]
-  );
-  const progressColorInverse = useTransform(
-    scrollY,
-    [0, threshold],
-    ["#1c140d", "#faf6f0"]
+    ["#362f2b", "#1c140d"]
   );
 
-  const uiColor = scrollingUp ? "#faf6f0" : progressColor;
-  const ctaBg = scrollingUp ? "#faf6f0" : progressColor;
-  const ctaText = scrollingUp ? "#1c140d" : progressColorInverse;
+  const uiColor = scrollingUp ? "#362f2b" : progressColor;
+
+  // Лого й телефон з'являються в шапці лише після того, як прокручено
+  // hero — на самому hero бренд вже показаний окремим написом ARMADERO
+  // внизу секції, тож дублювати його великим по центру не потрібно.
+  const chromeOpacity = useTransform(scrollY, [0, threshold * 0.4], [0, 1]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-20 bg-transparent">
@@ -111,17 +110,36 @@ export default function Header() {
             style={{
               scale,
               y: logoY,
+              opacity: chromeOpacity,
               color: uiColor,
               WebkitTextStrokeWidth: strokeWidth,
               WebkitTextStrokeColor: uiColor,
             }}
-            className="pointer-events-none text-center text-xl leading-none font-light tracking-[0.3em] whitespace-nowrap"
+            className="pointer-events-none text-center font-logo text-xl leading-none font-light tracking-[0.3em] whitespace-nowrap"
           >
-            VELLARO
+            ARMADERO
           </motion.p>
         </div>
 
         <div className="flex items-center gap-5">
+          <motion.a
+            href="tel:+380000000000"
+            style={{ color: uiColor, opacity: chromeOpacity }}
+            className="hidden items-center gap-2 text-sm tracking-wide md:flex"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              className="shrink-0"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            +380 00 000 00 00
+          </motion.a>
           <motion.div
             style={{ color: uiColor }}
             className="hidden items-center gap-1 text-sm tracking-wide opacity-80 md:flex"
@@ -132,13 +150,6 @@ export default function Header() {
               EN
             </button>
           </motion.div>
-          <motion.a
-            href="#contact"
-            style={{ backgroundColor: ctaBg, color: ctaText }}
-            className="rounded-full px-5 py-2 text-sm tracking-wide transition-opacity hover:opacity-90"
-          >
-            Підібрати крісла
-          </motion.a>
         </div>
       </div>
     </header>

@@ -10,7 +10,8 @@
   --color-brown-700: #55402c;
   --color-brown-500: #8a6b4d;
   --color-brown-300: #c9b39a;
-  --font-sans: "Ranade", ui-sans-serif, system-ui, sans-serif;
+  --color-brown-850: #362f2b;
+  --color-accent: #af957c;
 }
 
 @theme inline {
@@ -23,7 +24,10 @@
   --color-brown-700: var(--color-brown-700);
   --color-brown-500: var(--color-brown-500);
   --color-brown-300: var(--color-brown-300);
+  --color-brown-850: var(--color-brown-850);
+  --color-accent: var(--color-accent);
   --font-sans: var(--font-sans);
+  --font-logo: var(--font-logo);
 }
 
 html {

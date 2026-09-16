@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { mosaicImages } from "@/lib/images";
 import { mosaicLayout } from "@/lib/mosaicLayout";
 
-const LOGO_TEXT = "VELLARO";
+const LOGO_TEXT = "ARMADERO";
 const SEEN_KEY = "vellaro-intro-seen";
 
 export default function IntroOverlay() {
@@ -48,7 +48,7 @@ export default function IntroOverlay() {
         },
       });
 
-      // Wait for the custom font (Ranade, loaded in layout.tsx) before
+      // Wait for the custom font (Rajdhani, loaded in layout.tsx) before
       // starting: the "VELLARO" wordmark fades in via opacity almost
       // immediately, and without this it can render in the browser's bold
       // fallback font for a moment before swapping to the intended thin,
@@ -106,7 +106,7 @@ export default function IntroOverlay() {
     <div ref={overlayRef} className="fixed inset-0 z-[100] overflow-hidden bg-cream">
       <h1
         ref={typeRef}
-        className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-4xl font-light tracking-[0.4em] text-ink md:text-6xl"
+        className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 font-logo text-4xl font-light tracking-[0.4em] text-ink md:text-6xl"
       >
         {LOGO_TEXT.split("").map((ch, i) => (
           <span key={i} className="inline-block opacity-0">
