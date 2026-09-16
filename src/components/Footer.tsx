@@ -144,7 +144,10 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto flex max-w-7xl flex-col-reverse items-center justify-between gap-3 px-6 py-6 text-xs text-brown-500 md:flex-row md:px-10">
-        <span className="font-mono tracking-wide">© 2026 VELLARO</span>
+        <span className="font-mono tracking-wide">
+          VELLARO — студія гардеробних систем та інтер&apos;єру. Усі права
+          захищено.
+        </span>
         <div className="flex gap-6 font-mono tracking-wide">
           <a href="#" className="transition-colors hover:text-ink">
             Політика конфіденційності

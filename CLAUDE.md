@@ -8,6 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 VELLARO — a single-page portfolio landing site for a fictional premium home-cinema seating brand (Next.js/React/TypeScript/Tailwind, content in Ukrainian). It is one long `page.tsx` composed of section components, not a multi-page app. Full concept, copy, and section-by-section brief live in `PROJECT.md` — read it before making content or structural changes; it documents the target 10-block structure and the reasoning behind it (e.g. why the product catalog is section 2, not deeper in the page).
 
+**In-progress repositioning (not yet applied to code):** `REPOSITIONING.md` is a working log of a decision, still pending, to pivot the site's niche from home-cinema seating to custom closet/wardrobe storage systems, keeping the page structure and mostly the code as-is but rewriting copy, photos, and possibly brand name/accent color. Check it before assuming current copy/branding is final, and update it as decisions land.
+
 ## Commands
 
 - `npm run dev` — start dev server (Turbopack via Next 16)
@@ -19,8 +21,8 @@ No test runner is configured. Verify UI changes by running the dev server and ch
 
 ## Architecture
 
-- `src/app/page.tsx` — the entire site is one composition of section components rendered in order inside `<main>`. To reorder/add/remove a section, edit this file; each section is a self-contained component in `src/components/`.
-- `src/components/*Section.tsx` — one file per landing-page block (Hero, CatalogSection, PortfolioSection, TechnologySection, ProcessSection, ProductionSection, TestimonialsSection, FaqSection, ContactSection, Footer, etc.). `Header` and `IntroOverlay`/`StackedIntro` are page chrome/intro, not content sections.
+- `src/app/page.tsx` — the entire site is one composition of section components rendered in order inside `<main>`. To reorder/add/remove a section, edit this file; each section is a self-contained component in `src/components/`. Current order: `StackedIntro` (wrapping `Hero` + `CreateForYouSection`), `CatalogSection`, `PanoramaSection`, `PortfolioSection`, `TechnologySection`, `ProcessSection`, `ProcessFinaleSection`, `ProductionSection`, `TestimonialsSection`, `FaqSection`, `ContactSection`, then a second `PanoramaSection` call (different image, `title={null}`) before `Footer`.
+- `src/components/*Section.tsx` — one file per landing-page block. `Header` and `IntroOverlay`/`StackedIntro` are page chrome/intro, not content sections. `PanoramaSection` is reused twice with different props (see above), and `images.ts` is the only place that needs updating to swap either panorama's photo.
 - `src/components/ui/` — reusable pieces adapted from 21st.dev-sourced components (e.g. `testimonial.tsx`, `interactive-accordion.tsx`, `timeline-animation.tsx`). When integrating a new 21st.dev component, recolor it to the site's brand palette (CSS vars below) — these components often ship with generic shadcn color variables (`var(--foreground)`, etc.) that don't exist in this project.
 - `src/lib/images.ts` — single source of truth for all image paths (`public/...`) and remote placeholder URLs, grouped by section (`images.catalog`, `images.portfolio`, `images.production`, etc.), plus `mosaicImages` used by the intro animation. Add new image assets here rather than inlining paths in components.
 - `src/lib/mosaicLayout.ts` — layout math for the intro mosaic grid.
