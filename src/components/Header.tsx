@@ -14,7 +14,6 @@ export default function Header() {
   const { scrollY } = useScroll();
   const [viewportHeight, setViewportHeight] = useState(900);
   const [viewportWidth, setViewportWidth] = useState(1440);
-  const [scrollingUp, setScrollingUp] = useState(false);
 
   useEffect(() => {
     const setViewport = () => {
@@ -26,47 +25,12 @@ export default function Header() {
     return () => window.removeEventListener("resize", setViewport);
   }, []);
 
-  useEffect(() => {
-    // lastY — це "зафіксована" точка відліку, вона зсувається лише коли
-    // напрямок підтверджено (пройдено HYSTERESIS px). Порівняння з
-    // попереднім event'ом (замість зафіксованої точки) на трекпадах/
-    // інерційному скролі тремтить (+1/-1px між кадрами) і колір блимає.
-    const HYSTERESIS = 8;
-    let lastY = window.scrollY;
-    let ticking = false;
-
-    const update = () => {
-      const y = window.scrollY;
-      if (y <= 2) {
-        // Біля самого верху скрол завжди трактуємо як "вгору" — інакше
-        // пружний overscroll/незначний джиттер може випадково зчитатись
-        // як рух вниз і колір зникне саме там, де він найпотрібніший.
-        setScrollingUp(true);
-        lastY = y;
-      } else if (y < lastY - HYSTERESIS) {
-        setScrollingUp(true);
-        lastY = y;
-      } else if (y > lastY + HYSTERESIS) {
-        setScrollingUp(false);
-        lastY = y;
-      }
-      ticking = false;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   // Дистанція скролу, за яку лого доїжджає з hero в хедер — без pin,
   // без spacer, лише pure transform на одному елементі (дешево, не лагає).
-  const threshold = Math.max(viewportHeight * 0.55, 320);
+  // 0.85 — логотип має "доїхати" й стати на місце шапки саме тоді, коли
+  // наступна секція (CreateForYouSection) заїхала на 85% дистанції пінінгу
+  // Hero (StackedIntro пінить Hero на висоту viewportHeight).
+  const threshold = Math.max(viewportHeight * 0.85, 320);
 
   // Лого — це той самий великий білий напис ARMADERO, що на hero (лівий
   // нижній кут, 14.5vw, tracking 0.18em): він і "їде" в хедер, а не окрема
@@ -76,46 +40,85 @@ export default function Header() {
   const heroFontSize = viewportWidth * 0.145;
   const heroLeft = viewportWidth * 0.086;
   const heroTop = viewportHeight - heroFontSize * 1.1;
-  const heroTracking = heroFontSize * 0.18;
+  const heroTrackingRatio = 0.18;
 
   const headerFontSize = 20;
-  const headerTracking = headerFontSize * 0.3;
+  // На маленькому розмірі (20px) той самий em-трекінг, що на величезному
+  // hero-написі, виглядає розхлябано — літери надто дрібні для такого
+  // проміжку. У шапці лого має бути компактним логотипом, тож тут
+  // помітно менший коефіцієнт (0.08em), а не пропорція hero.
+  const headerTrackingRatio = 0.08;
   const headerWidth = 8 * headerFontSize * 0.9; // наближена ширина "ARMADERO" при цьому трекінгу
-  const headerLeft = viewportWidth / 2 - headerWidth / 2;
+  const headerCenterOffset = 40; // трохи правіше від точного центру шапки
+  const headerLeft = viewportWidth / 2 - headerWidth / 2 + headerCenterOffset;
   const headerTop = 40 - headerFontSize / 2;
 
   const logoFontSize = useTransform(scrollY, [0, threshold], [heroFontSize, headerFontSize]);
   const logoLeft = useTransform(scrollY, [0, threshold], [heroLeft, headerLeft]);
   const logoTop = useTransform(scrollY, [0, threshold], [heroTop, headerTop]);
-  const logoTracking = useTransform(scrollY, [0, threshold], [heroTracking, headerTracking]);
-  const logoColor = useTransform(scrollY, [0, threshold], ["#ffffff", "#362f2b"]);
-
-  // Один прогрес-колір для навлінків/телефону — hero тепер світлий (не
-  // темний кінозал), тож і над hero, і над білим контентом текст лишається
-  // темним (#362f2b), просто трохи глибшає до #1c140d, коли сторінка
-  // проскролена.
-  const progressColor = useTransform(
+  // Трекінг інтерполюється як em-коефіцієнт (не сирі px): лінійна
+  // інтерполяція двох крайніх px-значень трималась ближче до hero-
+  // пропорції майже всю дистанцію й "стрибала" вузько лише в останні
+  // кадри. Інтерполяція коефіцієнта тримає відносний проміжок між
+  // літерами пропорційним fontSize на кожному кроці.
+  const logoTrackingRatio = useTransform(
     scrollY,
     [0, threshold],
-    ["#362f2b", "#1c140d"]
+    [heroTrackingRatio, headerTrackingRatio]
+  );
+  // Framer Motion не додає "px" автоматично до letterSpacing (на відміну
+  // від fontSize/width/top) — без явної одиниці браузер відкидає значення
+  // як невалідне й трекінг лишається "замороженим" на дефолтному, тому тут
+  // рядок формується вручну.
+  const logoTracking = useTransform(
+    () => `${logoFontSize.get() * logoTrackingRatio.get()}px`
   );
 
-  const uiColor = scrollingUp ? "#362f2b" : progressColor;
+  // Білий оверлей (CreateForYouSection) насправді наїжджає на Hero ще ПІД
+  // ЧАС пінінгу (0 → viewportHeight), а не після нього: pinSpacing:false
+  // в StackedIntro означає, що поки Hero візуально "застряг", сторінка
+  // далі скролиться і оверлей підповзає знизу, накриваючи Hero саме в цьому
+  // діапазоні. Тому текст шапки має стати темним ДО того, як оверлей
+  // дістанеться смуги хедера (headerHeight px від верху), інакше він
+  // лишається білим на вже білому фоні секції під ним.
+  const headerHeight = 80;
+  const bgRangeStart = threshold + 100;
+  // Діапазон в 1px замість плавного fade — колір/фон перемикаються
+  // миттєво (без анімації-переходу), щойно scrollY проходить цю точку.
+  const bgThreshold = bgRangeStart + 1;
+  const textRangeStart = bgRangeStart;
+  const textThreshold = bgThreshold;
+  const uiColor = useTransform(
+    scrollY,
+    [textRangeStart, textThreshold],
+    ["#ffffff", "#362f2b"]
+  );
 
-  // Телефон з'являється в шапці лише після того, як лого доїхало на своє
-  // місце — просте fade без зміни масштабу/позиції.
-  const phoneOpacity = useTransform(scrollY, [0, threshold * 0.4], [0, 1]);
+  // Лого лишається білим всю дорогу під час переїзду (воно на темному/
+  // світлому Hero, але завжди поверх фотографії, тому білий колір читається
+  // скрізь) і темніє лише синхронно з навтекстом — коли вже стоїть в шапці
+  // й під ним реально білий фон наступної секції.
+  const logoColor = uiColor;
+  const headerBg = useTransform(
+    scrollY,
+    [bgRangeStart, bgThreshold],
+    ["rgba(255,255,255,0)", "rgba(255,255,255,1)"]
+  );
+  const phoneOpacity = useTransform(scrollY, [textRangeStart, textThreshold], [0, 1]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 h-20 bg-transparent">
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 md:px-10">
-        <nav className="hidden items-center gap-8 text-sm tracking-wide md:flex">
+    <motion.header
+      style={{ backgroundColor: headerBg }}
+      className="fixed inset-x-0 top-0 z-50 h-20"
+    >
+      <div className="mx-auto flex h-full max-w-[1350px] items-center justify-between px-6 md:px-0">
+        <nav className="hidden items-center gap-8 text-[19px] tracking-[0.02em] md:flex">
           {links.map((link) => (
             <motion.a
               key={link.href}
               href={link.href}
               style={{ color: uiColor }}
-              className="opacity-80 transition-opacity hover:opacity-100"
+              className="transition-opacity hover:opacity-80"
             >
               {link.label}
             </motion.a>
@@ -140,7 +143,7 @@ export default function Header() {
           <motion.a
             href="tel:+380000000000"
             style={{ color: uiColor, opacity: phoneOpacity }}
-            className="hidden items-center gap-2 text-sm tracking-wide md:flex"
+            className="hidden items-center gap-2 text-[19px] tracking-[0.02em] md:flex"
           >
             <svg
               width="15"
@@ -157,16 +160,19 @@ export default function Header() {
           </motion.a>
           <motion.div
             style={{ color: uiColor }}
-            className="hidden items-center gap-1 text-sm tracking-wide opacity-80 md:flex"
+            className="hidden items-center gap-1 text-[19px] tracking-[0.02em] md:flex"
           >
             <button className="opacity-100">UA</button>
             <span>/</span>
-            <button className="opacity-60 transition-opacity hover:opacity-100">
+            <button
+              style={{ color: "#ffffff" }}
+              className="opacity-50 transition-opacity hover:opacity-100"
+            >
               EN
             </button>
           </motion.div>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

@@ -23,11 +23,12 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       <Image src={images.hero} alt="" fill priority className="object-cover" />
+      <div className="absolute inset-0 bg-black/30" />
 
       {/* Деталі, що формують ваш простір */}
       <p
-        className="absolute text-right text-[22px] leading-[1.3] font-medium text-white"
-        style={{ left: "61%", top: "4.4%", width: "20vw" }}
+        className="absolute text-left text-[25px] leading-[1.3] font-medium tracking-[0.02em] text-white"
+        style={{ left: "57%", top: "3.5%", width: "20vw" }}
       >
         Деталі, що формують
         <br />
