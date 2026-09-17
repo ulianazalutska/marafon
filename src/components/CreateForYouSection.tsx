@@ -13,15 +13,16 @@ type Item = {
   image: string | null;
   side?: "left" | "right";
   shape?: "pill" | "circle";
+  compact?: boolean;
 };
 
 const items: Item[] = [
-  { label: "Дивани", image: images.catalog.lite, side: "right", shape: "pill" },
-  { label: "Кутові", image: images.catalog.comfort, side: "left", shape: "pill" },
-  { label: "Крісла", image: null },
-  { label: "Кінозали", image: images.catalog.signature, side: "right", shape: "pill" },
+  { label: "Гардеробні", image: images.createForYou.wardrobes, side: "right", shape: "pill" },
+  { label: "Кутові", image: images.createForYou.corner, side: "left", shape: "pill", compact: true },
+  { label: "Острівні", image: null },
+  { label: "Системи", image: images.createForYou.systems, side: "right", shape: "pill" },
   { label: "Модулі", image: null },
-  { label: "Проєкти", image: images.portfolio[0], side: "left", shape: "circle" },
+  { label: "Проєкти", image: images.createForYou.projects, side: "left", shape: "circle" },
 ];
 
 export default function CreateForYouSection() {
@@ -106,7 +107,7 @@ export default function CreateForYouSection() {
       <div className="mx-auto max-w-5xl px-6 text-center md:px-10">
         <p
           ref={eyebrowRef}
-          className="mb-10 text-sm tracking-[0.3em] text-brown-700 uppercase"
+          className="mb-[73px] text-lg tracking-[0.25em] text-brown-850 uppercase"
         >
           Ми створимо для вас
         </p>
@@ -123,7 +124,9 @@ export default function CreateForYouSection() {
                   className={`relative shrink-0 overflow-hidden bg-brown-300/30 ${
                     item.shape === "circle"
                       ? "h-14 w-14 rounded-full md:h-24 md:w-24"
-                      : "h-14 w-28 rounded-full md:h-24 md:w-48"
+                      : item.compact
+                        ? "h-[52px] w-28 rounded-full md:h-[88px] md:w-48"
+                        : "h-14 w-28 rounded-full md:h-24 md:w-48"
                   }`}
                 >
                   <Image
@@ -136,7 +139,7 @@ export default function CreateForYouSection() {
                 </span>
               )}
 
-              <h2 className="text-[13vw] leading-[0.95] font-medium tracking-tight text-brown-800 sm:text-6xl md:text-8xl">
+              <h2 className="text-[13vw] leading-[0.98] font-medium tracking-tight text-accent sm:text-6xl md:text-[74px]">
                 {item.label}
               </h2>
 
@@ -146,7 +149,9 @@ export default function CreateForYouSection() {
                   className={`relative shrink-0 overflow-hidden bg-brown-300/30 ${
                     item.shape === "circle"
                       ? "h-14 w-14 rounded-full md:h-24 md:w-24"
-                      : "h-14 w-28 rounded-full md:h-24 md:w-48"
+                      : item.compact
+                        ? "h-[52px] w-28 rounded-full md:h-[88px] md:w-48"
+                        : "h-14 w-28 rounded-full md:h-24 md:w-48"
                   }`}
                 >
                   <Image

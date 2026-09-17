@@ -9,6 +9,12 @@ export const images = {
     comfort: "/catalog/comfort.png",
     signature: "/catalog/signature.png",
   },
+  createForYou: {
+    wardrobes: "/create-for-you/wardrobes.png",
+    corner: "/create-for-you/corner.png",
+    systems: "/create-for-you/systems.png",
+    projects: "/create-for-you/projects.png",
+  },
   portfolio: [
     "/portfolio/1.png",
     "/portfolio/2.png",

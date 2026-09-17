@@ -37,8 +37,8 @@ export default function Hero() {
 
       {/* Від першого заміру до монтажу */}
       <p
-        className="absolute text-[15px] leading-[1.5] text-white"
-        style={{ left: "68.4%", top: "47%", width: "21vw" }}
+        className="absolute text-[19px] leading-[1.5] font-medium tracking-[0.02em] text-white"
+        style={{ left: "68.4%", top: "34%", width: "16vw" }}
       >
         Від першого заміру до монтажу — проєкт, матеріали та деталі в одному
         рішенні
@@ -46,12 +46,12 @@ export default function Hero() {
 
       {/* Відео-прев'ю картка */}
       <div
-        className="absolute"
-        style={{ left: "79.2%", top: "53.2%", width: "18.4vw" }}
+        className="absolute rounded-[1.75rem] bg-white p-[9px] pb-[17px] shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)]"
+        style={{ left: "79.2%", top: "43.2%", width: "9vw" }}
       >
         <button
           onClick={togglePlay}
-          className="group relative block aspect-[265/195] w-full overflow-hidden rounded-[1.75rem] border-[6px] border-white bg-brown-900 shadow-[0_20px_45px_-15px_rgba(0,0,0,0.5)]"
+          className="group relative block aspect-[174/185] w-full cursor-pointer overflow-hidden rounded-[1.25rem] bg-brown-900"
         >
           <video
             ref={videoRef}
@@ -63,18 +63,23 @@ export default function Hero() {
             className="h-full w-full object-cover"
           />
           <span
-            className={`absolute inset-0 flex items-center justify-center bg-black/10 transition-opacity ${
-              playing ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+              playing ? "opacity-0" : "opacity-100"
             }`}
           >
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="#362f2b">
-                <path d="M3 1.5v13l11-6.5z" />
-              </svg>
-            </span>
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <path
+                d="M14 10L32 22L14 34Z"
+                fill="white"
+                stroke="white"
+                strokeWidth="6"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+            </svg>
           </span>
         </button>
-        <p className="mt-3 text-center text-[15px] text-brown-850">
+        <p className="mt-3 text-center text-[13px] text-brown-850">
           Світло. Рух. Комфорт.
         </p>
       </div>
@@ -88,7 +93,7 @@ export default function Hero() {
         </p>
         <a
           href="#contact"
-          className="mt-6 inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[7px] pl-[10px] text-[19px] font-normal text-white transition-opacity hover:opacity-90"
+          className="mt-6 ml-23 inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[7px] pl-[10px] text-[19px] font-normal text-white transition-opacity hover:opacity-90"
         >
           Підібрати гардеробну
           <span className="flex h-[31px] w-[31px] items-center justify-center rounded-full bg-white">
