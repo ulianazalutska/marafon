@@ -1,13 +1,13 @@
 // Тимчасові фото з Unsplash (безкоштовні, для шаблону) — лишились тільки
 // для hero. Решта вже реальні згенеровані фото VELLARO.
 export const images = {
-  hero: "/hero/hero-img.png",
+  hero: "/hero/hero-img-2.png",
   heroPreviewVideo: "/hero/preview.mp4",
   heroPreviewPoster: "/hero/preview-poster.jpg",
   catalog: {
-    lite: "/catalog/lite.png",
-    comfort: "/catalog/comfort.png",
-    signature: "/catalog/signature.png",
+    lite: "/catalog/lite-2.png",
+    comfort: "/catalog/comfort-2.png",
+    signature: "/catalog/signature-2.png",
   },
   createForYou: {
     wardrobes: "/create-for-you/wardrobes.png",
@@ -27,7 +27,7 @@ export const images = {
     main: "/production/main.png",
     detail: "/production/detail.png",
   },
-  panorama: "/panorama/panorama.png",
+  panorama: "/panorama/panorama-hero.png",
   panorama2: "/panorama/panorama-2.png",
   processFinale: "/process/finale.png",
   technology: [
@@ -39,12 +39,12 @@ export const images = {
   technologyBanner: "/technology/banner.png",
   technologySketch: "/technology/sketch.png",
   portfolioCarousel: [
-    "/portfolio-carousel/1.png",
-    "/portfolio-carousel/2.png",
-    "/portfolio-carousel/3.png",
-    "/portfolio-carousel/4.png",
-    "/portfolio-carousel/5.png",
-    "/portfolio-carousel/6.png",
+    "/portfolio-carousel/wardrobe-1.png",
+    "/portfolio-carousel/wardrobe-2.png",
+    "/portfolio-carousel/wardrobe-3.png",
+    "/portfolio-carousel/wardrobe-4.png",
+    "/portfolio-carousel/wardrobe-5.png",
+    "/portfolio-carousel/wardrobe-6.png",
   ],
   material: "https://images.unsplash.com/photo-1708962000105-849e984e69a8",
 };

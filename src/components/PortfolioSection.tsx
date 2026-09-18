@@ -11,12 +11,12 @@ import { images } from "@/lib/images";
 gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
-  { area: "28 м²", seats: "5 місць", series: "Comfort", note: "Сім'я з двома дітьми" },
-  { area: "18 м²", seats: "3 місця", series: "Signature", note: "Квартира-студія" },
-  { area: "34 м²", seats: "7 місць", series: "Signature", note: "Будинок під Києвом" },
-  { area: "22 м²", seats: "4 місця", series: "Comfort", note: "Пентхаус" },
-  { area: "16 м²", seats: "2 місця", series: "Lite", note: "Холостяцька квартира" },
-  { area: "40 м²", seats: "10 місць", series: "Signature", note: "Приватний кінозал" },
+  { area: "8 м²", sections: "6 секцій", series: "Comfort", note: "Сім'я з двома дітьми" },
+  { area: "5 м²", sections: "4 секції", series: "Signature", note: "Квартира-студія" },
+  { area: "12 м²", sections: "9 секцій", series: "Signature", note: "Будинок під Києвом" },
+  { area: "7 м²", sections: "5 секцій", series: "Comfort", note: "Пентхаус" },
+  { area: "4 м²", sections: "3 секції", series: "Lite", note: "Холостяцька квартира" },
+  { area: "15 м²", sections: "12 секцій", series: "Signature", note: "Приватна гардеробна-острів" },
 ];
 
 const SWIPE_DISTANCE = 100;
@@ -76,7 +76,7 @@ function Slide({
 
   return (
     <motion.div
-      className="absolute inset-0 cursor-grab active:cursor-grabbing"
+      className="absolute inset-0 flex cursor-grab flex-col active:cursor-grabbing"
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.5}
@@ -88,14 +88,19 @@ function Slide({
       animate="center"
       exit="exit"
     >
-      <Image
-        src={images.portfolioCarousel[index]}
-        alt={`Кінозал ${p.area}, ${p.seats}`}
-        fill
-        draggable={false}
-        sizes="(min-width: 768px) 55vw, 90vw"
-        className="pointer-events-none object-cover"
-      />
+      <div className="relative flex-1">
+        <Image
+          src={images.portfolioCarousel[index]}
+          alt={`Гардеробна ${p.area}, ${p.sections}`}
+          fill
+          draggable={false}
+          sizes="(min-width: 768px) 55vw, 90vw"
+          className="pointer-events-none object-cover"
+        />
+      </div>
+      <p className="pt-4 text-sm whitespace-nowrap text-brown-700">
+        {p.area}, {p.sections}, {p.series} — {p.note}
+      </p>
     </motion.div>
   );
 }
@@ -155,30 +160,28 @@ export default function PortfolioSection() {
     setIndex((i) => (dir === "next" ? Math.min(i + 1, total - 1) : Math.max(i - 1, 0)));
   };
 
-  const current = projects[index];
-
   return (
     <section
       id="portfolio"
       ref={sectionRef}
-      className="relative overflow-hidden bg-cream py-24 text-ink md:py-32"
+      className="relative mt-[225px] overflow-hidden bg-cream pb-24 text-ink md:pb-32"
     >
-      <div className="flex flex-col gap-10 md:flex-row">
+      <div className="flex flex-col gap-10 md:flex-row md:gap-6">
         {/* Фіксований текстовий блок зліва */}
         <div
           ref={textRef}
           className="relative z-30 flex shrink-0 flex-col justify-between gap-10 px-6 md:h-[517px] md:w-[515px] md:px-0 md:pl-10"
         >
           <div>
-            <h2 className="max-w-xl text-3xl font-medium md:text-4xl">
-              Понад 120 реалізованих кінозалів по Україні
+            <h2 className="max-w-xl text-3xl font-light tracking-wide md:text-4xl">
+              Понад 120 реалізованих гардеробних по Україні
             </h2>
-            <p className="mt-4 max-w-sm text-brown-700">
-              Кожен проєкт — індивідуальна конфігурація під кімнату клієнта.
+            <p className="mt-4 max-w-[280px] text-brown-700">
+              Кожен проєкт — індивідуальна конфігурація під кімнату клієнта
             </p>
           </div>
           <p className="text-sm tabular-nums text-brown-500">
-            {String(index + 1).padStart(2, "0")} з {String(total).padStart(2, "0")}
+            {index + 1} з {total}
           </p>
         </div>
 
@@ -186,19 +189,25 @@ export default function PortfolioSection() {
         <div className="min-w-0 flex-1 px-6 md:px-0">
           <div
             ref={stageRef}
-            className="relative h-[58vh] w-[90%] md:h-[517px] md:w-[787px]"
+            className="relative h-[calc(58vh+40px)] w-[90%] md:h-[557px] md:w-[787px]"
           >
-            {/* Наступне фото визирає статичною смужкою праворуч */}
+            {/* Наступне фото визирає статичною смужкою праворуч, разом зі своїм підписом */}
             {index + 1 < total && (
-              <div className="absolute inset-0 z-0 translate-x-[108%] overflow-hidden">
-                <Image
-                  src={images.portfolioCarousel[index + 1]}
-                  alt=""
-                  fill
-                  draggable={false}
-                  sizes="200px"
-                  className="pointer-events-none object-cover"
-                />
+              <div className="absolute inset-0 z-0 flex translate-x-[108%] flex-col overflow-hidden">
+                <div className="relative flex-1">
+                  <Image
+                    src={images.portfolioCarousel[index + 1]}
+                    alt=""
+                    fill
+                    draggable={false}
+                    sizes="787px"
+                    className="pointer-events-none object-cover"
+                  />
+                </div>
+                <p className="pt-4 text-sm whitespace-nowrap text-brown-700">
+                  {projects[index + 1].area}, {projects[index + 1].sections},{" "}
+                  {projects[index + 1].series} — {projects[index + 1].note}
+                </p>
               </div>
             )}
 
@@ -212,19 +221,6 @@ export default function PortfolioSection() {
               />
             </AnimatePresence>
           </div>
-
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.p
-              key={index}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.3 }}
-              className="mt-4 text-sm text-brown-700"
-            >
-              {current.note} · {current.area} · {current.seats} · {current.series}
-            </motion.p>
-          </AnimatePresence>
         </div>
       </div>
     </section>

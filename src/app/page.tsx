@@ -27,7 +27,7 @@ export default function Home() {
           <CreateForYouSection />
         </StackedIntro>
         <CatalogSection />
-        <PanoramaSection />
+        <PanoramaSection title={null} />
         <PortfolioSection />
         <TechnologySection />
         <ProcessSection />

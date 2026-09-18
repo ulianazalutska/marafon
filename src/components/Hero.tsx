@@ -22,8 +22,16 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      <Image src={images.hero} alt="" fill priority className="object-cover" />
-      <div className="absolute inset-0 bg-black/30" />
+      <Image
+        src={images.hero}
+        alt=""
+        fill
+        priority
+        quality={100}
+        sizes="100vw"
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-black/8" />
 
       {/* Деталі, що формують ваш простір */}
       <p
