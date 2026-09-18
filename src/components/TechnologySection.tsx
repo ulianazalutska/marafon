@@ -10,28 +10,23 @@ import { images } from "@/lib/images";
 gsap.registerPlugin(ScrollTrigger);
 
 const swatches = [
-  { name: "Оксамит Cognac", color: "#a15c2e" },
-  { name: "Шкіра Espresso", color: "#3b2417" },
-  { name: "Тканина Sand", color: "#cdb28a" },
-  { name: "Оксамит Forest", color: "#3a4a3a" },
-  { name: "Шкіра Chestnut", color: "#6b3a26" },
-  { name: "Тканина Stone", color: "#8c8577" },
+  { name: "Дуб Cognac", image: images.technologyMaterials.dubCognac },
+  { name: "Горіх Espresso", image: images.technologyMaterials.horihEspresso },
+  { name: "Ламінат Sand", image: images.technologyMaterials.laminatSand },
+  { name: "Емаль Forest", image: images.technologyMaterials.emalForest },
+  { name: "Дуб Chestnut", image: images.technologyMaterials.dubChestnut },
+  { name: "Скло Stone", image: images.technologyMaterials.skloStone },
 ];
 
 const techSpecs = [
-  { label: "Електропривід", value: "Плавне розкладання одним дотиком" },
-  { label: "Підігрів", value: "Три рівні тепла в спинці й сидінні" },
-  { label: "Масаж", value: "Вбудовані вібромотори, кілька програм" },
-  { label: "Підсвітка", value: "Контурна LED-підсвітка основи" },
-  { label: "Гаджети", value: "Бездротова зарядка, столик-підсклянник" },
+  { label: "Електрокарниз", value: "Плавний підйом штанги одним дотиком" },
+  { label: "Підсвітка", value: "Автоматичне LED-освітлення при відкритті" },
+  { label: "Доводчики", value: "Безшумне закривання дверей і шухляд" },
+  { label: "Дзеркало", value: "Вбудоване, з регульованим світлом" },
+  { label: "Гаджети", value: "Бездротова зарядка та розетка в шухляді" },
 ];
 
-const materialSpecs = [
-  { label: "Матеріали", value: "Шкіра, оксамит, тканина" },
-  { label: "Оздоблення", value: "40+ варіантів під ваш інтер'єр" },
-];
-
-const SLIDE_VH = 90;
+const SLIDE_VH = 115;
 
 export default function TechnologySection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -146,9 +141,10 @@ export default function TechnologySection() {
           fill
           sizes="100vw"
           className="object-cover"
+          style={{ borderRadius: "10px" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-brown-950/80 via-brown-950/20 to-transparent" />
-        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-6 pb-10 md:px-10 md:pb-14">
+        <div className="absolute inset-0 bg-gradient-to-b from-brown-950/70 via-brown-950/15 to-transparent" />
+        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-6 pt-10 md:px-10 md:pb-14">
           <span className="text-sm tracking-[0.2em] text-cream/90 uppercase">
             Технології та оздоблення
           </span>
@@ -166,14 +162,11 @@ export default function TechnologySection() {
           <div ref={contentRef} className="pt-12 pb-24 md:pt-16">
           <motion.div style={{ y: leftLagY }}>
             <h3 className="text-2xl font-medium text-ink md:text-3xl">
-              Технології в кожному кріслі
+              Технології в кожному модулі
             </h3>
-            <span className="mt-6 block text-sm text-brown-500">
-              що всередині:
-            </span>
-            <p className="mt-2 max-w-md text-brown-700">
-              Плавний електропривід, підігрів і масаж керуються одним
-              дотиком — усе сховано в оббивці, нічого зайвого на очах.
+            <p className="mt-4 max-w-md text-brown-700">
+              Електрокарниз, підсвітка і доводчики керуються одним дотиком —
+              усе сховано у фасаді, нічого зайвого на очах.
             </p>
 
             <div className="mt-10">
@@ -183,32 +176,34 @@ export default function TechnologySection() {
                   className="spec-row flex items-baseline justify-between border-b border-brown-300/40 py-4"
                 >
                   <span className="text-sm font-medium text-ink">
-                    {s.label}:
+                    {s.label}
                   </span>
                   <span className="text-sm text-brown-700">{s.value}</span>
                 </div>
               ))}
             </div>
 
-            {/* Технічне креслення моделі */}
-            <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden">
+            {/* Технічне креслення модуля */}
+            <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden rounded-[10px]">
               <Image
                 src={images.technologySketch}
-                alt="Технічне креслення крісла VELLARO"
+                alt="Технічне креслення модуля VELLARO"
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
                 className="object-cover"
+                style={{ borderRadius: "10px" }}
               />
             </div>
 
             {/* Мобільна версія: одне фото під текстом, без sticky-стеку */}
-            <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden md:hidden">
+            <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden rounded-[10px] md:hidden">
               <Image
                 src={images.technology[0]}
-                alt="Крісло VELLARO"
+                alt="Гардеробна VELLARO"
                 fill
                 sizes="100vw"
                 className="object-cover"
+                style={{ borderRadius: "10px" }}
               />
             </div>
 
@@ -219,56 +214,49 @@ export default function TechnologySection() {
               з чого зроблено:
             </span>
             <p className="mt-2 max-w-md text-brown-700">
-              Шкіра, оксамит і тканина — кожна фактура підібрана так, щоб
+              ЛДСП, шпон і масив дерева — кожна фактура підібрана так, щоб
               залишатися бездоганною роками. 40+ варіантів оздоблення дають
-              змогу зібрати крісло, що виглядає так, ніби його створювали
+              змогу зібрати гардеробну, що виглядає так, ніби її створювали
               саме під вашу кімнату.
             </p>
 
             <div className="mt-10">
-              {materialSpecs.map((s) => (
-                <div
-                  key={s.label}
-                  className="spec-row flex items-baseline justify-between border-b border-brown-300/40 py-4"
-                >
-                  <span className="text-sm font-medium text-ink">
-                    {s.label}:
-                  </span>
-                  <span className="text-sm text-brown-700">{s.value}</span>
-                </div>
-              ))}
-
-              <div className="spec-row flex items-center justify-between py-4">
-                <span className="text-sm font-medium text-ink">Колір:</span>
-                <div className="flex gap-2">
-                  {swatches.map((s) => {
-                    const active = activeSwatch === s.name;
-                    return (
-                      <button
-                        key={s.name}
-                        type="button"
-                        title={s.name}
-                        onClick={() =>
-                          setActiveSwatch(active ? null : s.name)
-                        }
-                        className={`h-6 w-6 shrink-0 rounded-full ring-1 ring-black/10 transition-transform duration-200 ${
-                          active ? "scale-110 ring-2 ring-ink/40" : ""
-                        }`}
-                        style={{ backgroundColor: s.color }}
+              {swatches.map((s) => {
+                const active = activeSwatch === s.name;
+                return (
+                  <button
+                    key={s.name}
+                    type="button"
+                    onClick={() => setActiveSwatch(active ? null : s.name)}
+                    className={`spec-row flex w-full items-center justify-between border-b border-brown-300/40 py-4 text-left transition-colors ${
+                      active ? "text-ink" : ""
+                    }`}
+                  >
+                    <span className="text-sm font-medium text-ink">
+                      {s.name}
+                    </span>
+                    <span
+                      className={`relative h-6 w-6 shrink-0 overflow-hidden ring-1 ring-black/10 transition-transform duration-200 ${
+                        active ? "scale-110 ring-2 ring-ink/40" : ""
+                      }`}
+                    >
+                      <Image
+                        src={s.image}
+                        alt={s.name}
+                        fill
+                        sizes="24px"
+                        className="object-cover"
                       />
-                    );
-                  })}
-                </div>
-              </div>
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </motion.div>
           </div>
 
           {/* Права колонка: один sticky-контейнер, фото зсуваються одне
-              поверх іншого через GSAP scrub (чистий CSS sticky тут не
-              працює — StackedIntro огортає весь контент після Hero у
-              overflow-hidden, що ламає position:sticky для проміжних
-              контейнерів). */}
+              поверх іншого через GSAP scrub. */}
           <div
             className="relative hidden md:-mt-32 md:block"
             style={{ height: `${images.technology.length * SLIDE_VH}vh` }}
@@ -286,7 +274,7 @@ export default function TechnologySection() {
 
             <motion.div
               style={{ y: rightLagY }}
-              className="sticky top-24 h-[70vh] w-full overflow-hidden shadow-xl"
+              className="sticky top-24 h-[70vh] w-full overflow-hidden rounded-[10px] shadow-xl"
             >
               {images.technology.map((src, i) => (
                 <div
@@ -299,10 +287,11 @@ export default function TechnologySection() {
                 >
                   <Image
                     src={src}
-                    alt={`Крісло VELLARO — ракурс ${i + 1}`}
+                    alt={`Гардеробна VELLARO — ракурс ${i + 1}`}
                     fill
                     sizes="50vw"
                     className="object-cover"
+                    style={{ borderRadius: "10px" }}
                   />
                 </div>
               ))}

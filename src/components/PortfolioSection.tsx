@@ -32,7 +32,7 @@ const SWIPE_VELOCITY = 450;
 const slideVariants: Variants = {
   enter: (dir: "next" | "prev") =>
     dir === "next"
-      ? { x: "108%", scale: 1, opacity: 1, zIndex: 20 }
+      ? { x: "calc(100% + 45px)", scale: 1, opacity: 1, zIndex: 20 }
       : { x: "-260%", scale: 1, opacity: 1, zIndex: 20 },
   center: {
     x: 0,
@@ -42,7 +42,7 @@ const slideVariants: Variants = {
     transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
   },
   exit: (dir: "next" | "prev") => ({
-    x: dir === "next" ? "-260%" : "108%",
+    x: dir === "next" ? "-260%" : "calc(100% + 45px)",
     scale: 1,
     opacity: 1,
     zIndex: 5,
@@ -98,7 +98,7 @@ function Slide({
           className="pointer-events-none object-cover"
         />
       </div>
-      <p className="pt-4 text-sm whitespace-nowrap text-brown-700">
+      <p className="pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] whitespace-nowrap text-[#362F2B]">
         {p.area}, {p.sections}, {p.series} — {p.note}
       </p>
     </motion.div>
@@ -164,23 +164,23 @@ export default function PortfolioSection() {
     <section
       id="portfolio"
       ref={sectionRef}
-      className="relative mt-[225px] overflow-hidden bg-cream pb-24 text-ink md:pb-32"
+      className="relative mt-[225px] overflow-hidden bg-cream pb-[225px] text-ink"
     >
       <div className="flex flex-col gap-10 md:flex-row md:gap-6">
         {/* Фіксований текстовий блок зліва */}
         <div
           ref={textRef}
-          className="relative z-30 flex shrink-0 flex-col justify-between gap-10 px-6 md:h-[517px] md:w-[515px] md:px-0 md:pl-10"
+          className="relative z-30 flex shrink-0 flex-col justify-between gap-10 px-6 md:w-[40%] md:px-0 md:pl-10"
         >
           <div>
-            <h2 className="max-w-xl text-3xl font-light tracking-wide md:text-4xl">
+            <h2 className="max-w-xl text-[45px] leading-[54px] font-normal tracking-[0.04em] text-[#362F2B] mb-[21px]">
               Понад 120 реалізованих гардеробних по Україні
             </h2>
-            <p className="mt-4 max-w-[280px] text-brown-700">
+            <p className="mt-4 max-w-[429px] text-[24px] leading-[29px] font-normal tracking-[0.04em] text-[#362F2B]">
               Кожен проєкт — індивідуальна конфігурація під кімнату клієнта
             </p>
           </div>
-          <p className="text-sm tabular-nums text-brown-500">
+          <p className="text-[21px] leading-[25px] tracking-[0.04em] tabular-nums text-brown-500">
             {index + 1} з {total}
           </p>
         </div>
@@ -189,11 +189,11 @@ export default function PortfolioSection() {
         <div className="min-w-0 flex-1 px-6 md:px-0">
           <div
             ref={stageRef}
-            className="relative h-[calc(58vh+40px)] w-[90%] md:h-[557px] md:w-[787px]"
+            className="relative h-[calc(58vh+40px)] w-[90%] md:h-[532px] md:w-[655px]"
           >
             {/* Наступне фото визирає статичною смужкою праворуч, разом зі своїм підписом */}
             {index + 1 < total && (
-              <div className="absolute inset-0 z-0 flex translate-x-[108%] flex-col overflow-hidden">
+              <div className="absolute inset-0 z-0 flex translate-x-[calc(100%+45px)] flex-col overflow-hidden">
                 <div className="relative flex-1">
                   <Image
                     src={images.portfolioCarousel[index + 1]}
@@ -204,7 +204,7 @@ export default function PortfolioSection() {
                     className="pointer-events-none object-cover"
                   />
                 </div>
-                <p className="pt-4 text-sm whitespace-nowrap text-brown-700">
+                <p className="pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] whitespace-nowrap text-[#362F2B]">
                   {projects[index + 1].area}, {projects[index + 1].sections},{" "}
                   {projects[index + 1].series} — {projects[index + 1].note}
                 </p>
