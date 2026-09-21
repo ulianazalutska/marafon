@@ -34,6 +34,14 @@ html {
   overflow-x: hidden;
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+  /* Keeps the scrollbar's track reserved even when body scroll is locked
+     (IntroOverlay sets overflow:hidden during the intro). Without this,
+     the scrollbar disappearing/reappearing around the intro shifts the
+     visible viewport width by its own size, which throws off anything
+     sized in vw or positioned from a viewport-width calculation — visible
+     as a small jump in the hero photo and the logo right as the intro
+     hands off to the real page. */
+  scrollbar-gutter: stable;
 }
 
 body {

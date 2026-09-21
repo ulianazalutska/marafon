@@ -1,12 +1,47 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import gsap from "gsap";
 import { images } from "@/lib/images";
+import { INTRO_SEEN_KEY, INTRO_DONE_EVENT } from "@/lib/intro";
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+
+  const topTextRef = useRef<HTMLParagraphElement>(null);
+  const rightTextRef = useRef<HTMLParagraphElement>(null);
+  const videoCardRef = useRef<HTMLDivElement>(null);
+  const leftBlockRef = useRef<HTMLDivElement>(null);
+
+  // These elements sit underneath IntroOverlay while it plays, so revealing
+  // them only once it's fully gone (rather than animating on mount) keeps
+  // the two sequences from overlapping. This only ever runs on the actual
+  // first-load intro: on repeat visits within the session (intro already
+  // seen, so it never mounts) there's nothing to hand off from, so this
+  // bails out entirely rather than replaying the entrance instantly on
+  // every reload — the elements just render at rest, already in place.
+  useEffect(() => {
+    if (sessionStorage.getItem(INTRO_SEEN_KEY) === "true") return;
+
+    let tl: gsap.core.Timeline | undefined;
+    const ctx = gsap.context(() => {
+      tl = gsap.timeline({ paused: true, delay: 0.1 });
+      tl.from(topTextRef.current, { y: -28, opacity: 0, duration: 0.8, ease: "power3.out" })
+        .from(rightTextRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1")
+        .from(videoCardRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.15")
+        .from(leftBlockRef.current, { x: -28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1");
+    });
+
+    const play = () => tl?.play();
+    window.addEventListener(INTRO_DONE_EVENT, play, { once: true });
+
+    return () => {
+      window.removeEventListener(INTRO_DONE_EVENT, play);
+      ctx.revert();
+    };
+  }, []);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -35,6 +70,7 @@ export default function Hero() {
 
       {/* Деталі, що формують ваш простір */}
       <p
+        ref={topTextRef}
         className="absolute text-left text-[25px] leading-[1.3] font-medium tracking-[0.02em] text-white"
         style={{ left: "57%", top: "3.5%", width: "20vw" }}
       >
@@ -45,6 +81,7 @@ export default function Hero() {
 
       {/* Від першого заміру до монтажу */}
       <p
+        ref={rightTextRef}
         className="absolute text-[19px] leading-[1.5] font-medium tracking-[0.02em] text-white"
         style={{ left: "68.4%", top: "34%", width: "16vw" }}
       >
@@ -54,6 +91,7 @@ export default function Hero() {
 
       {/* Відео-прев'ю картка */}
       <div
+        ref={videoCardRef}
         className="absolute rounded-[1.75rem] bg-white p-[9px] pb-[17px] shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)]"
         style={{ left: "79.2%", top: "43.2%", width: "9vw" }}
       >
@@ -93,7 +131,7 @@ export default function Hero() {
       </div>
 
       {/* Гардеробна, створена під ваш простір */}
-      <div className="absolute" style={{ left: "15%", top: "48%" }}>
+      <div ref={leftBlockRef} className="absolute" style={{ left: "15%", top: "48%" }}>
         <p className="text-[19px] leading-[1.35] font-medium tracking-[0.02em] text-white">
           Гардеробна, створена під
           <br />
