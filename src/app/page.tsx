@@ -14,7 +14,6 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import FaqSection from "@/components/FaqSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import { images } from "@/lib/images";
 
 export default function Home() {
   return (
@@ -36,11 +35,6 @@ export default function Home() {
         <TestimonialsSection />
         <FaqSection />
         <ContactSection />
-        <PanoramaSection
-          image={images.panorama2}
-          alt="Домашній кінозал VELLARO у деталях"
-          title={null}
-        />
       </main>
       <Footer />
     </>

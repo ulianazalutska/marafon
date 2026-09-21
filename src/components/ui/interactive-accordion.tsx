@@ -42,8 +42,9 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
                       transition={{ type: "spring", stiffness: 400, damping: 25 }}
                     />
                     <motion.span
-                      className="relative z-10 text-sm font-medium tracking-wide"
-                      animate={{ color: isActive ? "#faf6f0" : "#8a6b4d" }}
+                      className="relative z-10 font-medium"
+                      style={{ fontSize: "22px", letterSpacing: "0.04em" }}
+                      animate={{ color: isActive ? "#faf6f0" : "#AF957C" }}
                       transition={{ duration: 0.2 }}
                     >
                       {item.number}
@@ -51,10 +52,11 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
                   </div>
 
                   <motion.h3
-                    className="text-left text-lg font-medium tracking-tight md:text-2xl"
+                    className="text-left font-medium"
+                    style={{ fontSize: "30px", letterSpacing: "0.04em", lineHeight: "36px" }}
                     animate={{
                       x: isActive || isHovered ? 4 : 0,
-                      color: isActive || isHovered ? "#150d08" : "#8a6b4d",
+                      color: "#362F2B",
                     }}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   >
@@ -123,7 +125,7 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
                     className="overflow-hidden"
                   >
                     <motion.p
-                      className="py-6 pr-12 pl-16 leading-relaxed text-brown-700"
+                      className="py-6 pr-12 pl-16 text-xl leading-relaxed text-brown-700"
                       initial={{ y: -10 }}
                       animate={{ y: 0 }}
                       exit={{ y: -10 }}

@@ -44,7 +44,7 @@ export default function ProcessFinaleSection() {
       >
         <Image
           src={images.processFinale}
-          alt="Домашній кінозал VELLARO на заході сонця"
+          alt="Гардеробна VELLARO на заході сонця"
           fill
           sizes="100vw"
           className="object-cover"
@@ -52,19 +52,26 @@ export default function ProcessFinaleSection() {
         />
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-brown-950/80 via-transparent to-brown-950/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-brown-950/85 via-brown-950/25 to-brown-950/35" />
 
       <div className="relative flex flex-col items-center gap-8 px-6 text-center">
-        <h3 className="max-w-3xl text-4xl leading-[1.05] font-medium text-cream md:text-6xl lg:text-7xl">
-          Кінозал, який
+        <h3 className="w-[571px] max-w-full text-[64px] leading-[77px] font-semibold tracking-[0.02em] text-white">
+          Гардеробна,
           <br />
-          <span className="italic">відчувається</span> як вдома
+          яка <span className="italic">відчувається</span>
+          <br />
+          як вдома
         </h3>
         <a
           href="#contact"
-          className="rounded-full bg-cream px-8 py-4 text-sm tracking-wide text-brown-950 transition-colors hover:bg-white"
+          className="inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[10px] pl-[16px] text-[19px] font-light tracking-[0.02em] text-white transition-opacity hover:opacity-90"
         >
           Замовити дзвінок
+          <span className="flex h-[31px] w-[31px] items-center justify-center rounded-full bg-white">
+            <svg width="13.67" height="13.67" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="#AF957C" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
         </a>
       </div>
     </section>

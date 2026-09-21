@@ -11,51 +11,51 @@ const testimonials = [
   {
     name: "Олена Ковальчук",
     role: "Київ",
-    text: "Замовляли крісла-стадіум на 5 місць у власний будинок. Прийшли за 5 тижнів, зібрали за день. Діти тепер не вилазять із кінозали.",
+    text: "Замовляли гардеробну на всю стіну спальні. Прийшли за 5 тижнів, зібрали за день. Тепер усі речі мають своє місце.",
     tone: "light" as const,
     photo: "https://randomuser.me/api/portraits/women/68.jpg",
   },
   {
     name: "Ігор Тарасенко",
     role: "Львів",
-    text: "Довго підбирали оздоблення — команда VELLARO надіслала зразки додому, щоб побачити колір наживо. Результат перевершив очікування.",
+    text: "Довго підбирали оздоблення фасадів — команда ARMADERO надіслала зразки додому, щоб побачити колір наживо. Результат перевершив очікування.",
     tone: "accent" as const,
-    photo: "https://randomuser.me/api/portraits/men/54.jpg",
+    photo: "/testimonials/ihor-tarasenko.png",
   },
   {
     name: "Марина Бондар",
     role: "Одеса",
-    text: "Електропривід працює безшумно, підігрів — саме те, чого не вистачало взимку. Рекомендую серію Signature.",
+    text: "Доводчики працюють безшумно, підсвітка полиць вмикається автоматично — саме те, чого не вистачало. Рекомендую серію Signature.",
     tone: "dark" as const,
     photo: "https://randomuser.me/api/portraits/women/32.jpg",
   },
   {
     name: "Дмитро Савчук",
     role: "Дніпро",
-    text: "Виїзд майстра для заміру зробили безкоштовно й швидко. Конфігуратор на сайті допоміг одразу побачити, як зал виглядатиме.",
+    text: "Виїзд майстра для заміру зробили безкоштовно й швидко. Конфігуратор на сайті допоміг одразу побачити, як гардеробна виглядатиме.",
     tone: "dark" as const,
     photo: "https://randomuser.me/api/portraits/men/76.jpg",
   },
   {
     name: "Олег Петренко",
     role: "Запоріжжя",
-    text: "Замовили друге крісло через рік, щоб доповнити комплект. Колір і оздоблення підібрали ідентично — різниці зовсім не видно.",
+    text: "Замовили другий модуль через рік, щоб доповнити гардеробну. Колір і оздоблення підібрали ідентично — різниці зовсім не видно.",
     tone: "dark" as const,
     photo: "https://randomuser.me/api/portraits/men/23.jpg",
   },
   {
     name: "Наталія Гриценко",
     role: "Харків",
-    text: "Обрали серію Comfort — якість оббивки на рівні імпортних брендів, але з локальним сервісом і гарантією.",
+    text: "Обрали серію Comfort — якість фурнітури на рівні імпортних брендів, але з локальним сервісом і гарантією.",
     tone: "accent" as const,
     photo: "https://randomuser.me/api/portraits/women/12.jpg",
   },
   {
     name: "Андрій Мельник",
     role: "Вінниця",
-    text: "Монтаж зробили за один візит, показали, як користуватись усіма функціями. Через рік — жодних нарікань до механізмів.",
+    text: "Монтаж зробили за один візит, показали, як користуватись висувними системами. Через рік — жодних нарікань до механізмів.",
     tone: "light" as const,
-    photo: "https://randomuser.me/api/portraits/men/91.jpg",
+    photo: "https://randomuser.me/api/portraits/men/85.jpg",
   },
 ];
 
@@ -78,9 +78,9 @@ const revealVariants: Variants = {
 };
 
 const toneClasses = {
-  dark: "bg-brown-950 text-cream",
-  accent: "bg-brown-700 text-cream",
-  light: "bg-cream-dim text-brown-950 border border-brown-300/40",
+  dark: "bg-brown-850 text-cream",
+  accent: "bg-[#AF957C] text-cream",
+  light: "bg-cream text-brown-950 border border-[#AF957C]",
 };
 
 const layout = [
@@ -128,7 +128,7 @@ function Card({
       className={`relative flex flex-col justify-between overflow-hidden rounded-lg p-5 ${toneClasses[t.tone]}`}
     >
       {t.tone === "light" && (
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#8a6b4d1a_1px,transparent_1px),linear-gradient(to_bottom,#8a6b4d1a_1px,transparent_1px)] bg-[size:50px_56px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#AF957C4d_1px,transparent_1px),linear-gradient(to_bottom,#AF957C4d_1px,transparent_1px)] bg-[size:50px_56px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
       )}
       <article className="relative mt-auto">
         <p>&ldquo;{t.text}&rdquo;</p>
@@ -150,15 +150,15 @@ export default function ClientFeedback() {
   const testimonialRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section ref={testimonialRef} className="bg-cream py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+    <section ref={testimonialRef} className="relative z-10 mb-[225px] bg-cream pt-16 md:pt-20">
+      <div className="mx-auto max-w-[1440px] px-6">
         <article className="mx-auto max-w-screen-md space-y-3 text-center">
           <TimelineContent
             as="h2"
             animationNum={0}
             customVariants={revealVariants}
             timelineRef={testimonialRef}
-            className="text-3xl font-medium md:text-4xl"
+            className="text-[45px] font-normal tracking-[0.02em]"
           >
             Що кажуть наші клієнти
           </TimelineContent>
@@ -167,13 +167,13 @@ export default function ClientFeedback() {
             animationNum={1}
             customVariants={revealVariants}
             timelineRef={testimonialRef}
-            className="text-brown-700"
+            className="mb-6 text-[20px] font-normal tracking-[0.02em] text-brown-850"
           >
-            Реальні відгуки власників кінозалів VELLARO
+            Реальні відгуки власників гардеробних ARMADERO
           </TimelineContent>
         </article>
 
-        <div className="flex flex-col gap-2 pt-10 pb-4 md:grid md:grid-cols-3 md:gap-2 md:py-10">
+        <div className="flex flex-col gap-4 pt-[50px] pb-4 md:grid md:grid-cols-3 md:gap-4 md:pt-[50px] md:pb-10">
           {layout.map(({ t, col, row }, i) => (
             <Card key={t.name} t={t} i={i} col={col} row={row} timelineRef={testimonialRef} />
           ))}

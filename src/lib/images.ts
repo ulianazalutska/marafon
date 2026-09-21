@@ -24,12 +24,18 @@ export const images = {
     "/portfolio/6.png",
   ],
   production: {
-    main: "/production/main.png",
-    detail: "/production/detail.png",
+    main: "/production/main-v2.png",
+    detail: "/production/detail-v2.png",
+  },
+  process: {
+    measure: "/process/step-1-measure.png",
+    materials: "/process/step-2-materials.png",
+    install: "/process/step-3-install.png",
   },
   panorama: "/panorama/panorama-hero.png",
   panorama2: "/panorama/panorama-2.png",
-  processFinale: "/process/finale.png",
+  panoramaContact: "/panorama/panorama-contact.png",
+  processFinale: "/process/finale-wardrobe.png",
   technology: [
     "/technology/rail-hanging-clothes.png",
     "/technology/led-strip-shelf.png",

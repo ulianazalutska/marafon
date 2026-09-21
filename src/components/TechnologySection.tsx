@@ -144,27 +144,27 @@ export default function TechnologySection() {
           style={{ borderRadius: "10px" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brown-950/70 via-brown-950/15 to-transparent" />
-        <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-6 pt-10 md:px-10 md:pb-14">
-          <span className="text-sm tracking-[0.2em] text-cream/90 uppercase">
+        <div className="relative z-10 mx-auto flex h-full max-w-[1600px] flex-col justify-end px-6 pt-10 md:px-10 md:pb-14">
+          <span className="text-[21px] font-normal tracking-[0.06em] text-cream/90 uppercase">
             Технології та оздоблення
           </span>
-          <h2 className="mt-3 text-6xl leading-[0.95] font-medium text-cream md:text-8xl">
+          <h2 className="mt-3 text-[103px] leading-[0.95] font-medium tracking-[0.04em] text-cream">
             Оздоблення
           </h2>
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 pb-16 md:px-10 md:pb-24">
+      <div className="mx-auto max-w-[1600px] px-6 pb-16 md:px-10 md:pb-24">
         <div className="grid items-start gap-x-8 md:grid-cols-2">
           {/* Ліва колонка: спек-картка моделі. Зовнішній div лишається для
               GSAP fade-in (contentRef), внутрішній motion.div — для
               незалежного пружинного лагу від скролу. */}
           <div ref={contentRef} className="pt-12 pb-24 md:pt-16">
           <motion.div style={{ y: leftLagY }}>
-            <h3 className="text-2xl font-medium text-ink md:text-3xl">
+            <h3 className="text-[43px] font-normal tracking-[0.02em] text-ink">
               Технології в кожному модулі
             </h3>
-            <p className="mt-4 max-w-md text-brown-700">
+            <p className="mt-4 max-w-md text-[23px] font-normal tracking-[0.02em] text-brown-700">
               Електрокарниз, підсвітка і доводчики керуються одним дотиком —
               усе сховано у фасаді, нічого зайвого на очах.
             </p>
@@ -175,10 +175,12 @@ export default function TechnologySection() {
                   key={s.label}
                   className="spec-row flex items-baseline justify-between border-b border-brown-300/40 py-4"
                 >
-                  <span className="text-sm font-medium text-ink">
+                  <span className="text-[23px] font-medium tracking-normal text-ink">
                     {s.label}
                   </span>
-                  <span className="text-sm text-brown-700">{s.value}</span>
+                  <span className="text-[19px] font-normal tracking-normal text-brown-700">
+                    {s.value}
+                  </span>
                 </div>
               ))}
             </div>
@@ -207,13 +209,13 @@ export default function TechnologySection() {
               />
             </div>
 
-            <h3 className="mt-16 text-2xl font-medium text-ink md:text-3xl">
+            <h3 className="mt-16 text-[43px] font-normal tracking-[0.02em] text-ink">
               Матеріали та оздоблення
             </h3>
-            <span className="mt-6 block text-sm text-brown-500">
+            <span className="mt-6 block text-[17px] font-normal tracking-[0.02em] text-brown-500">
               з чого зроблено:
             </span>
-            <p className="mt-2 max-w-md text-brown-700">
+            <p className="mt-2 max-w-md text-[22px] font-normal tracking-[0.02em] text-brown-700">
               ЛДСП, шпон і масив дерева — кожна фактура підібрана так, щоб
               залишатися бездоганною роками. 40+ варіантів оздоблення дають
               змогу зібрати гардеробну, що виглядає так, ніби її створювали
@@ -232,7 +234,7 @@ export default function TechnologySection() {
                       active ? "text-ink" : ""
                     }`}
                   >
-                    <span className="text-sm font-medium text-ink">
+                    <span className="text-[22px] font-normal tracking-[0.02em] text-ink">
                       {s.name}
                     </span>
                     <span
@@ -258,7 +260,7 @@ export default function TechnologySection() {
           {/* Права колонка: один sticky-контейнер, фото зсуваються одне
               поверх іншого через GSAP scrub. */}
           <div
-            className="relative hidden md:-mt-32 md:block"
+            className="relative hidden md:-mt-32 md:block md:pl-[70px]"
             style={{ height: `${images.technology.length * SLIDE_VH}vh` }}
           >
             {images.technology.map((_, i) => (

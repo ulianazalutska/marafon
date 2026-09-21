@@ -1,59 +1,63 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const stats = [
-  { value: "120+", label: "залів по Україні" },
-  { value: "5 років", label: "гарантії на каркас" },
-  { value: "5 тижнів", label: "середній термін виготовлення" },
-];
-
 const fields = [
-  { name: "name", label: "Ім'я", type: "text", required: true },
-  { name: "phone", label: "Телефон", type: "tel", required: true },
   {
-    name: "room",
-    label: "Метраж кімнати (опційно)",
+    name: "name",
+    label: "Ім'я",
     type: "text",
-    required: false,
+    placeholder: "Андрій Мельник",
+  },
+  {
+    name: "phone",
+    label: "Телефон",
+    type: "tel",
+    placeholder: "+380688580048",
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    placeholder: "andriymel@gmail.com",
   },
 ];
 
 export default function ContactSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const introRef = useRef<HTMLDivElement>(null);
-  const formRef = useRef<HTMLDivElement>(null);
+  const imageWrapRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        introRef.current,
-        { autoAlpha: 0, x: -60 },
+        imageWrapRef.current,
+        { yPercent: -8 },
         {
-          autoAlpha: 1,
-          x: 0,
-          duration: 1.4,
-          ease: "power3.out",
+          yPercent: 8,
+          ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
           },
         }
       );
 
       gsap.fromTo(
-        formRef.current,
-        { autoAlpha: 0, x: 60 },
+        cardRef.current,
+        { autoAlpha: 0, y: 40 },
         {
           autoAlpha: 1,
-          x: 0,
-          duration: 1.4,
-          delay: 0.15,
+          y: 0,
+          duration: 1.2,
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -71,72 +75,79 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative overflow-hidden bg-cream py-24 text-ink md:py-32"
+      className="relative mt-[255px] aspect-[1916/821] w-full overflow-hidden"
     >
-      <div className="relative mx-auto grid max-w-7xl items-center gap-16 px-6 md:grid-cols-2 md:gap-20 md:px-10">
-        <div ref={introRef}>
-          <p className="mb-4 text-sm tracking-[0.3em] text-brown-500 uppercase">
-            Заявка
-          </p>
-          <h2 className="relative max-w-md text-4xl leading-[1.15] font-medium md:text-5xl">
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -top-3 -left-4 font-serif text-3xl text-brown-500 select-none"
-            >
-              &#10077;
-            </span>
-            Готові побачити свій зал?
-          </h2>
-          <p className="mt-6 max-w-sm text-brown-700">
-            Залиште контакти — надішлемо 3D-візуалізацію конфігурації
-            безкоштовно протягом 2 днів.
-          </p>
+      <div ref={imageWrapRef} className="absolute inset-0 -top-[12%] h-[124%]">
+        <Image
+          src={images.panoramaContact}
+          alt="Гардеробна система VELLARO"
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+      </div>
 
-          <dl className="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-brown-300/60 pt-8">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="text-2xl font-medium md:text-3xl">
-                  {stat.value}
-                </dt>
-                <dd className="mt-2 text-xs leading-snug text-brown-500 uppercase tracking-wide">
-                  {stat.label}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brown-950/80 via-transparent to-brown-950/20" />
 
-        <div ref={formRef}>
-          <form className="flex flex-col gap-8">
-            {fields.map((field) => (
-              <label key={field.name} className="group relative block">
-                <input
-                  type={field.type}
-                  name={field.name}
-                  placeholder=" "
-                  required={field.required}
-                  className="peer w-full border-b border-brown-300/60 bg-transparent py-2 text-ink outline-none transition-colors focus:border-ink"
-                />
-                <span className="pointer-events-none absolute top-2 left-0 text-brown-500 transition-all duration-200 peer-focus:-top-4 peer-focus:text-xs peer-focus:tracking-wide peer-focus:text-brown-700 peer-[&:not(:placeholder-shown)]:-top-4 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:tracking-wide peer-[&:not(:placeholder-shown)]:text-brown-700">
-                  {field.label}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 min-h-[466px] w-[336px] -translate-x-1/2 -translate-y-1/2">
+          <div
+            ref={cardRef}
+            className="h-full min-h-[466px] w-[336px] rounded-[20px] bg-white px-[38px] py-[44px] shadow-[0_30px_60px_-15px_rgba(28,20,13,0.45)]"
+          >
+            <h2 className="text-center text-[20px] font-normal tracking-[0.04em] text-ink">
+              Зв&apos;яжіться з нами
+            </h2>
+
+            <form className="mt-6 flex flex-col gap-[10px]">
+              {fields.map((field) => (
+                <label key={field.name} className="block">
+                  <span className="block text-[14px] font-normal tracking-normal text-[#AF957C]">
+                    {field.label}
+                  </span>
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    required
+                    className="mt-2 w-full rounded-[10px] bg-[#F6F6F6] pt-[9px] pr-[17px] pb-[9px] pl-[17px] text-[11px] font-normal text-[#CAC4BF] outline-none placeholder:text-[#CAC4BF]"
+                  />
+                </label>
+              ))}
+
+              <label className="block">
+                <span className="block text-[14px] font-normal tracking-normal text-[#AF957C]">
+                  Повідомлення
                 </span>
-                <span className="absolute bottom-0 left-0 h-px w-0 bg-ink transition-all duration-300 ease-out peer-focus:w-full" />
+                <textarea
+                  name="message"
+                  placeholder="Пишіть тут"
+                  rows={2}
+                  className="mt-2 w-full resize-none rounded-[10px] bg-[#F6F6F6] pt-[9px] pr-[17px] pb-[42px] pl-[17px] text-[11px] font-normal text-[#CAC4BF] outline-none placeholder:text-[#CAC4BF]"
+                />
               </label>
-            ))}
 
-            <button
-              type="submit"
-              className="group mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm tracking-wide text-cream transition-colors hover:bg-brown-800"
-            >
-              Отримати візуалізацію
-              <span
-                aria-hidden
-                className="transition-transform duration-200 group-hover:translate-x-1"
+              <p className="text-[8px] leading-tight tracking-normal text-brown-850 uppercase">
+                By submitting, you agree to our{" "}
+                <a href="#" className="underline">
+                  terms
+                </a>{" "}
+                and privacy policy
+              </p>
+
+              <button
+                type="submit"
+                className="mt-2 inline-flex items-center gap-3 self-center rounded-full bg-accent py-[4px] pr-[7px] pl-[10px] text-sm font-normal text-white transition-opacity hover:opacity-90"
               >
-                &rarr;
-              </span>
-            </button>
-          </form>
+                Отримати візуалізацію
+                <span className="flex h-[31px] w-[31px] shrink-0 items-center justify-center rounded-full bg-white">
+                  <svg width="13.67" height="13.67" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="#AF957C" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </section>

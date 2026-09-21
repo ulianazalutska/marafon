@@ -81,6 +81,13 @@ export default function IntroOverlay() {
       // pixel-identical instead of a visible jump.
       const heroLogoLayout = getHeroLogoLayout(window.innerWidth, window.innerHeight);
       const typingFontSize = Math.min(window.innerWidth * 0.045, 64);
+      // Same tracking RATIO as the hero-state logo (0.18em), just at the
+      // smaller typing font-size — not the 0.4em it used to be. That match
+      // matters once the flight step below fixes font-size/letter-spacing
+      // and animates `scale` instead: scaling a box uniformly preserves the
+      // ratio it already has, so starting at the same ratio the hero logo
+      // ends at means nothing needs to visibly "snap tighter" mid-flight.
+      const typingTrackingRatio = heroLogoLayout.trackingRatio;
       gsap.set(typeRef.current, {
         fontSize: typingFontSize,
         // GSAP (like Framer Motion, see the same gotcha noted in
@@ -88,7 +95,7 @@ export default function IntroOverlay() {
         // does for fontSize/width/top — a bare number is an invalid CSS
         // value the browser silently drops, so letter-spacing does nothing
         // without the explicit unit.
-        letterSpacing: `${typingFontSize * 0.4}px`,
+        letterSpacing: `${typingFontSize * typingTrackingRatio}px`,
         color: "#1c140d",
       });
       // Centered via a concrete measured px box, not left:50%+xPercent:-50:
@@ -98,10 +105,9 @@ export default function IntroOverlay() {
       // made the text visibly overshoot left before snapping into place.
       // Plain left/top numbers sidestep that entirely.
       const startRect = typeRef.current!.getBoundingClientRect();
-      gsap.set(typeRef.current, {
-        left: window.innerWidth / 2 - startRect.width / 2,
-        top: window.innerHeight / 2 - startRect.height / 2,
-      });
+      const startLeft = window.innerWidth / 2 - startRect.width / 2;
+      const startTop = window.innerHeight / 2 - startRect.height / 2;
+      gsap.set(typeRef.current, { left: startLeft, top: startTop });
 
       Promise.all([document.fonts?.ready ?? Promise.resolve(), heroImgReady]).then(() =>
         tl.play()
@@ -136,6 +142,46 @@ export default function IntroOverlay() {
           },
           ">-0.1"
         )
+        .call(
+          // Right as the flight starts: swap the per-letter <span> markup
+          // (needed only for the typing stagger) for a plain text node, and
+          // switch from animating fontSize/letterSpacing directly to
+          // animating `scale` instead (see the .to() below). Two different
+          // sources of the same symptom, fixed together here:
+          //
+          // 1) 8 independent inline-block boxes each round their own width
+          //    to the nearest pixel while fontSize/letterSpacing change —
+          //    those roundings don't stay in lockstep, showing as a faint
+          //    tremor in the word's shape. A single text node has only one
+          //    box to round.
+          // 2) Even with one text node, animating fontSize directly still
+          //    re-shapes the glyphs (kerning/hinting) at every discrete
+          //    size the tween passes through, and that re-shaping isn't
+          //    perfectly linear between sizes — a residual left-right
+          //    jitter. Fixing font-size/letter-spacing at their final
+          //    values now and compensating with a `scale` transform (set
+          //    below to the equivalent shrink factor, then animated back
+          //    to 1) means the glyphs are shaped once and the "growth" is
+          //    purely a GPU compositing scale — no reshaping, no jitter.
+          //
+          // `transformOrigin: "0 0"` keeps the box's top-left corner (i.e.
+          // `left`/`top`) exactly where it already is through this swap, so
+          // none of this is visible — same visual size and position as the
+          // instant before, just represented differently underneath.
+          () => {
+            const el = typeRef.current;
+            if (!el) return;
+            el.textContent = LOGO_TEXT;
+            gsap.set(el, {
+              transformOrigin: "0 0",
+              fontSize: heroLogoLayout.fontSize,
+              letterSpacing: `${heroLogoLayout.tracking}px`,
+              scale: typingFontSize / heroLogoLayout.fontSize,
+            });
+          },
+          [],
+          "<"
+        )
         .to(
           // The typed wordmark morphs into Header's hero-logo spot instead
           // of fading away — same start/duration/ease as the photo's expand
@@ -144,8 +190,7 @@ export default function IntroOverlay() {
           {
             left: heroLogoLayout.left,
             top: heroLogoLayout.top,
-            fontSize: heroLogoLayout.fontSize,
-            letterSpacing: `${heroLogoLayout.tracking}px`,
+            scale: 1,
             color: "#ffffff",
             duration: 1.1,
             ease: "power3.inOut",

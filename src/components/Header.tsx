@@ -102,14 +102,14 @@ export default function Header() {
   const heroTop = heroLogoLayout.top;
   const heroTrackingRatio = heroLogoLayout.trackingRatio;
 
-  const headerFontSize = 20;
+  const headerFontSize = 27;
   // На маленькому розмірі (20px) той самий em-трекінг, що на величезному
   // hero-написі, виглядає розхлябано — літери надто дрібні для такого
   // проміжку. У шапці лого має бути компактним логотипом, тож тут
   // помітно менший коефіцієнт (0.08em), а не пропорція hero.
   const headerTrackingRatio = 0.08;
   const headerWidth = 8 * headerFontSize * 0.9; // наближена ширина "ARMADERO" при цьому трекінгу
-  const headerCenterOffset = 40; // трохи правіше від точного центру шапки
+  const headerCenterOffset = 100; // трохи правіше від точного центру шапки
   const headerLeft = viewportWidth / 2 - headerWidth / 2 + headerCenterOffset;
   const headerTop = 40 - headerFontSize / 2;
 
@@ -228,10 +228,7 @@ export default function Header() {
           >
             <button className="opacity-100">UA</button>
             <span>/</span>
-            <button
-              style={{ color: "#ffffff" }}
-              className="opacity-50 transition-opacity hover:opacity-100"
-            >
+            <button className="opacity-50 transition-opacity hover:opacity-100">
               EN
             </button>
           </motion.div>
