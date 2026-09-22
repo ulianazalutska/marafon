@@ -30,7 +30,7 @@ export default function ProcessSection() {
           <h2 className="max-w-3xl text-6xl leading-[1.05] font-bold text-[#362F2B] md:text-[96px] md:leading-[1.04] md:font-medium md:tracking-[0.02em]">
             Як це працює покроково
           </h2>
-          <p className="max-w-lg text-lg text-brown-700 md:w-[422px] md:max-w-[422px] md:pt-3 md:text-[32px] md:leading-[38px] md:font-normal md:tracking-[0.02em]">
+          <p className="max-w-lg text-lg text-[#362F2B] md:w-[422px] md:max-w-[422px] md:pt-3 md:text-[32px] md:leading-[38px] md:font-normal md:tracking-[0.02em]">
             Від виміру кімнати до готової гардеробної — три прості кроки, які
             ми проходимо разом із вами
           </p>
@@ -50,7 +50,7 @@ export default function ProcessSection() {
                 <h3 className="text-2xl font-medium text-[#362F2B] md:text-[43px] md:tracking-[0.02em]">
                   {s.title}
                 </h3>
-                <p className="max-w-md text-base text-brown-700 md:w-[598px] md:max-w-[598px] md:text-[22px] md:font-normal md:tracking-[0.02em]">
+                <p className="max-w-md text-base text-[#362F2B] md:w-[598px] md:max-w-[598px] md:text-[22px] md:font-normal md:tracking-[0.02em]">
                   {s.text}
                 </p>
               </div>

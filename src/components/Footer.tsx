@@ -124,7 +124,7 @@ export default function Footer() {
             ))}
           </ul>
 
-          <div className="w-[192px] text-brown-700">
+          <div className="w-[192px] text-[#362F2B]">
             <p className="text-[16px] leading-[19px] font-light tracking-[0.04em] text-brown-850">
               м. Київ, вул. Антоновича, 51, 2 поверх 01015, Україна
             </p>
@@ -154,7 +154,7 @@ export default function Footer() {
 
             <form
               onSubmit={(e) => e.preventDefault()}
-              className="mt-4 flex items-center gap-2 rounded-[40px] border border-transparent bg-[#F6F6F6] py-1.5 pr-1.5 pl-4 transition-colors duration-300 focus-within:border-[#362F2B]"
+              className="mt-[30px] flex items-center gap-2 rounded-[40px] border border-transparent bg-[#F6F6F6] py-1.5 pr-1.5 pl-4 transition-colors duration-300 focus-within:border-[#362F2B]"
             >
               <input
                 type="email"
@@ -190,7 +190,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-[1600px] flex-col-reverse items-center justify-between gap-3 border-t border-brown-300/60 py-6 text-xs text-brown-500 md:flex-row">
+      <div className="mx-auto flex max-w-[1600px] flex-col-reverse items-center justify-between gap-3 border-t border-brown-300/60 py-6 text-xs text-[#362F2B] md:flex-row">
         <span className="text-[15px] font-light tracking-[0em] text-brown-850">
           Студія гардеробних систем та інтер&apos;єру. Усі права захищено
         </span>

@@ -15,9 +15,9 @@ const rajdhani = Rajdhani({
 });
 
 export const metadata: Metadata = {
-  title: "VELLARO — крісла для домашнього кінотеатру",
+  title: "Armadero — гардеробні системи на замовлення",
   description:
-    "Модульні крісла та дивани ручної роботи для домашнього кінотеатру. Український цех, гарантія 5 років.",
+    "Модульні гардеробні системи ручної роботи під розмір вашої кімнати. Український цех, гарантія 5 років.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

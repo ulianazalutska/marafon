@@ -96,7 +96,7 @@ export default function IntroOverlay() {
         // value the browser silently drops, so letter-spacing does nothing
         // without the explicit unit.
         letterSpacing: `${typingFontSize * typingTrackingRatio}px`,
-        color: "#1c140d",
+        color: "#362f2b",
       });
       // Centered via a concrete measured px box, not left:50%+xPercent:-50:
       // xPercent is recalculated against the element's CURRENT width every

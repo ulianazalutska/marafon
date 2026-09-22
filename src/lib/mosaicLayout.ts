@@ -14,4 +14,8 @@ export const mosaicLayout = [
   { left: 88, top: 64, width: 11, height: 15 },
   { left: 24, top: 64, width: 12, height: 16 },
   { left: 50, top: 70, width: 12, height: 14 },
+  { left: 44, top: 5, width: 14, height: 17 }, // 13 — top-center gap
+  { left: 91, top: 80, width: 9, height: 14 }, // 14 — bottom-right corner
+  { left: 64, top: 78, width: 11, height: 15 }, // 15 — bottom-center gap
+  { left: 1, top: 78, width: 11, height: 16 }, // 16 — bottom-left corner
 ] as const;

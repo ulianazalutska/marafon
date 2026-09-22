@@ -180,7 +180,7 @@ export default function PortfolioSection() {
               Кожен проєкт — індивідуальна конфігурація під кімнату клієнта
             </p>
           </div>
-          <p className="text-[21px] leading-[25px] tracking-[0.04em] tabular-nums text-brown-500">
+          <p className="text-[21px] leading-[25px] tracking-[0.04em] tabular-nums text-accent">
             {index + 1} з {total}
           </p>
         </div>
