@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { images } from "@/lib/images";
@@ -33,6 +34,7 @@ export default function ContactSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageWrapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -90,63 +92,132 @@ export default function ContactSection() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brown-950/80 via-transparent to-brown-950/20" />
 
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 min-h-[466px] w-[336px] -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute top-1/2 left-1/2 min-h-[600px] w-[460px] -translate-x-1/2 -translate-y-1/2">
           <div
             ref={cardRef}
-            className="h-full min-h-[466px] w-[336px] rounded-[20px] bg-white px-[38px] py-[44px] shadow-[0_30px_60px_-15px_rgba(28,20,13,0.45)]"
+            className="h-full min-h-[600px] w-[460px] rounded-[24px] bg-white px-[52px] py-[56px] shadow-[0_30px_60px_-15px_rgba(28,20,13,0.45)]"
           >
-            <h2 className="text-center text-[20px] font-normal tracking-[0.04em] text-ink">
+            <h2 className="text-center text-[28px] font-normal tracking-[0.04em] text-ink">
               Зв&apos;яжіться з нами
             </h2>
 
-            <form className="mt-6 flex flex-col gap-[10px]">
-              {fields.map((field) => (
-                <label key={field.name} className="block">
-                  <span className="block text-[14px] font-normal tracking-normal text-[#AF957C]">
-                    {field.label}
-                  </span>
-                  <input
-                    type={field.type}
-                    name={field.name}
-                    placeholder={field.placeholder}
-                    required
-                    className="mt-2 w-full rounded-[10px] bg-[#F6F6F6] pt-[9px] pr-[17px] pb-[9px] pl-[17px] text-[11px] font-normal text-[#CAC4BF] outline-none placeholder:text-[#CAC4BF]"
-                  />
-                </label>
-              ))}
+            <AnimatePresence mode="wait">
+              {submitted ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="mt-16 flex flex-col items-center text-center"
+                >
+                  <motion.span
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.15, type: "spring", stiffness: 260, damping: 18 }}
+                    className="flex h-14 w-14 items-center justify-center rounded-full bg-accent"
+                  >
+                    <motion.svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <motion.path
+                        d="M4 10.5L8 14.5L16 6"
+                        stroke="white"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
+                      />
+                    </motion.svg>
+                  </motion.span>
+                  <p className="mt-6 text-[16px] leading-relaxed text-ink">
+                    Дякуємо! Ваша заявка надіслана — ми зв&apos;яжемося з вами найближчим часом.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="mt-6 text-[14px] font-normal tracking-normal text-[#AF957C] underline transition-opacity hover:opacity-70"
+                  >
+                    Повернутися до форми
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.form
+                  key="form"
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 12 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="mt-8 flex flex-col gap-[16px]"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setSubmitted(true);
+                  }}
+                >
+                  {fields.map((field) => (
+                    <label key={field.name} className="block">
+                      <span className="block text-[15px] font-normal tracking-normal text-[#AF957C]">
+                        {field.label}
+                      </span>
+                      <input
+                        type={field.type}
+                        name={field.name}
+                        placeholder={field.placeholder}
+                        autoComplete="off"
+                        required
+                        className="mt-2 w-full rounded-[10px] border border-transparent bg-[#F6F6F6] pt-[13px] pr-[20px] pb-[13px] pl-[20px] text-[14px] font-normal text-[#CAC4BF] outline-none transition-colors duration-300 focus:border-[#362F2B] placeholder:text-[#CAC4BF]"
+                      />
+                    </label>
+                  ))}
 
-              <label className="block">
-                <span className="block text-[14px] font-normal tracking-normal text-[#AF957C]">
-                  Повідомлення
-                </span>
-                <textarea
-                  name="message"
-                  placeholder="Пишіть тут"
-                  rows={2}
-                  className="mt-2 w-full resize-none rounded-[10px] bg-[#F6F6F6] pt-[9px] pr-[17px] pb-[42px] pl-[17px] text-[11px] font-normal text-[#CAC4BF] outline-none placeholder:text-[#CAC4BF]"
-                />
-              </label>
+                  <label className="block">
+                    <span className="block text-[15px] font-normal tracking-normal text-[#AF957C]">
+                      Повідомлення
+                    </span>
+                    <textarea
+                      name="message"
+                      placeholder="Пишіть тут"
+                      autoComplete="off"
+                      rows={3}
+                      className="mt-2 w-full resize-none rounded-[10px] border border-transparent bg-[#F6F6F6] pt-[13px] pr-[20px] pb-[42px] pl-[20px] text-[14px] font-normal text-[#CAC4BF] outline-none transition-colors duration-300 focus:border-[#362F2B] placeholder:text-[#CAC4BF]"
+                    />
+                  </label>
 
-              <p className="text-[8px] leading-tight tracking-normal text-brown-850 uppercase">
-                By submitting, you agree to our{" "}
-                <a href="#" className="underline">
-                  terms
-                </a>{" "}
-                and privacy policy
-              </p>
+                  <p className="text-[10px] leading-tight tracking-normal text-brown-850 uppercase">
+                    By submitting, you agree to our{" "}
+                    <a href="#" className="underline">
+                      terms
+                    </a>{" "}
+                    and privacy policy
+                  </p>
 
-              <button
-                type="submit"
-                className="mt-2 inline-flex items-center gap-3 self-center rounded-full bg-accent py-[4px] pr-[7px] pl-[10px] text-sm font-normal text-white transition-opacity hover:opacity-90"
-              >
-                Отримати візуалізацію
-                <span className="flex h-[31px] w-[31px] shrink-0 items-center justify-center rounded-full bg-white">
-                  <svg width="13.67" height="13.67" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="#AF957C" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-              </button>
-            </form>
+                  <button
+                    type="submit"
+                    className="group mt-2 inline-flex items-center gap-3 self-center rounded-full bg-accent py-[6px] pr-[8px] pl-[20px] text-base font-normal text-white transition-opacity hover:opacity-90"
+                  >
+                    Отримати візуалізацію
+                    <span className="flex h-[38px] w-[38px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 9 9"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="transition-transform duration-300 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px]"
+                      >
+                        <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="#AF957C" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </button>
+                </motion.form>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>

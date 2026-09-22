@@ -139,11 +139,18 @@ export default function Hero() {
         </p>
         <a
           href="#contact"
-          className="mt-6 ml-23 inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[7px] pl-[10px] text-[19px] font-normal text-white transition-opacity hover:opacity-90"
+          className="group mt-6 ml-23 inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[7px] pl-[10px] text-[19px] font-normal text-white transition-opacity hover:opacity-90"
         >
           Підібрати гардеробну
-          <span className="flex h-[31px] w-[31px] items-center justify-center rounded-full bg-white">
-            <svg width="13.67" height="13.67" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <span className="flex h-[31px] w-[31px] items-center justify-center overflow-hidden rounded-full bg-white">
+            <svg
+              width="13.67"
+              height="13.67"
+              viewBox="0 0 9 9"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="transition-transform duration-300 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px]"
+            >
               <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="#AF957C" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>

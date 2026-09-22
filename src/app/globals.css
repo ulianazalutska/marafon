@@ -63,3 +63,23 @@ body {
 .pulse-ring {
   animation: pulse-ring 4.5s cubic-bezier(0.3, 0.6, 0.4, 1) infinite;
 }
+
+/* Chrome's UA stylesheet sets cursor:default on <button>, unlike <a>,
+   which is pointer by default — this normalizes every button site-wide. */
+button {
+  cursor: pointer;
+}
+
+/* Chrome tints autofilled inputs blue/yellow via its own UA background;
+   -webkit-box-shadow with an inset spread is the only reliable override
+   (overriding `background` alone is ignored on autofilled fields). */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #f6f6f6 inset;
+  -webkit-text-fill-color: #1c140d;
+  transition: background-color 9999s ease-in-out 0s;
+}

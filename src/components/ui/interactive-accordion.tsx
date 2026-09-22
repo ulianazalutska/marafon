@@ -33,7 +33,8 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
                 <div className="flex items-center gap-6 px-1 py-5">
                   <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
                     <motion.div
-                      className="absolute inset-0 rounded-full bg-brown-950"
+                      className="absolute inset-0 rounded-full"
+                      style={{ backgroundColor: "#362F2B" }}
                       initial={false}
                       animate={{
                         scale: isActive ? 1 : isHovered ? 0.85 : 0,

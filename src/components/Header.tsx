@@ -171,7 +171,7 @@ export default function Header() {
       style={{ backgroundColor: headerBg }}
       className="fixed inset-x-0 top-0 z-50 h-20"
     >
-      <div className="mx-auto flex h-full max-w-[1350px] items-center justify-between px-6 md:px-0">
+      <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-6">
         <nav
           ref={navRef}
           className="hidden items-center gap-8 text-[19px] tracking-[0.02em] md:flex"

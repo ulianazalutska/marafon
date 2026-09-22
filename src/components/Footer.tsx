@@ -1,40 +1,28 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const columns = [
-  {
-    title: "Продукція",
-    links: [
-      { href: "#catalog", label: "Каталог" },
-      { href: "#production", label: "Технології" },
-      { href: "#production", label: "Виробництво" },
-    ],
-  },
-  {
-    title: "Компанія",
-    links: [
-      { href: "#portfolio", label: "Портфоліо" },
-      { href: "#process", label: "Процес" },
-      { href: "#contact", label: "Контакти" },
-    ],
-  },
-  {
-    title: "Соціальні мережі",
-    links: [
-      { href: "https://instagram.com", label: "Instagram" },
-      { href: "https://pinterest.com", label: "Pinterest" },
-    ],
-  },
+const footerLinks = [
+  { href: "#", label: "Про нас" },
+  { href: "#", label: "Політика конфіденційності" },
+  { href: "#", label: "Умови використання" },
+];
+
+const socials = [
+  { href: "https://instagram.com", label: "Instagram" },
+  { href: "https://pinterest.com", label: "Pinterest" },
+  { href: "https://tiktok.com", label: "TikTok" },
+  { href: "https://facebook.com", label: "Facebook" },
 ];
 
 export default function Footer() {
   const introRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -81,81 +69,140 @@ export default function Footer() {
 
   return (
     <footer className="bg-cream text-ink">
-      <div className="mx-auto flex max-w-7xl flex-col gap-12 border-b border-brown-300/60 px-6 py-16 md:flex-row md:items-start md:justify-between md:px-10 md:py-20">
-        <div ref={introRef}>
-          <h2 className="relative max-w-sm text-4xl leading-[1.15] font-medium md:text-5xl">
+      <div className="mx-auto flex max-w-[1600px] flex-col gap-y-12 px-6 py-16 md:py-20 lg:flex-row lg:items-start lg:justify-between">
+        <div ref={introRef} className="w-full lg:w-[520px] lg:shrink-0">
+          <h2 className="relative text-[45px] leading-[54px] font-normal tracking-[0.04em] text-brown-850">
             <span className="relative -ml-1 inline-block">
               <span
                 aria-hidden
-                className="pointer-events-none absolute -top-2 -left-3 font-serif text-2xl text-brown-500 select-none md:-top-3 md:-left-4 md:text-3xl"
+                className="pointer-events-none absolute -top-2 -left-3 font-serif text-2xl text-accent select-none"
               >
                 &#10077;
               </span>
-              Замовте своє
+              Замовте свій
             </span>
             <br />
-            крісло VELLARO.
+            гардероб в Armadero
             <span
               aria-hidden
-              className="pointer-events-none ml-1 font-serif text-2xl text-brown-500 select-none md:text-3xl"
+              className="pointer-events-none ml-1 font-serif text-2xl text-accent select-none"
             >
               &#10078;
             </span>
           </h2>
 
-          <a
-            href="#contact"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm tracking-wide text-cream transition-opacity hover:opacity-90"
-          >
-            <span aria-hidden>&rarr;</span> Замовити консультацію
-          </a>
+          <ul className="mt-8 flex flex-col">
+            {footerLinks.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  className="text-[18px] leading-[42px] font-light tracking-[0.04em] text-brown-850 transition-colors hover:text-ink"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <nav
+        <div
           ref={navRef}
-          className="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-3 md:gap-x-16"
+          className="flex flex-col flex-wrap gap-[120px] sm:flex-row"
         >
-          {columns.map((col) => (
-            <div key={col.title}>
-              <p className="font-mono text-[11px] tracking-widest text-brown-500 uppercase">
-                {col.title}
-              </p>
-              <ul className="mt-4 flex flex-col gap-2.5">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-brown-800 transition-colors hover:text-ink"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </nav>
-      </div>
+          <ul className="flex flex-col gap-[20px]">
+            {socials.map((s) => (
+              <li key={s.label}>
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[18px] font-light tracking-[0.04em] text-brown-850 transition-colors hover:text-ink"
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-      <div className="overflow-hidden border-b border-brown-300/60 py-6 md:py-10">
-        <p className="text-center font-logo text-[22vw] leading-none font-medium tracking-tight whitespace-nowrap text-ink/10 sm:text-[20vw] md:text-[15vw]">
-          VELLARO
-        </p>
-      </div>
+          <div className="w-[192px] text-brown-700">
+            <p className="text-[16px] leading-[19px] font-light tracking-[0.04em] text-brown-850">
+              м. Київ, вул. Антоновича, 51, 2 поверх 01015, Україна
+            </p>
+            <p className="mt-[43px] text-[21px] font-medium tracking-[0em] text-brown-850">
+              <a
+                href="tel:+380442001515"
+                className="block transition-opacity hover:opacity-80"
+              >
+                +380 44 200 15 15
+              </a>
+              <a
+                href="mailto:hello@armadero.ua"
+                className="mt-1 block transition-opacity hover:opacity-80"
+              >
+                hello@armadero.ua
+              </a>
+            </p>
+          </div>
 
-      <div className="mx-auto flex max-w-7xl flex-col-reverse items-center justify-between gap-3 px-6 py-6 text-xs text-brown-500 md:flex-row md:px-10">
-        <span className="font-mono tracking-wide">
-          VELLARO — студія гардеробних систем та інтер&apos;єру. Усі права
-          захищено.
-        </span>
-        <div className="flex gap-6 font-mono tracking-wide">
-          <a href="#" className="transition-colors hover:text-ink">
-            Політика конфіденційності
-          </a>
-          <a href="#" className="transition-colors hover:text-ink">
-            Умови використання
-          </a>
+          <div className="w-[261px]">
+            <h3 className="text-[30px] leading-[30px] font-normal tracking-[0.02em] text-brown-850">
+              Підпишіться на Newsletter
+            </h3>
+            <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-brown-850">
+              Отримуйте новини та підбірки щомісяця
+            </p>
+
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="mt-4 flex items-center gap-2 rounded-[40px] border border-transparent bg-[#F6F6F6] py-1.5 pr-1.5 pl-4 transition-colors duration-300 focus-within:border-[#362F2B]"
+            >
+              <input
+                type="email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="andriymel@gmail.com"
+                autoComplete="off"
+                required
+                className="w-full bg-transparent text-[13px] font-normal tracking-[0em] text-ink outline-none placeholder:text-[#CAC4BF]"
+              />
+              <button
+                type="submit"
+                aria-label="Підписатися на розсилку"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-white transition-opacity hover:opacity-90"
+              >
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 9 9"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
+
+      <div className="mx-auto flex max-w-[1600px] flex-col-reverse items-center justify-between gap-3 border-t border-brown-300/60 py-6 text-xs text-brown-500 md:flex-row">
+        <span className="text-[15px] font-light tracking-[0em] text-brown-850">
+          Студія гардеробних систем та інтер&apos;єру. Усі права захищено
+        </span>
+        <span className="text-[15px] font-light tracking-[0em] text-brown-850">
+          Website design by Zalutska
+        </span>
+      </div>
+
+      <div className="relative h-[clamp(170px,15vw,280px)] overflow-hidden bg-[#F6F6F6]">
+        <p className="absolute top-[10px] left-1/2 -translate-x-1/2 whitespace-nowrap font-logo text-[26vw] leading-[0.8] font-semibold tracking-[-0.04em] text-white">
+          Armadero
+        </p>
       </div>
     </footer>
   );
