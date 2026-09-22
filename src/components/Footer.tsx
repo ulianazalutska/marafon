@@ -23,6 +23,8 @@ export default function Footer() {
   const introRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterSent, setNewsletterSent] = useState(false);
+  const [newsletterSending, setNewsletterSending] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -153,7 +155,28 @@ export default function Footer() {
             </p>
 
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={async (e) => {
+                e.preventDefault();
+                if (newsletterSending) return;
+                setNewsletterSending(true);
+                try {
+                  const res = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      type: "newsletter",
+                      email: newsletterEmail,
+                    }),
+                  });
+                  if (!res.ok) throw new Error("request failed");
+                  setNewsletterEmail("");
+                  setNewsletterSent(true);
+                } catch {
+                  // silently ignore — footer subscribe has no error UI
+                } finally {
+                  setNewsletterSending(false);
+                }
+              }}
               className="mt-[30px] flex items-center gap-2 rounded-[40px] border border-transparent bg-[#F6F6F6] py-1.5 pr-1.5 pl-4 transition-colors duration-300 focus-within:border-[#362F2B]"
             >
               <input
@@ -167,8 +190,9 @@ export default function Footer() {
               />
               <button
                 type="submit"
+                disabled={newsletterSending}
                 aria-label="Підписатися на розсилку"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-white transition-opacity hover:opacity-90"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-white transition-opacity hover:opacity-90 disabled:opacity-60"
               >
                 <svg
                   width="13"
@@ -186,6 +210,11 @@ export default function Footer() {
                 </svg>
               </button>
             </form>
+            {newsletterSent && (
+              <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-accent">
+                Дякуємо за підписку!
+              </p>
+            )}
           </div>
         </div>
       </div>

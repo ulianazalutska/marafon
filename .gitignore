@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local-only scripts with secrets (e.g. Apps Script shared secret)
+/scripts
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

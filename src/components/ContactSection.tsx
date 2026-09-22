@@ -35,6 +35,8 @@ export default function ContactSection() {
   const imageWrapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -155,11 +157,43 @@ export default function ContactSection() {
                   exit={{ opacity: 0, y: 12 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   className="mt-8 flex flex-col gap-[16px]"
-                  onSubmit={(e) => {
+                  onSubmit={async (e) => {
                     e.preventDefault();
-                    setSubmitted(true);
+                    setError(false);
+                    setSending(true);
+                    const form = e.currentTarget;
+                    const data = new FormData(form);
+                    try {
+                      const res = await fetch("/api/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          type: "contact",
+                          name: data.get("name"),
+                          phone: data.get("phone"),
+                          email: data.get("email"),
+                          message: data.get("message"),
+                          website: data.get("website"),
+                        }),
+                      });
+                      if (!res.ok) throw new Error("request failed");
+                      form.reset();
+                      setSubmitted(true);
+                    } catch {
+                      setError(true);
+                    } finally {
+                      setSending(false);
+                    }
                   }}
                 >
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                    aria-hidden="true"
+                  />
                   {fields.map((field) => (
                     <label key={field.name} className="block">
                       <span className="block text-[15px] font-normal tracking-normal text-[#AF957C]">
@@ -197,11 +231,18 @@ export default function ContactSection() {
                     and privacy policy
                   </p>
 
+                  {error && (
+                    <p className="text-center text-[13px] text-red-600">
+                      Не вдалося надіслати заявку. Спробуйте ще раз.
+                    </p>
+                  )}
+
                   <button
                     type="submit"
-                    className="group mt-2 inline-flex items-center gap-3 self-center rounded-full bg-accent py-[6px] pr-[8px] pl-[20px] text-base font-normal text-white transition-opacity hover:opacity-90"
+                    disabled={sending}
+                    className="group mt-2 inline-flex items-center gap-3 self-center rounded-full bg-accent py-[6px] pr-[8px] pl-[20px] text-base font-normal text-white transition-opacity hover:opacity-90 disabled:opacity-60"
                   >
-                    Отримати візуалізацію
+                    {sending ? "Надсилаємо..." : "Отримати візуалізацію"}
                     <span className="flex h-[38px] w-[38px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
                       <svg
                         width="16"
