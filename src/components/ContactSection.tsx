@@ -224,11 +224,14 @@ export default function ContactSection() {
                   </label>
 
                   <p className="text-[10px] leading-tight tracking-normal text-brown-850 uppercase">
-                    By submitting, you agree to our{" "}
-                    <a href="#" className="underline">
-                      terms
+                    Надсилаючи форму, ви погоджуєтесь з{" "}
+                    <a href="/terms" className="underline">
+                      умовами використання
                     </a>{" "}
-                    and privacy policy
+                    та{" "}
+                    <a href="/privacy" className="underline">
+                      політикою конфіденційності
+                    </a>
                   </p>
 
                   {error && (

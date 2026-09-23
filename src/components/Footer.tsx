@@ -7,9 +7,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const footerLinks = [
-  { href: "#", label: "Про нас" },
-  { href: "#", label: "Політика конфіденційності" },
-  { href: "#", label: "Умови використання" },
+  { href: "/#production", label: "Про нас" },
+  { href: "/privacy", label: "Політика конфіденційності" },
+  { href: "/terms", label: "Умови використання" },
 ];
 
 const socials = [
