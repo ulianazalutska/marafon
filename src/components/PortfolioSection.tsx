@@ -197,7 +197,7 @@ export default function PortfolioSection() {
                 <div className="relative flex-1">
                   <Image
                     src={images.portfolioCarousel[index + 1]}
-                    alt=""
+                    alt={`Гардеробна ${projects[index + 1].area}, ${projects[index + 1].sections}`}
                     fill
                     draggable={false}
                     sizes="787px"
