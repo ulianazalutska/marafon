@@ -80,7 +80,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: `(function () {
               try {
                 if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }
-                if (Number(sessionStorage.getItem("vellaro-scroll-y")) > 0) {
+                if (Number(sessionStorage.getItem("armadero-scroll-y")) > 0) {
                   document.documentElement.style.visibility = "hidden";
                   setTimeout(function () { document.documentElement.style.visibility = ""; }, 2000);
                 }
