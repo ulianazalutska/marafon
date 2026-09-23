@@ -21,9 +21,16 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
           const isActive = activeId === item.id;
           const isHovered = hoveredId === item.id;
 
+          const buttonId = `accordion-trigger-${item.id}`;
+          const panelId = `accordion-panel-${item.id}`;
+
           return (
             <div key={item.id}>
               <motion.button
+                type="button"
+                id={buttonId}
+                aria-expanded={isActive}
+                aria-controls={panelId}
                 onClick={() => setActiveId(isActive ? null : item.id)}
                 onMouseEnter={() => setHoveredId(item.id)}
                 onMouseLeave={() => setHoveredId(null)}
@@ -106,6 +113,9 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
               <AnimatePresence mode="wait">
                 {isActive && (
                   <motion.div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={buttonId}
                     initial={{ height: 0, opacity: 0 }}
                     animate={{
                       height: "auto",
