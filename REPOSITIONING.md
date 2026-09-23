@@ -85,7 +85,7 @@ https://claude.ai/artifact/BtbZywbH1b2J9PjFAf1rof
 | `panorama` | `public/panorama/panorama.png` | Панорама 1 (після каталогу) | ultra-wide ~21:9, мін. 2800×1300px |
 | `panorama2` | `public/panorama/panorama-2.png` | Панорама 3 (перед футером) | ultra-wide ~21:9, мін. 2800×1300px |
 | `technologyMaterials.*` | `public/technology/materials/*.png` | Технології, свотчі матеріалів (6 шт: dub-cognac, horih-espresso, laminat-sand, emal-forest, dub-chestnut, sklo-stone) | square tiles |
-| `material` (окремий, невживаний у видимому контенті) | unsplash-заглушка, задіяна лише як один із 17 тайлів інтро-мозаїки (`mosaicImages`) | Інтро-анімація | square |
+| `material` (окремий, невживаний у видимому контенті) | локальне фото, задіяне лише як один із 17 тайлів інтро-мозаїки (`mosaicImages`) | Інтро-анімація | square |
 
 Промпти для всіх позицій — в артефакті-шотлисті вище (для історії); окремо для 3
 "панорамних" кадрів (Панорама 1, фінальна панель процесу, Панорама 2/перед футером)
@@ -110,4 +110,4 @@ https://claude.ai/artifact/BtbZywbH1b2J9PjFAf1rof
 - [x] Палітра фіналізована — біла база + латунний акцент `#af957c`
 - [x] Тексти в компонентах переписані під гардеробні
 - [x] Фото замінені на реальні/згенеровані під ARMADERO
-- [ ] `images.material` (unsplash-заглушка в інтро-мозаїці, розділ 5) — не чіпати без окремого запиту власниці
+- [x] `images.material` (розділ 5) — більше не unsplash-заглушка: фото завантажене локально в `public/technology/materials/sample-fabric.webp`, той самий кадр, лише без залежності від стороннього хостингу
