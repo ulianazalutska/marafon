@@ -169,7 +169,7 @@ export default function ClientFeedback() {
             timelineRef={testimonialRef}
             className="mb-6 text-[20px] font-normal tracking-[0.02em] text-brown-850"
           >
-            Реальні відгуки власників гардеробних ARMADERO
+            Відгуки власників гардеробних ARMADERO
           </TimelineContent>
         </article>
 
