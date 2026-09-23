@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
 import { INTRO_SEEN_KEY, INTRO_DONE_EVENT } from "@/lib/intro";
 
 export default function Hero() {
+  const t = useTranslations("Hero");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
@@ -74,9 +76,9 @@ export default function Hero() {
         className="absolute text-left text-[25px] leading-[1.3] font-medium tracking-[0.02em] text-white"
         style={{ left: "57%", top: "3.5%", width: "20vw" }}
       >
-        Деталі, що формують
+        {t("headlineLine1")}
         <br />
-        ваш простір
+        {t("headlineLine2")}
       </h1>
 
       {/* Від першого заміру до монтажу */}
@@ -85,8 +87,7 @@ export default function Hero() {
         className="absolute text-[19px] leading-[1.5] font-medium tracking-[0.02em] text-white"
         style={{ left: "68.4%", top: "34%", width: "16vw" }}
       >
-        Від першого заміру до монтажу — проєкт, матеріали та деталі в одному
-        рішенні
+        {t("subtext")}
       </p>
 
       {/* Відео-прев'ю картка */}
@@ -126,22 +127,22 @@ export default function Hero() {
           </span>
         </button>
         <p className="mt-3 text-center text-[13px] text-brown-850">
-          Світло. Рух. Комфорт.
+          {t("videoCaption")}
         </p>
       </div>
 
       {/* Гардеробна, створена під ваш простір */}
       <div ref={leftBlockRef} className="absolute" style={{ left: "15%", top: "48%" }}>
         <p className="text-[19px] leading-[1.35] font-medium tracking-[0.02em] text-white">
-          Гардеробна, створена під
+          {t("leftHeadlineLine1")}
           <br />
-          ваш простір і спосіб життя
+          {t("leftHeadlineLine2")}
         </p>
         <a
           href="#contact"
           className="group mt-6 ml-23 inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[7px] pl-[10px] text-[19px] font-normal text-white transition-opacity hover:opacity-90"
         >
-          Підібрати гардеробну
+          {t("cta")}
           <span className="flex h-[31px] w-[31px] items-center justify-center overflow-hidden rounded-full bg-white">
             <svg
               width="13.67"

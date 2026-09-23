@@ -1,0 +1,19 @@
+{
+  "Header": {
+    "nav": {
+      "catalog": "Catalog",
+      "portfolio": "Portfolio",
+      "production": "Production",
+      "contact": "Contact"
+    }
+  },
+  "Hero": {
+    "headlineLine1": "Details that shape",
+    "headlineLine2": "your space",
+    "subtext": "From the first measurement to installation — design, materials, and details in one solution",
+    "videoCaption": "Light. Motion. Comfort.",
+    "leftHeadlineLine1": "A wardrobe built for",
+    "leftHeadlineLine2": "your space and lifestyle",
+    "cta": "Design your wardrobe"
+  }
+}

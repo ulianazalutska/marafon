@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Exo_2, Rajdhani } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import "./globals.css";
 
 const exo2 = Exo_2({
@@ -45,10 +47,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
     <html
-      lang="uk"
+      lang={locale}
       className={`h-full antialiased ${exo2.variable} ${rajdhani.variable}`}
       suppressHydrationWarning
     >
@@ -90,7 +95,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-cream text-ink font-sans">
-        {children}
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );

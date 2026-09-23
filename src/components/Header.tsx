@@ -3,17 +3,32 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useLocale, useTranslations } from "next-intl";
 import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, LOGO_ARRIVED_EVENT } from "@/lib/intro";
 import { getHeroLogoLayout } from "@/lib/logoLayout";
-
-const links = [
-  { href: "#catalog", label: "Каталог" },
-  { href: "#portfolio", label: "Портфоліо" },
-  { href: "#production", label: "Виробництво" },
-  { href: "#contact", label: "Контакти" },
-];
+import { LOCALE_COOKIE, type Locale } from "@/i18n/config";
 
 export default function Header() {
+  const t = useTranslations("Header");
+  const locale = useLocale();
+
+  const links = [
+    { href: "#catalog", label: t("nav.catalog") },
+    { href: "#portfolio", label: t("nav.portfolio") },
+    { href: "#production", label: t("nav.production") },
+    { href: "#contact", label: t("nav.contact") },
+  ];
+
+  // A soft router.refresh() (tried first) re-rendered the server tree in
+  // place but read as a jarring white flash — a full reload is the plain,
+  // predictable behavior most bilingual sites already use for a language
+  // switch, and sidesteps that entirely.
+  const switchLocale = (next: Locale) => {
+    if (next === locale) return;
+    document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000`;
+    window.location.reload();
+  };
+
   const { scrollY } = useScroll();
   const [viewportHeight, setViewportHeight] = useState(900);
   const [viewportWidth, setViewportWidth] = useState(1440);
@@ -225,9 +240,21 @@ export default function Header() {
             style={{ color: uiColor }}
             className="hidden items-center gap-1 text-[19px] tracking-[0.02em] md:flex"
           >
-            <button className="opacity-100">UA</button>
+            <button
+              type="button"
+              onClick={() => switchLocale("uk")}
+              aria-current={locale === "uk"}
+              className={locale === "uk" ? "opacity-100" : "opacity-50 transition-opacity hover:opacity-100"}
+            >
+              UA
+            </button>
             <span>/</span>
-            <button className="opacity-50 transition-opacity hover:opacity-100">
+            <button
+              type="button"
+              onClick={() => switchLocale("en")}
+              aria-current={locale === "en"}
+              className={locale === "en" ? "opacity-100" : "opacity-50 transition-opacity hover:opacity-100"}
+            >
               EN
             </button>
           </motion.div>
