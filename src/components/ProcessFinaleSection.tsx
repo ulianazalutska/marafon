@@ -66,7 +66,7 @@ export default function ProcessFinaleSection() {
           href="#contact"
           className="group inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[10px] pl-[16px] text-[19px] font-light tracking-[0.02em] text-white transition-opacity hover:opacity-90"
         >
-          Замовити дзвінок
+          Залишити заявку
           <span className="flex h-[31px] w-[31px] items-center justify-center overflow-hidden rounded-full bg-white">
             <svg
               width="13.67"

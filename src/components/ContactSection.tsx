@@ -245,7 +245,7 @@ export default function ContactSection() {
                     disabled={sending}
                     className="group mt-2 inline-flex items-center gap-3 self-center rounded-full bg-accent py-[6px] pr-[8px] pl-[20px] text-base font-normal text-white transition-opacity hover:opacity-90 disabled:opacity-60"
                   >
-                    {sending ? "Надсилаємо..." : "Отримати візуалізацію"}
+                    {sending ? "Надсилаємо..." : "Надіслати заявку"}
                     <span className="flex h-[38px] w-[38px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
                       <svg
                         width="16"
