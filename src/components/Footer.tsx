@@ -22,6 +22,7 @@ const socials = [
 export default function Footer() {
   const introRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
+  const newsletterHoneypotRef = useRef<HTMLInputElement>(null);
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSent, setNewsletterSent] = useState(false);
   const [newsletterSending, setNewsletterSending] = useState(false);
@@ -158,6 +159,13 @@ export default function Footer() {
               onSubmit={async (e) => {
                 e.preventDefault();
                 if (newsletterSending) return;
+                // Honeypot: bots fill every field, real users never see or
+                // touch this one — same field name the server checks for.
+                if (newsletterHoneypotRef.current?.value.trim()) {
+                  setNewsletterEmail("");
+                  setNewsletterSent(true);
+                  return;
+                }
                 setNewsletterSending(true);
                 try {
                   const res = await fetch("/api/contact", {
@@ -166,6 +174,7 @@ export default function Footer() {
                     body: JSON.stringify({
                       type: "newsletter",
                       email: newsletterEmail,
+                      website: newsletterHoneypotRef.current?.value ?? "",
                     }),
                   });
                   if (!res.ok) throw new Error("request failed");
@@ -179,6 +188,15 @@ export default function Footer() {
               }}
               className="mt-[30px] flex items-center gap-2 rounded-[40px] border border-transparent bg-[#F6F6F6] py-1.5 pr-1.5 pl-4 transition-colors duration-300 focus-within:border-[#362F2B]"
             >
+              <input
+                ref={newsletterHoneypotRef}
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                aria-hidden="true"
+              />
               <input
                 type="email"
                 value={newsletterEmail}
