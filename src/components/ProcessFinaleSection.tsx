@@ -55,13 +55,13 @@ export default function ProcessFinaleSection() {
       <div className="absolute inset-0 bg-gradient-to-t from-brown-950/85 via-brown-950/25 to-brown-950/35" />
 
       <div className="relative flex flex-col items-center gap-8 px-6 text-center">
-        <h3 className="w-[571px] max-w-full text-[64px] leading-[77px] font-semibold tracking-[0.02em] text-white">
+        <h2 className="w-[571px] max-w-full text-[64px] leading-[77px] font-semibold tracking-[0.02em] text-white">
           Гардеробна,
           <br />
           яка <span className="italic">відчувається</span>
           <br />
           як вдома
-        </h3>
+        </h2>
         <a
           href="#contact"
           className="group inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[10px] pl-[16px] text-[19px] font-light tracking-[0.02em] text-white transition-opacity hover:opacity-90"
