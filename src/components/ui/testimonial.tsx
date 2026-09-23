@@ -20,7 +20,7 @@ const testimonials = [
     role: "Львів",
     text: "Довго підбирали оздоблення фасадів — команда ARMADERO надіслала зразки додому, щоб побачити колір наживо. Результат перевершив очікування.",
     tone: "accent" as const,
-    photo: "/testimonials/ihor-tarasenko.png",
+    photo: "/testimonials/ihor-tarasenko.webp",
   },
   {
     name: "Марина Бондар",
