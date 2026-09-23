@@ -5,32 +5,25 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const fields = [
-  {
-    name: "name",
-    label: "Ім'я",
-    type: "text",
-    placeholder: "Андрій Мельник",
-  },
-  {
-    name: "phone",
-    label: "Телефон",
-    type: "tel",
-    placeholder: "+380688580048",
-  },
-  {
-    name: "email",
-    label: "Email",
-    type: "email",
-    placeholder: "andriymel@gmail.com",
-  },
-];
+const fieldMeta = [
+  { name: "name", type: "text" },
+  { name: "phone", type: "tel" },
+  { name: "email", type: "email" },
+] as const;
 
 export default function ContactSection() {
+  const t = useTranslations("Contact");
+  const fields = fieldMeta.map((f) => ({
+    ...f,
+    label: t(`fields.${f.name}.label`),
+    placeholder: t(`fields.${f.name}.placeholder`),
+  }));
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageWrapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -84,7 +77,7 @@ export default function ContactSection() {
       <div ref={imageWrapRef} className="absolute inset-0 -top-[12%] h-[124%]">
         <Image
           src={images.panoramaContact}
-          alt="Гардеробна система ARMADERO"
+          alt={t("imageAlt")}
           fill
           sizes="100vw"
           className="object-cover"
@@ -100,7 +93,7 @@ export default function ContactSection() {
             className="h-full min-h-[600px] w-[460px] rounded-[24px] bg-white px-[52px] py-[56px] shadow-[0_30px_60px_-15px_rgba(28,20,13,0.45)]"
           >
             <h2 className="text-center text-[28px] font-normal tracking-[0.04em] text-ink">
-              Зв&apos;яжіться з нами
+              {t("heading")}
             </h2>
 
             <AnimatePresence mode="wait">
@@ -139,14 +132,14 @@ export default function ContactSection() {
                     </motion.svg>
                   </motion.span>
                   <p className="mt-6 text-[16px] leading-relaxed text-ink">
-                    Дякуємо! Ваша заявка надіслана — ми зв&apos;яжемося з вами найближчим часом.
+                    {t("successMessage")}
                   </p>
                   <button
                     type="button"
                     onClick={() => setSubmitted(false)}
                     className="mt-6 text-[14px] font-normal tracking-normal text-accent underline transition-opacity hover:opacity-70"
                   >
-                    Повернутися до форми
+                    {t("backToForm")}
                   </button>
                 </motion.div>
               ) : (
@@ -212,11 +205,11 @@ export default function ContactSection() {
 
                   <label className="block">
                     <span className="block text-[15px] font-normal tracking-normal text-accent">
-                      Повідомлення
+                      {t("messageLabel")}
                     </span>
                     <textarea
                       name="message"
-                      placeholder="Пишіть тут"
+                      placeholder={t("messagePlaceholder")}
                       autoComplete="off"
                       rows={3}
                       className="mt-2 w-full resize-none rounded-[10px] border border-transparent bg-brown-100 pt-[13px] pr-[20px] pb-[42px] pl-[20px] text-[14px] font-normal text-ink outline-none transition-colors duration-300 focus:border-ink placeholder:text-brown-200"
@@ -224,19 +217,19 @@ export default function ContactSection() {
                   </label>
 
                   <p className="text-[10px] leading-tight tracking-normal text-brown-850 uppercase">
-                    Надсилаючи форму, ви погоджуєтесь з{" "}
+                    {t("consentPrefix")}{" "}
                     <a href="/terms" className="underline">
-                      умовами використання
+                      {t("consentTerms")}
                     </a>{" "}
-                    та{" "}
+                    {t("consentAnd")}{" "}
                     <a href="/privacy" className="underline">
-                      політикою конфіденційності
+                      {t("consentPrivacy")}
                     </a>
                   </p>
 
                   {error && (
                     <p className="text-center text-[13px] text-red-600">
-                      Не вдалося надіслати заявку. Спробуйте ще раз.
+                      {t("errorMessage")}
                     </p>
                   )}
 
@@ -245,7 +238,7 @@ export default function ContactSection() {
                     disabled={sending}
                     className="group mt-2 inline-flex items-center gap-3 self-center rounded-full bg-accent py-[6px] pr-[8px] pl-[20px] text-base font-normal text-white transition-opacity hover:opacity-90 disabled:opacity-60"
                   >
-                    {sending ? "Надсилаємо..." : "Надіслати заявку"}
+                    {sending ? t("submitting") : t("submit")}
                     <span className="flex h-[38px] w-[38px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
                       <svg
                         width="16"

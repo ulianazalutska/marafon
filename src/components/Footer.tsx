@@ -3,14 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const footerLinks = [
-  { href: "/#production", label: "Про нас" },
-  { href: "/privacy", label: "Політика конфіденційності" },
-  { href: "/terms", label: "Умови використання" },
-];
 
 const socials = [
   { href: "https://instagram.com", label: "Instagram" },
@@ -20,6 +15,13 @@ const socials = [
 ];
 
 export default function Footer() {
+  const t = useTranslations("Footer");
+  const footerLinks = [
+    { href: "/#production", label: t("linkAbout") },
+    { href: "/privacy", label: t("linkPrivacy") },
+    { href: "/terms", label: t("linkTerms") },
+  ];
+
   const introRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const newsletterHoneypotRef = useRef<HTMLInputElement>(null);
@@ -83,10 +85,10 @@ export default function Footer() {
               >
                 &#10077;
               </span>
-              Замовте свій
+              {t("headlinePrefix")}
             </span>
             <br />
-            гардероб в Armadero
+            {t("headlineSuffix")}
             <span
               aria-hidden
               className="pointer-events-none ml-1 font-serif text-2xl text-accent select-none"
@@ -130,7 +132,7 @@ export default function Footer() {
 
           <div className="w-[192px] text-ink">
             <p className="text-[16px] leading-[19px] font-light tracking-[0.04em] text-brown-850">
-              м. Київ, вул. Антоновича, 51, 2 поверх 01015, Україна
+              {t("address")}
             </p>
             <p className="mt-[43px] text-[21px] font-medium tracking-[0em] text-brown-850">
               <a
@@ -150,10 +152,10 @@ export default function Footer() {
 
           <div className="w-[261px]">
             <h3 className="text-[30px] leading-[30px] font-normal tracking-[0.02em] text-brown-850">
-              Підпишіться на Newsletter
+              {t("newsletterHeading")}
             </h3>
             <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-brown-850">
-              Отримуйте новини та підбірки щомісяця
+              {t("newsletterSubtitle")}
             </p>
 
             <form
@@ -203,7 +205,7 @@ export default function Footer() {
                 type="email"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder="andriymel@gmail.com"
+                placeholder={t("newsletterPlaceholder")}
                 autoComplete="off"
                 required
                 className="w-full bg-transparent text-[13px] font-normal tracking-[0em] text-ink outline-none placeholder:text-brown-200"
@@ -211,7 +213,7 @@ export default function Footer() {
               <button
                 type="submit"
                 disabled={newsletterSending}
-                aria-label="Підписатися на розсилку"
+                aria-label={t("newsletterAriaLabel")}
                 className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-white transition-opacity hover:opacity-90 disabled:opacity-60"
               >
                 <svg
@@ -232,12 +234,12 @@ export default function Footer() {
             </form>
             {newsletterSent && (
               <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-accent">
-                Дякуємо за підписку!
+                {t("newsletterThanks")}
               </p>
             )}
             {newsletterError && (
               <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-red-600">
-                Не вдалося підписатись. Спробуйте ще раз.
+                {t("newsletterError")}
               </p>
             )}
           </div>
@@ -246,10 +248,10 @@ export default function Footer() {
 
       <div className="mx-auto flex max-w-[1600px] flex-col-reverse items-center justify-between gap-3 border-t border-brown-300/60 py-6 text-xs text-ink md:flex-row">
         <span className="text-[15px] font-light tracking-[0em] text-brown-850">
-          Студія гардеробних систем та інтер&apos;єру. Усі права захищено
+          {t("copyright")}
         </span>
         <span className="text-[15px] font-light tracking-[0em] text-brown-850">
-          Website design by Zalutska
+          {t("designCredit")}
         </span>
       </div>
 

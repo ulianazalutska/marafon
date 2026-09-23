@@ -186,5 +186,41 @@
         "a": "Calculated individually depending on the region and the wardrobe's size."
       }
     ]
+  },
+  "Contact": {
+    "imageAlt": "ARMADERO wardrobe system",
+    "heading": "Get in touch",
+    "successMessage": "Thank you! Your request has been sent — we'll get back to you shortly.",
+    "backToForm": "Back to the form",
+    "fields": {
+      "name": { "label": "Name", "placeholder": "John Smith" },
+      "phone": { "label": "Phone", "placeholder": "+1 555 0100" },
+      "email": { "label": "Email", "placeholder": "john@example.com" }
+    },
+    "messageLabel": "Message",
+    "messagePlaceholder": "Write here",
+    "consentPrefix": "By submitting the form, you agree to the",
+    "consentTerms": "terms of use",
+    "consentAnd": "and",
+    "consentPrivacy": "privacy policy",
+    "errorMessage": "Couldn't send your request. Please try again.",
+    "submitting": "Sending...",
+    "submit": "Send request"
+  },
+  "Footer": {
+    "headlinePrefix": "Order your",
+    "headlineSuffix": "Armadero wardrobe",
+    "linkAbout": "About us",
+    "linkPrivacy": "Privacy Policy",
+    "linkTerms": "Terms of Use",
+    "address": "51 Antonovycha St, 2nd floor, 01015 Kyiv, Ukraine",
+    "newsletterHeading": "Subscribe to our Newsletter",
+    "newsletterSubtitle": "Get news and roundups every month",
+    "newsletterPlaceholder": "john@example.com",
+    "newsletterAriaLabel": "Subscribe to the newsletter",
+    "newsletterThanks": "Thanks for subscribing!",
+    "newsletterError": "Couldn't subscribe. Please try again.",
+    "copyright": "A wardrobe systems and interior studio. All rights reserved",
+    "designCredit": "Website design by Zalutska"
   }
 }
