@@ -26,6 +26,7 @@ export default function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSent, setNewsletterSent] = useState(false);
   const [newsletterSending, setNewsletterSending] = useState(false);
+  const [newsletterError, setNewsletterError] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -167,6 +168,7 @@ export default function Footer() {
                   return;
                 }
                 setNewsletterSending(true);
+                setNewsletterError(false);
                 try {
                   const res = await fetch("/api/contact", {
                     method: "POST",
@@ -181,7 +183,7 @@ export default function Footer() {
                   setNewsletterEmail("");
                   setNewsletterSent(true);
                 } catch {
-                  // silently ignore — footer subscribe has no error UI
+                  setNewsletterError(true);
                 } finally {
                   setNewsletterSending(false);
                 }
@@ -231,6 +233,11 @@ export default function Footer() {
             {newsletterSent && (
               <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-accent">
                 Дякуємо за підписку!
+              </p>
+            )}
+            {newsletterError && (
+              <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-red-600">
+                Не вдалося підписатись. Спробуйте ще раз.
               </p>
             )}
           </div>
