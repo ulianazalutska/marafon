@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Exo_2, Rajdhani } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import "./globals.css";
 
 const exo2 = Exo_2({
@@ -16,36 +16,39 @@ const rajdhani = Rajdhani({
   variable: "--font-logo",
 });
 
-const title = "Armadero — гардеробні системи на замовлення";
-const description =
-  "Модульні гардеробні системи ручної роботи під розмір вашої кімнати. Український цех, гарантія до 5 років.";
-const ogImage = {
-  url: "/og-image.jpg",
-  width: 1200,
-  height: 630,
-  alt: "Гардеробна система Armadero",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = await getTranslations("Meta");
+  const title = t("title");
+  const description = t("description");
+  const ogImage = {
+    url: "/og-image.jpg",
+    width: 1200,
+    height: 630,
+    alt: t("ogImageAlt"),
+  };
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://armadero.ua"),
-  title,
-  description,
-  openGraph: {
+  return {
+    metadataBase: new URL("https://armadero.ua"),
     title,
     description,
-    url: "/",
-    siteName: "Armadero",
-    locale: "uk_UA",
-    type: "website",
-    images: [ogImage],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: [ogImage.url],
-  },
-};
+    openGraph: {
+      title,
+      description,
+      url: "/",
+      siteName: "Armadero",
+      locale: locale === "en" ? "en_US" : "uk_UA",
+      type: "website",
+      images: [ogImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage.url],
+    },
+  };
+}
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
@@ -88,6 +91,18 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                 if (Number(sessionStorage.getItem("armadero-scroll-y")) > 0) {
                   document.documentElement.style.visibility = "hidden";
                   setTimeout(function () { document.documentElement.style.visibility = ""; }, 2000);
+                }
+                // Consumed here (once, synchronously, before React even
+                // mounts) rather than inside Hero's effect: dev-mode
+                // StrictMode double-invokes effects, so a sessionStorage
+                // .removeItem in the effect body itself gets called on the
+                // first (discarded) invocation, leaving nothing for the
+                // second (real) one to find — the animation it's gating
+                // silently never plays. window.__armadero is a plain global,
+                // immune to that double-invoke.
+                if (sessionStorage.getItem("armadero-lang-switch") === "true") {
+                  window.__armadero = { langSwitch: true };
+                  sessionStorage.removeItem("armadero-lang-switch");
                 }
               } catch (e) {}
             })();`,

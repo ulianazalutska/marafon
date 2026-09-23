@@ -24,8 +24,19 @@ export default function Hero() {
   // seen, so it never mounts) there's nothing to hand off from, so this
   // bails out entirely rather than replaying the entrance instantly on
   // every reload — the elements just render at rest, already in place.
+  //
+  // Exception: a locale switch (Header) sets LANG_SWITCH_KEY right before
+  // its reload specifically so this plays once more — the full IntroOverlay
+  // stays skipped (that'd be a lot to sit through just for a language
+  // toggle), but replaying just the text entrance confirms the switch
+  // visibly. Nothing to hand off from in that case, so it plays immediately
+  // instead of waiting for INTRO_DONE_EVENT.
   useEffect(() => {
-    if (sessionStorage.getItem(INTRO_SEEN_KEY) === "true") return;
+    const introSeen = sessionStorage.getItem(INTRO_SEEN_KEY) === "true";
+    const langSwitch = Boolean(
+      (window as unknown as { __armadero?: { langSwitch?: boolean } }).__armadero?.langSwitch
+    );
+    if (introSeen && !langSwitch) return;
 
     let tl: gsap.core.Timeline | undefined;
     const ctx = gsap.context(() => {
@@ -35,6 +46,11 @@ export default function Hero() {
         .from(videoCardRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.15")
         .from(leftBlockRef.current, { x: -28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1");
     });
+
+    if (introSeen && langSwitch) {
+      tl?.play();
+      return () => ctx.revert();
+    }
 
     const play = () => tl?.play();
     window.addEventListener(INTRO_DONE_EVENT, play, { once: true });

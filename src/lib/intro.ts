@@ -14,3 +14,7 @@ export const LOGO_ARRIVED_EVENT = "armadero:logo-arrived";
 // Where StackedIntro stashes scrollY across a reload — see its own comment
 // for why the browser's native scroll restoration can't be trusted here.
 export const SCROLL_Y_KEY = "armadero-scroll-y";
+// Set by Header right before a locale-switch reload, so Hero can play its
+// entrance animation again on that one reload even though INTRO_SEEN_KEY is
+// already set — without replaying the full IntroOverlay mosaic/logo sequence.
+export const LANG_SWITCH_KEY = "armadero-lang-switch";

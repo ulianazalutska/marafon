@@ -1,4 +1,9 @@
 {
+  "Meta": {
+    "title": "Armadero — custom-made wardrobe systems",
+    "description": "Handcrafted modular wardrobe systems sized to your room. Ukrainian workshop, warranty up to 5 years.",
+    "ogImageAlt": "Armadero wardrobe system"
+  },
   "Header": {
     "nav": {
       "catalog": "Catalog",
@@ -222,5 +227,55 @@
     "newsletterError": "Couldn't subscribe. Please try again.",
     "copyright": "A wardrobe systems and interior studio. All rights reserved",
     "designCredit": "Website design by Zalutska"
+  },
+  "LegalHeader": {
+    "backHome": "← Back to home"
+  },
+  "Privacy": {
+    "metaTitle": "Privacy Policy — Armadero",
+    "metaDescription": "How Armadero collects, uses, and protects the personal data of site visitors and clients.",
+    "title": "Privacy Policy",
+    "updated": "Last updated: September 23, 2026",
+    "s1heading": "1. General provisions",
+    "s1body": "This Privacy Policy explains how ARMADERO (\"we\", \"the Company\") processes the personal data of armadero.ua visitors and clients who submit a request to order a wardrobe system. We follow the Law of Ukraine \"On Personal Data Protection\" No. 2297-VI and other applicable Ukrainian data protection legislation.",
+    "s2heading": "2. What data we collect",
+    "s2body": "Through the request form and the newsletter signup form in the footer, we may collect: your name, phone number, email address, and any message text you voluntarily provide. The site does not use analytics or advertising cookies — the browser's technically necessary sessionStorage is used only to avoid replaying the intro animation within one session, and shares no data with third parties.",
+    "s3heading": "3. Purpose of processing",
+    "s3body": "Data from the request form is used solely to contact you, discuss your order's details, arrange a measuring visit, and prepare a quote. Data from the newsletter form is used to send news and product roundups about Armadero. We do not sell or share your personal data with third parties for marketing purposes.",
+    "s4heading": "4. Legal basis and retention",
+    "s4body": "The basis for processing is the consent you give when filling out the form. Data is retained for as long as needed to fulfill the order and communicate with you, but no longer than 3 years from your last contact, after which it is deleted or anonymized.",
+    "s5heading": "5. Your rights",
+    "s5intro": "Under applicable law, you have the right to:",
+    "s5items": [
+      "find out whether your personal data is being processed;",
+      "access your data and receive a copy of it;",
+      "request correction of inaccurate data;",
+      "withdraw consent and request deletion of your data;",
+      "object to the processing of your data for newsletters at any time."
+    ],
+    "s5outro": "To exercise these rights, email us at",
+    "s6heading": "6. Contact",
+    "s6prefix": "ARMADERO, 51 Antonovycha St, 01015 Kyiv, Ukraine. Email:"
+  },
+  "Terms": {
+    "metaTitle": "Terms of Use — Armadero",
+    "metaDescription": "Terms for using armadero.ua and the process for submitting a request to have a wardrobe system made.",
+    "title": "Terms of Use",
+    "updated": "Last updated: September 23, 2026",
+    "s1heading": "1. General provisions",
+    "s1prefix": "These Terms govern the use of armadero.ua and the process for submitting a request to have a custom wardrobe system made. By using the site and submitting a request, you agree to these Terms and to our",
+    "s1linkText": "Privacy Policy",
+    "s1suffix": ". The relationship between the parties is governed by the Civil Code of Ukraine and the Law of Ukraine \"On Consumer Rights Protection\".",
+    "s2heading": "2. A request is not a contract",
+    "s2body": "The form on the site is a request for a consultation, not a public offer or an electronic contract. After you submit it, we contact you, arrange a measuring visit (free within Kyiv), and confirm the wardrobe's specifications and final price. The manufacturing contract is concluded separately, in writing, after the measurement and specification are confirmed.",
+    "s3heading": "3. Pricing and payment",
+    "s3body": "Prices shown on the site or quoted during a consultation are estimates and depend on the size, materials, and configuration. The final price is fixed in the contract after measuring. Payment terms (deposit/full payment) are agreed individually when signing the contract.",
+    "s4heading": "4. Warranty and returns",
+    "s4body": "The wardrobe frame carries a 5-year warranty; soft-close hinges, the motorized rail, and lighting carry a 2-year warranty, subject to proper use. Because every wardrobe is manufactured individually to the customer's size and preferences, it is subject to the return rules for made-to-order goods of proper quality under Article 9 of the Law of Ukraine \"On Consumer Rights Protection\": such goods are not subject to return or exchange unless they have manufacturing defects.",
+    "s5heading": "5. Intellectual property",
+    "s5body": "The site's text, photos, design layouts, and other materials are owned by ARMADERO or used under lawful authorization, and may not be copied or used without written consent.",
+    "s6heading": "6. Contact",
+    "s6prefix": "For questions about these Terms, email",
+    "s6suffix": "or call the phone number listed in the site's footer."
   }
 }

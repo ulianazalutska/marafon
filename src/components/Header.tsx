@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, LOGO_ARRIVED_EVENT } from "@/lib/intro";
+import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, LOGO_ARRIVED_EVENT, LANG_SWITCH_KEY } from "@/lib/intro";
 import { getHeroLogoLayout } from "@/lib/logoLayout";
 import { LOCALE_COOKIE, type Locale } from "@/i18n/config";
 
@@ -26,6 +26,7 @@ export default function Header() {
   const switchLocale = (next: Locale) => {
     if (next === locale) return;
     document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000`;
+    sessionStorage.setItem(LANG_SWITCH_KEY, "true");
     window.location.reload();
   };
 
