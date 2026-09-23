@@ -205,7 +205,7 @@ export default function ContactSection() {
                         placeholder={field.placeholder}
                         autoComplete="off"
                         required
-                        className="mt-2 w-full rounded-[10px] border border-transparent bg-[#F6F6F6] pt-[13px] pr-[20px] pb-[13px] pl-[20px] text-[14px] font-normal text-[#CAC4BF] outline-none transition-colors duration-300 focus:border-[#362F2B] placeholder:text-[#CAC4BF]"
+                        className="mt-2 w-full rounded-[10px] border border-transparent bg-[#F6F6F6] pt-[13px] pr-[20px] pb-[13px] pl-[20px] text-[14px] font-normal text-[#362F2B] outline-none transition-colors duration-300 focus:border-[#362F2B] placeholder:text-[#CAC4BF]"
                       />
                     </label>
                   ))}
@@ -219,7 +219,7 @@ export default function ContactSection() {
                       placeholder="Пишіть тут"
                       autoComplete="off"
                       rows={3}
-                      className="mt-2 w-full resize-none rounded-[10px] border border-transparent bg-[#F6F6F6] pt-[13px] pr-[20px] pb-[42px] pl-[20px] text-[14px] font-normal text-[#CAC4BF] outline-none transition-colors duration-300 focus:border-[#362F2B] placeholder:text-[#CAC4BF]"
+                      className="mt-2 w-full resize-none rounded-[10px] border border-transparent bg-[#F6F6F6] pt-[13px] pr-[20px] pb-[42px] pl-[20px] text-[14px] font-normal text-[#362F2B] outline-none transition-colors duration-300 focus:border-[#362F2B] placeholder:text-[#CAC4BF]"
                     />
                   </label>
 
