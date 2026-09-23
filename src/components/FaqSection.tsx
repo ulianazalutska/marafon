@@ -50,7 +50,7 @@ export default function FaqSection() {
       >
         <h2
           className="mb-14 font-normal"
-          style={{ fontSize: "45px", letterSpacing: "0.04em", color: "#362F2B" }}
+          style={{ fontSize: "45px", letterSpacing: "0.04em", color: "var(--color-ink)" }}
         >
           FAQ
         </h2>

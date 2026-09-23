@@ -41,7 +41,7 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
                   <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
                     <motion.div
                       className="absolute inset-0 rounded-full"
-                      style={{ backgroundColor: "#362F2B" }}
+                      style={{ backgroundColor: "var(--color-ink)" }}
                       initial={false}
                       animate={{
                         scale: isActive ? 1 : isHovered ? 0.85 : 0,
@@ -82,7 +82,7 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
                         height="16"
                         viewBox="0 0 16 16"
                         fill="none"
-                        className="text-[#362F2B]"
+                        className="text-ink"
                         animate={{ opacity: isActive || isHovered ? 1 : 0.4 }}
                         transition={{ duration: 0.2 }}
                       >
@@ -136,7 +136,7 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
                     className="overflow-hidden"
                   >
                     <motion.p
-                      className="py-6 pr-12 pl-16 text-xl leading-relaxed text-[#362F2B]"
+                      className="py-6 pr-12 pl-16 text-xl leading-relaxed text-ink"
                       initial={{ y: -10 }}
                       animate={{ y: 0 }}
                       exit={{ y: -10 }}

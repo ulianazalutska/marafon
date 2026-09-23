@@ -144,7 +144,7 @@ export default function ContactSection() {
                   <button
                     type="button"
                     onClick={() => setSubmitted(false)}
-                    className="mt-6 text-[14px] font-normal tracking-normal text-[#AF957C] underline transition-opacity hover:opacity-70"
+                    className="mt-6 text-[14px] font-normal tracking-normal text-accent underline transition-opacity hover:opacity-70"
                   >
                     Повернутися до форми
                   </button>
@@ -196,7 +196,7 @@ export default function ContactSection() {
                   />
                   {fields.map((field) => (
                     <label key={field.name} className="block">
-                      <span className="block text-[15px] font-normal tracking-normal text-[#AF957C]">
+                      <span className="block text-[15px] font-normal tracking-normal text-accent">
                         {field.label}
                       </span>
                       <input
@@ -205,13 +205,13 @@ export default function ContactSection() {
                         placeholder={field.placeholder}
                         autoComplete="off"
                         required
-                        className="mt-2 w-full rounded-[10px] border border-transparent bg-[#F6F6F6] pt-[13px] pr-[20px] pb-[13px] pl-[20px] text-[14px] font-normal text-[#362F2B] outline-none transition-colors duration-300 focus:border-[#362F2B] placeholder:text-[#CAC4BF]"
+                        className="mt-2 w-full rounded-[10px] border border-transparent bg-brown-100 pt-[13px] pr-[20px] pb-[13px] pl-[20px] text-[14px] font-normal text-ink outline-none transition-colors duration-300 focus:border-ink placeholder:text-brown-200"
                       />
                     </label>
                   ))}
 
                   <label className="block">
-                    <span className="block text-[15px] font-normal tracking-normal text-[#AF957C]">
+                    <span className="block text-[15px] font-normal tracking-normal text-accent">
                       Повідомлення
                     </span>
                     <textarea
@@ -219,7 +219,7 @@ export default function ContactSection() {
                       placeholder="Пишіть тут"
                       autoComplete="off"
                       rows={3}
-                      className="mt-2 w-full resize-none rounded-[10px] border border-transparent bg-[#F6F6F6] pt-[13px] pr-[20px] pb-[42px] pl-[20px] text-[14px] font-normal text-[#362F2B] outline-none transition-colors duration-300 focus:border-[#362F2B] placeholder:text-[#CAC4BF]"
+                      className="mt-2 w-full resize-none rounded-[10px] border border-transparent bg-brown-100 pt-[13px] pr-[20px] pb-[42px] pl-[20px] text-[14px] font-normal text-ink outline-none transition-colors duration-300 focus:border-ink placeholder:text-brown-200"
                     />
                   </label>
 
@@ -255,7 +255,7 @@ export default function ContactSection() {
                         xmlns="http://www.w3.org/2000/svg"
                         className="transition-transform duration-300 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px]"
                       >
-                        <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="#AF957C" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="var(--color-accent)" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </span>
                   </button>

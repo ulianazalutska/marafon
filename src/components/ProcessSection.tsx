@@ -105,10 +105,10 @@ export default function ProcessSection() {
     <section ref={sectionRef} className="bg-cream py-20 md:pt-[159px] md:pb-0">
       <div className="w-full px-6 pb-16 md:pr-[100px] md:pl-10 md:pb-[115px]">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-          <h2 className="max-w-3xl text-6xl leading-[1.05] font-bold text-[#362F2B] md:text-[96px] md:leading-[1.04] md:font-medium md:tracking-[0.02em]">
+          <h2 className="max-w-3xl text-6xl leading-[1.05] font-bold text-ink md:text-[96px] md:leading-[1.04] md:font-medium md:tracking-[0.02em]">
             Як це працює покроково
           </h2>
-          <p className="max-w-lg text-lg text-[#362F2B] md:w-[422px] md:max-w-[422px] md:pt-3 md:text-[32px] md:leading-[38px] md:font-normal md:tracking-[0.02em]">
+          <p className="max-w-lg text-lg text-ink md:w-[422px] md:max-w-[422px] md:pt-3 md:text-[32px] md:leading-[38px] md:font-normal md:tracking-[0.02em]">
             Від виміру кімнати до готової гардеробної — три прості кроки, які
             ми проходимо разом із вами
           </p>
@@ -120,18 +120,18 @@ export default function ProcessSection() {
         {steps.map((s) => (
           <div
             key={s.n}
-            className="relative flex w-full flex-col overflow-hidden border-t border-[#AF957C] bg-cream pt-10 pb-8"
+            className="relative flex w-full flex-col overflow-hidden border-t border-accent bg-cream pt-10 pb-8"
           >
             <div className="flex w-full flex-col px-6">
               <div className="grid gap-4">
-                <h3 className="text-2xl font-medium text-[#362F2B]">
+                <h3 className="text-2xl font-medium text-ink">
                   {s.title}
                 </h3>
-                <p className="max-w-md text-base text-[#362F2B]">{s.text}</p>
+                <p className="max-w-md text-base text-ink">{s.text}</p>
               </div>
 
               <div className="mt-10 grid items-end gap-4">
-                <span className="text-8xl leading-none font-semibold text-[#AF957C]/46 tracking-[0.02em]">
+                <span className="text-8xl leading-none font-semibold text-accent/46 tracking-[0.02em]">
                   {s.n}
                 </span>
 
@@ -168,22 +168,22 @@ export default function ProcessSection() {
                 ref={(el) => {
                   cardRefs.current[i] = el;
                 }}
-                className={`relative flex flex-col justify-between overflow-hidden border-t border-[#AF957C] bg-cream px-10 py-16 ${
+                className={`relative flex flex-col justify-between overflow-hidden border-t border-accent bg-cream px-10 py-16 ${
                   isLast ? "" : "sticky top-24"
                 }`}
                 style={{ minHeight: `${CARD_MIN_VH}vh` }}
               >
                 <div className="grid gap-10 md:grid-cols-2">
-                  <h3 className="text-[46px] font-medium tracking-[0.02em] text-[#362F2B]">
+                  <h3 className="text-[46px] font-medium tracking-[0.02em] text-ink">
                     {s.title}
                   </h3>
-                  <p className="max-w-[520px] text-[23px] font-normal tracking-[0.02em] text-[#362F2B]">
+                  <p className="max-w-[520px] text-[23px] font-normal tracking-[0.02em] text-ink">
                     {s.text}
                   </p>
                 </div>
 
                 <div className="grid items-end gap-10 md:grid-cols-2">
-                  <span className="text-[190px] leading-none font-semibold text-[#AF957C]/46 tracking-[0.02em]">
+                  <span className="text-[190px] leading-none font-semibold text-accent/46 tracking-[0.02em]">
                     {s.n}
                   </span>
 

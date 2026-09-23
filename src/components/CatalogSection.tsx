@@ -99,7 +99,7 @@ export default function CatalogSection() {
           className="mb-[48px] flex flex-col justify-between gap-4 md:flex-row md:items-center"
         >
           <h2
-            className="max-w-xl font-normal text-[#362F2B]"
+            className="max-w-xl font-normal text-ink"
             style={{
               fontSize: "45px",
               lineHeight: "54px",
@@ -109,7 +109,7 @@ export default function CatalogSection() {
             Три серії — під вашу кімнату і бюджет
           </h2>
           <p
-            className="font-normal text-[#362F2B] md:mr-48"
+            className="font-normal text-ink md:mr-48"
             style={{
               width: "460px",
               fontSize: "24px",
@@ -182,13 +182,13 @@ export default function CatalogSection() {
                     />
                     <h4
                       className="font-medium"
-                      style={{ fontSize: "14px", letterSpacing: "0.04em", color: "#362F2B" }}
+                      style={{ fontSize: "14px", letterSpacing: "0.04em", color: "var(--color-ink)" }}
                     >
                       {item.name}
                     </h4>
                     <p
                       className="mt-2 font-normal leading-relaxed"
-                      style={{ fontSize: "10px", letterSpacing: "0.04em", color: "#362F2B" }}
+                      style={{ fontSize: "10px", letterSpacing: "0.04em", color: "var(--color-ink)" }}
                     >
                       {item.description}
                     </p>
@@ -197,7 +197,7 @@ export default function CatalogSection() {
                         <li
                           key={f}
                           className="px-2 py-0.5 text-[11px] tracking-wide text-white"
-                          style={{ backgroundColor: "#AF957C", borderRadius: "2px" }}
+                          style={{ backgroundColor: "var(--color-accent)", borderRadius: "2px" }}
                         >
                           {f}
                         </li>

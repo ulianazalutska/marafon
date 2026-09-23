@@ -164,7 +164,7 @@ export default function TechnologySection() {
             <h3 className="text-[43px] font-normal tracking-[0.02em] text-ink">
               Технології в кожному модулі
             </h3>
-            <p className="mt-4 max-w-md text-[23px] font-normal tracking-[0.02em] text-[#362F2B]">
+            <p className="mt-4 max-w-md text-[23px] font-normal tracking-[0.02em] text-ink">
               Електрокарниз, підсвітка і доводчики керуються одним дотиком —
               усе сховано у фасаді, нічого зайвого на очах.
             </p>
@@ -178,7 +178,7 @@ export default function TechnologySection() {
                   <span className="text-[23px] font-medium tracking-normal text-ink">
                     {s.label}
                   </span>
-                  <span className="text-[19px] font-normal tracking-normal text-[#362F2B]">
+                  <span className="text-[19px] font-normal tracking-normal text-ink">
                     {s.value}
                   </span>
                 </div>
@@ -212,10 +212,10 @@ export default function TechnologySection() {
             <h3 className="mt-16 text-[43px] font-normal tracking-[0.02em] text-ink">
               Матеріали та оздоблення
             </h3>
-            <span className="mt-6 block text-[17px] font-normal tracking-[0.02em] text-[#362F2B]">
+            <span className="mt-6 block text-[17px] font-normal tracking-[0.02em] text-ink">
               з чого зроблено:
             </span>
-            <p className="mt-2 max-w-md text-[22px] font-normal tracking-[0.02em] text-[#362F2B]">
+            <p className="mt-2 max-w-md text-[22px] font-normal tracking-[0.02em] text-ink">
               ЛДСП, шпон і масив дерева — кожна фактура підібрана так, щоб
               залишатися бездоганною роками. 40+ варіантів оздоблення дають
               змогу зібрати гардеробну, що виглядає так, ніби її створювали

@@ -76,7 +76,7 @@ export default function ProcessFinaleSection() {
               xmlns="http://www.w3.org/2000/svg"
               className="transition-transform duration-300 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px]"
             >
-              <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="#AF957C" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M0.5 7.64L7.64 0.5M7.64 5.9264V0.5H2.2136" stroke="var(--color-accent)" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
         </a>

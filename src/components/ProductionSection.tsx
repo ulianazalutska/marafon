@@ -84,10 +84,10 @@ export default function ProductionSection() {
           <p className="mb-4 text-[18px] font-normal tracking-[0.06em] text-accent uppercase">
             Про виробництво
           </p>
-          <h2 className="mb-6 text-[43px] leading-[1.05] font-medium tracking-[0.02em] text-[#362F2B]">
+          <h2 className="mb-6 text-[43px] leading-[1.05] font-medium tracking-[0.02em] text-ink">
             Цех, а не конвеєр
           </h2>
-          <p className="w-[530px] max-w-full text-[22px] font-normal leading-[30px] tracking-[0.02em] text-[#362F2B]">
+          <p className="w-[530px] max-w-full text-[22px] font-normal leading-[30px] tracking-[0.02em] text-ink">
             ARMADERO — команда столярів у Києві. Кожну гардеробну робимо під
             конкретне замовлення: каркас із вологостійкого ЛДСП або масиву
             дуба, фурнітура сертифікованих європейських постачальників,

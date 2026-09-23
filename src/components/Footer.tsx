@@ -128,7 +128,7 @@ export default function Footer() {
             ))}
           </ul>
 
-          <div className="w-[192px] text-[#362F2B]">
+          <div className="w-[192px] text-ink">
             <p className="text-[16px] leading-[19px] font-light tracking-[0.04em] text-brown-850">
               м. Київ, вул. Антоновича, 51, 2 поверх 01015, Україна
             </p>
@@ -188,7 +188,7 @@ export default function Footer() {
                   setNewsletterSending(false);
                 }
               }}
-              className="mt-[30px] flex items-center gap-2 rounded-[40px] border border-transparent bg-[#F6F6F6] py-1.5 pr-1.5 pl-4 transition-colors duration-300 focus-within:border-[#362F2B]"
+              className="mt-[30px] flex items-center gap-2 rounded-[40px] border border-transparent bg-brown-100 py-1.5 pr-1.5 pl-4 transition-colors duration-300 focus-within:border-ink"
             >
               <input
                 ref={newsletterHoneypotRef}
@@ -206,7 +206,7 @@ export default function Footer() {
                 placeholder="andriymel@gmail.com"
                 autoComplete="off"
                 required
-                className="w-full bg-transparent text-[13px] font-normal tracking-[0em] text-ink outline-none placeholder:text-[#CAC4BF]"
+                className="w-full bg-transparent text-[13px] font-normal tracking-[0em] text-ink outline-none placeholder:text-brown-200"
               />
               <button
                 type="submit"
@@ -244,7 +244,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-[1600px] flex-col-reverse items-center justify-between gap-3 border-t border-brown-300/60 py-6 text-xs text-[#362F2B] md:flex-row">
+      <div className="mx-auto flex max-w-[1600px] flex-col-reverse items-center justify-between gap-3 border-t border-brown-300/60 py-6 text-xs text-ink md:flex-row">
         <span className="text-[15px] font-light tracking-[0em] text-brown-850">
           Студія гардеробних систем та інтер&apos;єру. Усі права захищено
         </span>
@@ -253,7 +253,7 @@ export default function Footer() {
         </span>
       </div>
 
-      <div className="relative h-[clamp(170px,15vw,280px)] overflow-hidden bg-[#F6F6F6]">
+      <div className="relative h-[clamp(170px,15vw,280px)] overflow-hidden bg-brown-100">
         <p className="absolute top-[10px] left-1/2 -translate-x-1/2 whitespace-nowrap font-logo text-[26vw] leading-[0.8] font-semibold tracking-[-0.04em] text-white">
           Armadero
         </p>

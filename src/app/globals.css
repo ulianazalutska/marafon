@@ -7,6 +7,8 @@
   --color-brown-900: #241609;
   --color-brown-300: #c9b39a;
   --color-brown-850: #362f2b;
+  --color-brown-200: #cac4bf;
+  --color-brown-100: #f6f6f6;
   --color-accent: #af957c;
 }
 
@@ -17,6 +19,8 @@
   --color-brown-900: var(--color-brown-900);
   --color-brown-300: var(--color-brown-300);
   --color-brown-850: var(--color-brown-850);
+  --color-brown-200: var(--color-brown-200);
+  --color-brown-100: var(--color-brown-100);
   --color-accent: var(--color-accent);
   --font-sans: var(--font-sans);
   --font-logo: var(--font-logo);

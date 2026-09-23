@@ -80,8 +80,8 @@ const revealVariants: Variants = {
 
 const toneClasses = {
   dark: "bg-brown-850 text-cream",
-  accent: "bg-[#AF957C] text-cream",
-  light: "bg-cream text-[#362F2B] border border-[#AF957C]",
+  accent: "bg-accent text-cream",
+  light: "bg-cream text-ink border border-accent",
 };
 
 const layout = [
@@ -136,7 +136,7 @@ function Card({
         <div className="flex items-end justify-between pt-5">
           <div>
             <h3 className="font-semibold">{t.name}</h3>
-            <p className={t.tone === "light" ? "text-[#362F2B]" : "text-cream/60"}>
+            <p className={t.tone === "light" ? "text-ink" : "text-cream/60"}>
               {t.role}
             </p>
           </div>

@@ -98,7 +98,7 @@ function Slide({
           className="pointer-events-none object-cover"
         />
       </div>
-      <p className="pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] whitespace-nowrap text-[#362F2B]">
+      <p className="pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] whitespace-nowrap text-ink">
         {p.area}, {p.sections}, {p.series} — {p.note}
       </p>
     </motion.div>
@@ -173,10 +173,10 @@ export default function PortfolioSection() {
           className="relative z-30 flex shrink-0 flex-col justify-between gap-10 px-6 md:w-[40%] md:px-0 md:pl-10"
         >
           <div>
-            <h2 className="max-w-xl text-[45px] leading-[54px] font-normal tracking-[0.04em] text-[#362F2B] mb-[21px]">
+            <h2 className="max-w-xl text-[45px] leading-[54px] font-normal tracking-[0.04em] text-ink mb-[21px]">
               Понад 120 реалізованих гардеробних по Україні
             </h2>
-            <p className="mt-4 max-w-[429px] text-[24px] leading-[29px] font-normal tracking-[0.04em] text-[#362F2B]">
+            <p className="mt-4 max-w-[429px] text-[24px] leading-[29px] font-normal tracking-[0.04em] text-ink">
               Кожен проєкт — індивідуальна конфігурація під кімнату клієнта
             </p>
           </div>
@@ -204,7 +204,7 @@ export default function PortfolioSection() {
                     className="pointer-events-none object-cover"
                   />
                 </div>
-                <p className="pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] whitespace-nowrap text-[#362F2B]">
+                <p className="pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] whitespace-nowrap text-ink">
                   {projects[index + 1].area}, {projects[index + 1].sections},{" "}
                   {projects[index + 1].series} — {projects[index + 1].note}
                 </p>
