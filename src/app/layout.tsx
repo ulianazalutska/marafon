@@ -14,11 +14,35 @@ const rajdhani = Rajdhani({
   variable: "--font-logo",
 });
 
+const title = "Armadero — гардеробні системи на замовлення";
+const description =
+  "Модульні гардеробні системи ручної роботи під розмір вашої кімнати. Український цех, гарантія 5 років.";
+const ogImage = {
+  url: "/og-image.jpg",
+  width: 1200,
+  height: 630,
+  alt: "Гардеробна система Armadero",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://armadero.ua"),
-  title: "Armadero — гардеробні системи на замовлення",
-  description:
-    "Модульні гардеробні системи ручної роботи під розмір вашої кімнати. Український цех, гарантія 5 років.",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: "/",
+    siteName: "Armadero",
+    locale: "uk_UA",
+    type: "website",
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: [ogImage.url],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
