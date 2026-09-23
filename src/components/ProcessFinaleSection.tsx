@@ -4,11 +4,13 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ProcessFinaleSection() {
+  const t = useTranslations("ProcessFinale");
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +46,7 @@ export default function ProcessFinaleSection() {
       >
         <Image
           src={images.processFinale}
-          alt="Гардеробна ARMADERO на заході сонця"
+          alt={t("alt")}
           fill
           sizes="100vw"
           className="object-cover"
@@ -56,17 +58,17 @@ export default function ProcessFinaleSection() {
 
       <div className="relative flex flex-col items-center gap-8 px-6 text-center">
         <h2 className="w-[571px] max-w-full text-[64px] leading-[77px] font-semibold tracking-[0.02em] text-white">
-          Гардеробна,
+          {t("line1")}
           <br />
-          яка <span className="italic">відчувається</span>
+          {t("line2Prefix")}<span className="italic">{t("line2Italic")}</span>
           <br />
-          як вдома
+          {t("line3")}
         </h2>
         <a
           href="#contact"
           className="group inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[10px] pl-[16px] text-[19px] font-light tracking-[0.02em] text-white transition-opacity hover:opacity-90"
         >
-          Залишити заявку
+          {t("cta")}
           <span className="flex h-[31px] w-[31px] items-center justify-center overflow-hidden rounded-full bg-white">
             <svg
               width="13.67"

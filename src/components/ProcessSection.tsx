@@ -4,29 +4,15 @@ import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const steps = [
-  {
-    n: "01",
-    title: "Заміряємо кімнату",
-    text: "Самостійно за нашою інструкцією або виїзд майстра для точних замірів простору — врахуємо кожен виступ, двері й вентиляцію, щоб гардеробна стала як улита, до міліметра.",
-    image: images.process.measure,
-  },
-  {
-    n: "02",
-    title: "Збираєте конфігурацію",
-    text: "Серія, кількість секцій, розкладка модулів, оздоблення та функції — все під ваш інтер'єр і бюджет.",
-    image: images.process.materials,
-  },
-  {
-    n: "03",
-    title: "Отримуєте готову гардеробну",
-    text: "Виготовлення і монтаж під ключ — привозимо, збираємо на місці та показуємо, як користуватися всіма механізмами гардеробної.",
-    image: images.process.install,
-  },
+const stepMeta = [
+  { n: "01", image: images.process.measure },
+  { n: "02", image: images.process.materials },
+  { n: "03", image: images.process.install },
 ];
 
 // Кожна картка (крім останньої) — окремий position:sticky елемент у
@@ -40,6 +26,10 @@ const CARD_MIN_VH = 75;
 const BUFFER_RATIO = 0.01; // частка висоти вʼюпорта, додана як буфер
 
 export default function ProcessSection() {
+  const t = useTranslations("Process");
+  const stepText = t.raw("steps") as { title: string; text: string }[];
+  const steps = stepMeta.map((m, i) => ({ ...m, ...stepText[i] }));
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const wrapperRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -48,8 +38,8 @@ export default function ProcessSection() {
   useLayoutEffect(() => {
     const setWrapperHeights = () => {
       const buffer = window.innerHeight * BUFFER_RATIO;
-      steps.forEach((_, i) => {
-        if (i === steps.length - 1) return;
+      stepMeta.forEach((_, i) => {
+        if (i === stepMeta.length - 1) return;
         const card = cardRefs.current[i];
         const wrapper = wrapperRefs.current[i];
         if (!card || !wrapper) return;
@@ -70,8 +60,8 @@ export default function ProcessSection() {
       mm.add(
         "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
         () => {
-          steps.forEach((_, i) => {
-            if (i === steps.length - 1) return;
+          stepMeta.forEach((_, i) => {
+            if (i === stepMeta.length - 1) return;
 
             // Лише затемнення попередньої картки, без дрейфу y — дрейф
             // рухав увесь вміст картки (текст+фото) як одне ціле й давав
@@ -106,11 +96,10 @@ export default function ProcessSection() {
       <div className="w-full px-6 pb-16 md:pr-[100px] md:pl-10 md:pb-[115px]">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <h2 className="max-w-3xl text-6xl leading-[1.05] font-bold text-ink md:text-[96px] md:leading-[1.04] md:font-medium md:tracking-[0.02em]">
-            Як це працює покроково
+            {t("heading")}
           </h2>
           <p className="max-w-lg text-lg text-ink md:w-[422px] md:max-w-[422px] md:pt-3 md:text-[32px] md:leading-[38px] md:font-normal md:tracking-[0.02em]">
-            Від виміру кімнати до готової гардеробної — три прості кроки, які
-            ми проходимо разом із вами
+            {t("subtitle")}
           </p>
         </div>
       </div>

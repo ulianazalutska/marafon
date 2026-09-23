@@ -87,5 +87,38 @@
       "Glass Stone"
     ],
     "slideAltPrefix": "ARMADERO wardrobe — angle"
+  },
+  "Process": {
+    "heading": "How it works, step by step",
+    "subtitle": "From measuring the room to the finished wardrobe — three simple steps we go through together with you",
+    "steps": [
+      {
+        "title": "We measure the room",
+        "text": "Do it yourself with our guide, or have a specialist come measure the space precisely — accounting for every ledge, door, and vent, so the wardrobe fits like a glove, down to the millimeter."
+      },
+      {
+        "title": "You build the configuration",
+        "text": "Series, number of sections, module layout, finishes and features — all tailored to your interior and budget."
+      },
+      {
+        "title": "You get your finished wardrobe",
+        "text": "Turnkey manufacturing and installation — we deliver, assemble on site, and show you how to use every mechanism."
+      }
+    ]
+  },
+  "ProcessFinale": {
+    "alt": "ARMADERO wardrobe at sunset",
+    "line1": "A wardrobe",
+    "line2Prefix": "that ",
+    "line2Italic": "feels",
+    "line3": "like home",
+    "cta": "Leave a request"
+  },
+  "Production": {
+    "mainAlt": "An ARMADERO craftsman at work",
+    "detailAlt": "A joiner working a wooden beam in the ARMADERO workshop",
+    "eyebrow": "About production",
+    "heading": "A workshop, not an assembly line",
+    "text": "ARMADERO is a team of joiners in Kyiv. Every wardrobe is built to order: a frame in moisture-resistant chipboard or solid oak, hardware from certified European suppliers, hand-assembled, joint to joint. Every mechanism is tested for 50,000 open cycles."
   }
 }
