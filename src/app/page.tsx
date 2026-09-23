@@ -1,3 +1,4 @@
+import { MotionConfig } from "framer-motion";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import IntroOverlay from "@/components/IntroOverlay";
@@ -17,7 +18,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <Header />
       <IntroOverlay />
       <main>
@@ -37,6 +38,6 @@ export default function Home() {
         <ContactSection />
       </main>
       <Footer />
-    </>
+    </MotionConfig>
   );
 }
