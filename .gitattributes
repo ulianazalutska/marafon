@@ -1,0 +1,4 @@
+# Normalize line endings to LF in the repository regardless of the
+# committer's OS/git config, so `git diff`/`git status` stop flagging
+# LF<->CRLF churn on Windows checkouts.
+* text=auto eol=lf
