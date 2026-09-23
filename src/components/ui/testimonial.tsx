@@ -3,61 +3,21 @@
 import { TimelineContent } from "@/components/ui/timeline-animation";
 import Image from "next/image";
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 import type { Variants } from "framer-motion";
 
-// Стокові портрети (спочатку randomuser.me, тепер завантажені локально —
-// безкоштовні для демо) — цей лендинг є портфоліо-кейсом вигаданого бренду,
-// реальних клієнтів ARMADERO не існує.
-const testimonials = [
-  {
-    name: "Олена Ковальчук",
-    role: "Київ",
-    text: "Замовляли гардеробну на всю стіну спальні. Прийшли за 5 тижнів, зібрали за день. Тепер усі речі мають своє місце.",
-    tone: "light" as const,
-    photo: "/testimonials/olena-kovalchuk.webp",
-  },
-  {
-    name: "Ігор Тарасенко",
-    role: "Львів",
-    text: "Довго підбирали оздоблення фасадів — команда ARMADERO надіслала зразки додому, щоб побачити колір наживо. Результат перевершив очікування.",
-    tone: "accent" as const,
-    photo: "/testimonials/ihor-tarasenko.webp",
-  },
-  {
-    name: "Марина Бондар",
-    role: "Одеса",
-    text: "Доводчики працюють безшумно, підсвітка полиць вмикається автоматично — саме те, чого не вистачало. Рекомендую серію Signature.",
-    tone: "dark" as const,
-    photo: "/testimonials/maryna-bondar.webp",
-  },
-  {
-    name: "Дмитро Савчук",
-    role: "Дніпро",
-    text: "Виїзд майстра для заміру зробили безкоштовно й швидко. Конфігуратор на сайті допоміг одразу побачити, як гардеробна виглядатиме.",
-    tone: "dark" as const,
-    photo: "/testimonials/dmytro-savchuk.webp",
-  },
-  {
-    name: "Олег Петренко",
-    role: "Запоріжжя",
-    text: "Замовили другий модуль через рік, щоб доповнити гардеробну. Колір і оздоблення підібрали ідентично — різниці зовсім не видно.",
-    tone: "dark" as const,
-    photo: "/testimonials/oleh-petrenko.webp",
-  },
-  {
-    name: "Наталія Гриценко",
-    role: "Харків",
-    text: "Обрали серію Comfort — якість фурнітури на рівні імпортних брендів, але з локальним сервісом і гарантією.",
-    tone: "accent" as const,
-    photo: "/testimonials/nataliia-hrytsenko.webp",
-  },
-  {
-    name: "Андрій Мельник",
-    role: "Вінниця",
-    text: "Монтаж зробили за один візит, показали, як користуватись висувними системами. Через рік — жодних нарікань до механізмів.",
-    tone: "light" as const,
-    photo: "/testimonials/andrii-melnyk.webp",
-  },
+// Photos are local stock portraits (originally from randomuser.me, free for
+// demo use) — this landing is a portfolio case study for a fictional brand,
+// no real ARMADERO clients exist. tone/photo don't change per locale, so
+// they stay here; name/role/text come from messages/*.json ("Testimonials").
+const testimonialMeta = [
+  { tone: "light" as const, photo: "/testimonials/olena-kovalchuk.webp" },
+  { tone: "accent" as const, photo: "/testimonials/ihor-tarasenko.webp" },
+  { tone: "dark" as const, photo: "/testimonials/maryna-bondar.webp" },
+  { tone: "dark" as const, photo: "/testimonials/dmytro-savchuk.webp" },
+  { tone: "dark" as const, photo: "/testimonials/oleh-petrenko.webp" },
+  { tone: "accent" as const, photo: "/testimonials/nataliia-hrytsenko.webp" },
+  { tone: "light" as const, photo: "/testimonials/andrii-melnyk.webp" },
 ];
 
 const revealVariants: Variants = {
@@ -84,16 +44,6 @@ const toneClasses = {
   light: "bg-cream text-ink border border-accent",
 };
 
-const layout = [
-  { t: testimonials[0], col: 1, row: "1 / span 2" },
-  { t: testimonials[1], col: 1, row: "3" },
-  { t: testimonials[2], col: 2, row: "1" },
-  { t: testimonials[3], col: 2, row: "2" },
-  { t: testimonials[4], col: 2, row: "3" },
-  { t: testimonials[5], col: 3, row: "1" },
-  { t: testimonials[6], col: 3, row: "2 / span 2" },
-];
-
 function Avatar({ name, photo }: { name: string; photo: string }) {
   return (
     <Image
@@ -106,6 +56,14 @@ function Avatar({ name, photo }: { name: string; photo: string }) {
   );
 }
 
+type Testimonial = {
+  name: string;
+  role: string;
+  text: string;
+  tone: "light" | "accent" | "dark";
+  photo: string;
+};
+
 function Card({
   t,
   i,
@@ -113,7 +71,7 @@ function Card({
   row,
   timelineRef,
 }: {
-  t: (typeof testimonials)[number];
+  t: Testimonial;
   i: number;
   col: number;
   row: string;
@@ -148,7 +106,20 @@ function Card({
 }
 
 export default function ClientFeedback() {
+  const t = useTranslations("Testimonials");
   const testimonialRef = useRef<HTMLDivElement>(null);
+
+  const names = t.raw("list") as { name: string; role: string; text: string }[];
+  const testimonials: Testimonial[] = names.map((n, i) => ({ ...n, ...testimonialMeta[i] }));
+  const layout = [
+    { t: testimonials[0], col: 1, row: "1 / span 2" },
+    { t: testimonials[1], col: 1, row: "3" },
+    { t: testimonials[2], col: 2, row: "1" },
+    { t: testimonials[3], col: 2, row: "2" },
+    { t: testimonials[4], col: 2, row: "3" },
+    { t: testimonials[5], col: 3, row: "1" },
+    { t: testimonials[6], col: 3, row: "2 / span 2" },
+  ];
 
   return (
     <section ref={testimonialRef} className="relative z-10 mb-[225px] bg-cream pt-16 md:pt-20">
@@ -161,7 +132,7 @@ export default function ClientFeedback() {
             timelineRef={testimonialRef}
             className="text-[45px] font-normal tracking-[0.02em]"
           >
-            Що кажуть наші клієнти
+            {t("heading")}
           </TimelineContent>
           <TimelineContent
             as="p"
@@ -170,13 +141,13 @@ export default function ClientFeedback() {
             timelineRef={testimonialRef}
             className="mb-6 text-[20px] font-normal tracking-[0.02em] text-brown-850"
           >
-            Відгуки власників гардеробних ARMADERO
+            {t("subtitle")}
           </TimelineContent>
         </article>
 
         <div className="flex flex-col gap-4 pt-[50px] pb-4 md:grid md:grid-cols-3 md:gap-4 md:pt-[50px] md:pb-10">
-          {layout.map(({ t, col, row }, i) => (
-            <Card key={t.name} t={t} i={i} col={col} row={row} timelineRef={testimonialRef} />
+          {layout.map(({ t: testimonial, col, row }, i) => (
+            <Card key={testimonial.name} t={testimonial} i={i} col={col} row={row} timelineRef={testimonialRef} />
           ))}
         </div>
       </div>

@@ -120,5 +120,71 @@
     "eyebrow": "About production",
     "heading": "A workshop, not an assembly line",
     "text": "ARMADERO is a team of joiners in Kyiv. Every wardrobe is built to order: a frame in moisture-resistant chipboard or solid oak, hardware from certified European suppliers, hand-assembled, joint to joint. Every mechanism is tested for 50,000 open cycles."
+  },
+  "Testimonials": {
+    "heading": "What our clients say",
+    "subtitle": "Reviews from ARMADERO wardrobe owners",
+    "list": [
+      {
+        "name": "Olena Kovalchuk",
+        "role": "Kyiv",
+        "text": "We ordered a wardrobe for the whole bedroom wall. It arrived in 5 weeks, assembled in a day. Now everything has its place."
+      },
+      {
+        "name": "Ihor Tarasenko",
+        "role": "Lviv",
+        "text": "We spent a long time picking the front finish — the ARMADERO team sent samples to our home so we could see the color in person. The result exceeded expectations."
+      },
+      {
+        "name": "Maryna Bondar",
+        "role": "Odesa",
+        "text": "The soft-close hinges are silent, the shelf lighting turns on automatically — exactly what was missing. I recommend the Signature series."
+      },
+      {
+        "name": "Dmytro Savchuk",
+        "role": "Dnipro",
+        "text": "The measuring visit was free and fast. The site's configurator let us see right away what the wardrobe would look like."
+      },
+      {
+        "name": "Oleh Petrenko",
+        "role": "Zaporizhzhia",
+        "text": "We ordered a second module a year later to extend the wardrobe. The color and finish matched perfectly — you can't tell the difference."
+      },
+      {
+        "name": "Nataliia Hrytsenko",
+        "role": "Kharkiv",
+        "text": "We chose the Comfort series — hardware quality on par with imported brands, but with local service and warranty."
+      },
+      {
+        "name": "Andrii Melnyk",
+        "role": "Vinnytsia",
+        "text": "Installation was done in one visit, and they showed us how to use the pull-out systems. A year later — no complaints about the mechanisms."
+      }
+    ]
+  },
+  "Faq": {
+    "heading": "FAQ",
+    "items": [
+      {
+        "q": "How much does a measuring visit cost?",
+        "a": "Free within Kyiv. Elsewhere in Ukraine — we confirm the cost with your request, depending on distance."
+      },
+      {
+        "q": "Can I order a non-standard wardrobe configuration?",
+        "a": "Yes, the modular system lets you build any layout — from a corner nook to a full walk-in room."
+      },
+      {
+        "q": "What's the warranty term for hardware and mechanisms?",
+        "a": "2 years on soft-close hinges, the motorized rail, and lighting; 5 years on the frame."
+      },
+      {
+        "q": "Can I order a wardrobe without lighting and a motorized rail?",
+        "a": "Yes — the Lite series has laminate fronts with standard hardware, no technology package."
+      },
+      {
+        "q": "How much does delivery within Ukraine/the EU cost?",
+        "a": "Calculated individually depending on the region and the wardrobe's size."
+      }
+    ]
   }
 }
