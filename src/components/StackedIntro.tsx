@@ -12,16 +12,9 @@ export default function StackedIntro({ children }: { children: ReactNode }) {
   const pinnedRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Pinning Hero with pinSpacing:false pulls ~viewport-height worth of
-    // space out of document flow the instant this effect runs, shifting
-    // everything below it up. The browser's own scroll-restoration-on-reload
-    // fires around that same moment, so it ends up restoring against
-    // whichever document height won the race — usually the pre-pin one —
-    // and lands somewhere wrong (often right back at Hero). Taking over
-    // restoration by hand sidesteps that race entirely.
-    if ("scrollRestoration" in history) {
-      history.scrollRestoration = "manual";
-    }
+    // Browser-native scroll restoration is disabled synchronously in
+    // layout.tsx's <head> (before this ever mounts) — see its comment for
+    // why. This effect only owns saving/restoring the position ourselves.
     const savedY = Number(sessionStorage.getItem(SCROLL_Y_KEY) ?? "");
     sessionStorage.removeItem(SCROLL_Y_KEY);
 
@@ -48,11 +41,18 @@ export default function StackedIntro({ children }: { children: ReactNode }) {
     // behavior:"instant" is required here — html has scroll-behavior:smooth
     // globally, which would otherwise animate this as a visible scroll-past
     // of the entire page rather than landing there directly.
-    if (Number.isFinite(savedY) && savedY > 0) {
-      requestAnimationFrame(() =>
-        window.scrollTo({ top: savedY, left: 0, behavior: "instant" })
-      );
-    }
+    //
+    // The page may still be hidden (layout.tsx's inline script, when a
+    // saved position exists) precisely so none of this — including the
+    // jump itself — is visible; revealing it right after is what makes the
+    // whole thing read as "landed there directly" instead of "flashed the
+    // top of the page, then jumped".
+    requestAnimationFrame(() => {
+      if (Number.isFinite(savedY) && savedY > 0) {
+        window.scrollTo({ top: savedY, left: 0, behavior: "instant" });
+      }
+      document.documentElement.style.visibility = "";
+    });
 
     // The overlay panel that covers the pinned Hero contains lazy-loaded
     // images; if any are still loading when the trigger above measures
