@@ -10,7 +10,7 @@ export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
-  const topTextRef = useRef<HTMLParagraphElement>(null);
+  const topTextRef = useRef<HTMLHeadingElement>(null);
   const rightTextRef = useRef<HTMLParagraphElement>(null);
   const videoCardRef = useRef<HTMLDivElement>(null);
   const leftBlockRef = useRef<HTMLDivElement>(null);
@@ -69,7 +69,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/8" />
 
       {/* Деталі, що формують ваш простір */}
-      <p
+      <h1
         ref={topTextRef}
         className="absolute text-left text-[25px] leading-[1.3] font-medium tracking-[0.02em] text-white"
         style={{ left: "57%", top: "3.5%", width: "20vw" }}
@@ -77,7 +77,7 @@ export default function Hero() {
         Деталі, що формують
         <br />
         ваш простір
-      </p>
+      </h1>
 
       {/* Від першого заміру до монтажу */}
       <p

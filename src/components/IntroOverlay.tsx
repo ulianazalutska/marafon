@@ -212,8 +212,9 @@ export default function IntroOverlay() {
 
   return (
     <div ref={overlayRef} className="fixed inset-0 z-[100] overflow-hidden bg-cream">
-      <h1
+      <div
         ref={typeRef}
+        aria-hidden="true"
         className="absolute z-10 leading-none font-logo font-medium whitespace-nowrap text-ink"
       >
         {LOGO_TEXT.split("").map((ch, i) => (
@@ -221,7 +222,7 @@ export default function IntroOverlay() {
             {ch}
           </span>
         ))}
-      </h1>
+      </div>
 
       {mosaicImages.map((src, i) => {
         const layout = mosaicLayout[i];
