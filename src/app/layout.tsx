@@ -15,6 +15,7 @@ const rajdhani = Rajdhani({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://armadero.ua"),
   title: "Armadero — гардеробні системи на замовлення",
   description:
     "Модульні гардеробні системи ручної роботи під розмір вашої кімнати. Український цех, гарантія 5 років.",
