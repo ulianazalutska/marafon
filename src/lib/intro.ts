@@ -11,3 +11,6 @@ export const INTRO_DONE_EVENT = "vellaro:intro-done";
 // invisible) logo can pop in right then with zero animation of its own,
 // since by that moment it's pixel-identical to what's already on screen.
 export const LOGO_ARRIVED_EVENT = "vellaro:logo-arrived";
+// Where StackedIntro stashes scrollY across a reload — see its own comment
+// for why the browser's native scroll restoration can't be trusted here.
+export const SCROLL_Y_KEY = "vellaro-scroll-y";

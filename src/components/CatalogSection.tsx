@@ -57,7 +57,7 @@ export default function CatalogSection() {
             scrollTrigger: {
               trigger: headingRef.current,
               start: "top 82%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             },
           }
         );
@@ -77,7 +77,7 @@ export default function CatalogSection() {
             scrollTrigger: {
               trigger: gridRef.current,
               start: "top 78%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             },
           }
         );

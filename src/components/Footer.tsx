@@ -40,7 +40,7 @@ export default function Footer() {
             scrollTrigger: {
               trigger: introRef.current,
               start: "top 88%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             },
           }
         );
@@ -59,7 +59,7 @@ export default function Footer() {
             scrollTrigger: {
               trigger: navRef.current,
               start: "top 88%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             },
           }
         );
