@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
@@ -6,6 +8,24 @@ const TOPIC_LEADS = process.env.TELEGRAM_TOPIC_LEADS;
 const TOPIC_NEWSLETTER = process.env.TELEGRAM_TOPIC_NEWSLETTER;
 const SHEETS_URL = process.env.GOOGLE_SHEETS_URL;
 const SHEETS_SECRET = process.env.GOOGLE_SHEETS_SECRET;
+
+// Falls back to unprotected (with a one-time warning) rather than throwing,
+// so the form keeps working before UPSTASH_REDIS_REST_URL/TOKEN are set up —
+// see .env.local.example for where to get them.
+const ratelimit =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+    ? new Ratelimit({
+        redis: Redis.fromEnv(),
+        limiter: Ratelimit.slidingWindow(5, "10 m"),
+        prefix: "armadero:contact",
+      })
+    : null;
+
+if (!ratelimit) {
+  console.warn(
+    "[/api/contact] UPSTASH_REDIS_REST_URL/TOKEN not set — rate limiting is disabled."
+  );
+}
 
 function escapeHtml(value: string) {
   return value
@@ -18,6 +38,14 @@ export async function POST(request: Request) {
   if (!BOT_TOKEN || !CHAT_ID) {
     console.error("Telegram env vars are not configured");
     return NextResponse.json({ error: "Server is not configured" }, { status: 500 });
+  }
+
+  if (ratelimit) {
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const { success } = await ratelimit.limit(ip);
+    if (!success) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
   }
 
   const body = await request.json().catch(() => null);
