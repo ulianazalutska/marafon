@@ -31,9 +31,14 @@ export default function ProcessSection() {
   const steps = stepMeta.map((m, i) => ({ ...m, ...stepText[i] }));
 
   const sectionRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
   const wrapperRefs = useRef<(HTMLDivElement | null)[]>([]);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const overlayRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const mobileContentRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const desktopTopRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const desktopBottomRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useLayoutEffect(() => {
     const setWrapperHeights = () => {
@@ -56,6 +61,74 @@ export default function ProcessSection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          headingRef.current,
+          { autoAlpha: 0, y: 40 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 1.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+
+        gsap.fromTo(
+          subtitleRef.current,
+          { autoAlpha: 0, y: 40 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 1.1,
+            delay: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+        stepMeta.forEach((_, i) => {
+          gsap.fromTo(
+            mobileContentRefs.current[i],
+            { autoAlpha: 0, y: 30 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.9,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: mobileContentRefs.current[i],
+                start: "top 85%",
+                toggleActions: "play none none none",
+              },
+            }
+          );
+
+          gsap.fromTo(
+            [desktopTopRefs.current[i], desktopBottomRefs.current[i]],
+            { autoAlpha: 0, y: 30 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.9,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: cardRefs.current[i] ?? wrapperRefs.current[i],
+                start: "top 85%",
+                toggleActions: "play none none none",
+              },
+            }
+          );
+        });
+      });
 
       mm.add(
         "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
@@ -95,10 +168,16 @@ export default function ProcessSection() {
     <section ref={sectionRef} className="bg-cream py-20 md:pt-[159px] md:pb-0">
       <div className="w-full px-6 pb-16 md:pr-[100px] md:pl-10 md:pb-[115px]">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-          <h2 className="max-w-3xl text-6xl leading-[1.05] font-bold text-ink md:text-[96px] md:leading-[1.04] md:font-medium md:tracking-[0.02em]">
+          <h2
+            ref={headingRef}
+            className="max-w-3xl text-6xl leading-[1.05] font-bold text-ink md:text-[96px] md:leading-[1.04] md:font-medium md:tracking-[0.02em]"
+          >
             {t("heading")}
           </h2>
-          <p className="max-w-lg text-lg text-ink md:w-[422px] md:max-w-[422px] md:pt-3 md:text-[32px] md:leading-[38px] md:font-normal md:tracking-[0.02em]">
+          <p
+            ref={subtitleRef}
+            className="max-w-lg text-lg text-ink md:w-[422px] md:max-w-[422px] md:pt-3 md:text-[32px] md:leading-[38px] md:font-normal md:tracking-[0.02em]"
+          >
             {t("subtitle")}
           </p>
         </div>
@@ -106,12 +185,17 @@ export default function ProcessSection() {
 
       {/* Мобільна версія: звичайний потік без наїзду карток одна на одну. */}
       <div className="relative md:hidden">
-        {steps.map((s) => (
+        {steps.map((s, i) => (
           <div
             key={s.n}
             className="relative flex w-full flex-col overflow-hidden border-t border-accent bg-cream pt-10 pb-8"
           >
-            <div className="flex w-full flex-col px-6">
+            <div
+              ref={(el) => {
+                mobileContentRefs.current[i] = el;
+              }}
+              className="flex w-full flex-col px-6"
+            >
               <div className="grid gap-4">
                 <h3 className="text-2xl font-medium text-ink">
                   {s.title}
@@ -162,7 +246,12 @@ export default function ProcessSection() {
                 }`}
                 style={{ minHeight: `${CARD_MIN_VH}vh` }}
               >
-                <div className="grid gap-10 md:grid-cols-2">
+                <div
+                  ref={(el) => {
+                    desktopTopRefs.current[i] = el;
+                  }}
+                  className="grid gap-10 md:grid-cols-2"
+                >
                   <h3 className="text-[46px] font-medium tracking-[0.02em] text-ink">
                     {s.title}
                   </h3>
@@ -171,7 +260,12 @@ export default function ProcessSection() {
                   </p>
                 </div>
 
-                <div className="grid items-end gap-10 md:grid-cols-2">
+                <div
+                  ref={(el) => {
+                    desktopBottomRefs.current[i] = el;
+                  }}
+                  className="grid items-end gap-10 md:grid-cols-2"
+                >
                   <span className="text-[190px] leading-none font-semibold text-accent/46 tracking-[0.02em]">
                     {s.n}
                   </span>
