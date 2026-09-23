@@ -27,6 +27,9 @@ if (!ratelimit) {
   );
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[\d\s()+-]{7,20}$/;
+
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -64,8 +67,8 @@ export async function POST(request: Request) {
 
   if (isNewsletter) {
     const email = typeof body.email === "string" ? body.email.trim() : "";
-    if (!email) {
-      return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    if (!email || !EMAIL_RE.test(email)) {
+      return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
     }
     text = `📧 <b>Нова підписка на розсилку</b>\n\nEmail: ${escapeHtml(email)}`;
     sheetPayload = { type: "newsletter", email };
@@ -77,6 +80,12 @@ export async function POST(request: Request) {
 
     if (!name || !phone || !email) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+    if (!EMAIL_RE.test(email)) {
+      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
+    }
+    if (!PHONE_RE.test(phone)) {
+      return NextResponse.json({ error: "Invalid phone" }, { status: 400 });
     }
 
     text = [
