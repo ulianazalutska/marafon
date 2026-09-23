@@ -6,18 +6,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { PanInfo, Variants } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-  { area: "8 м²", sections: "6 секцій", series: "Comfort", note: "Сім'я з двома дітьми" },
-  { area: "5 м²", sections: "4 секції", series: "Signature", note: "Квартира-студія" },
-  { area: "12 м²", sections: "9 секцій", series: "Signature", note: "Будинок під Києвом" },
-  { area: "7 м²", sections: "5 секцій", series: "Comfort", note: "Пентхаус" },
-  { area: "4 м²", sections: "3 секції", series: "Lite", note: "Холостяцька квартира" },
-  { area: "15 м²", sections: "12 секцій", series: "Signature", note: "Приватна гардеробна-острів" },
-];
+type Project = { area: string; sections: string; series: string; note: string };
 
 const SWIPE_DISTANCE = 100;
 const SWIPE_VELOCITY = 450;
@@ -55,11 +49,15 @@ function Slide({
   total,
   direction,
   onCommit,
+  projects,
+  altPrefix,
 }: {
   index: number;
   total: number;
   direction: "next" | "prev";
   onCommit: (dir: "next" | "prev") => void;
+  projects: Project[];
+  altPrefix: string;
 }) {
   const p = projects[index];
 
@@ -91,7 +89,7 @@ function Slide({
       <div className="relative flex-1">
         <Image
           src={images.portfolioCarousel[index]}
-          alt={`Гардеробна ${p.area}, ${p.sections}`}
+          alt={`${altPrefix} ${p.area}, ${p.sections}`}
           fill
           draggable={false}
           sizes="(min-width: 768px) 55vw, 90vw"
@@ -106,6 +104,8 @@ function Slide({
 }
 
 export default function PortfolioSection() {
+  const t = useTranslations("Portfolio");
+  const projects = t.raw("projects") as Project[];
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const total = projects.length;
@@ -174,14 +174,14 @@ export default function PortfolioSection() {
         >
           <div>
             <h2 className="max-w-xl text-[45px] leading-[54px] font-normal tracking-[0.04em] text-ink mb-[21px]">
-              Понад 120 реалізованих гардеробних по Україні
+              {t("heading")}
             </h2>
             <p className="mt-4 max-w-[429px] text-[24px] leading-[29px] font-normal tracking-[0.04em] text-ink">
-              Кожен проєкт — індивідуальна конфігурація під кімнату клієнта
+              {t("subtitle")}
             </p>
           </div>
           <p className="text-[21px] leading-[25px] tracking-[0.04em] tabular-nums text-accent">
-            {index + 1} з {total}
+            {index + 1} {t("counterOf")} {total}
           </p>
         </div>
 
@@ -197,7 +197,7 @@ export default function PortfolioSection() {
                 <div className="relative flex-1">
                   <Image
                     src={images.portfolioCarousel[index + 1]}
-                    alt={`Гардеробна ${projects[index + 1].area}, ${projects[index + 1].sections}`}
+                    alt={`${t("altPrefix")} ${projects[index + 1].area}, ${projects[index + 1].sections}`}
                     fill
                     draggable={false}
                     sizes="787px"
@@ -218,6 +218,8 @@ export default function PortfolioSection() {
                 total={total}
                 direction={direction}
                 onCommit={handleCommit}
+                projects={projects}
+                altPrefix={t("altPrefix")}
               />
             </AnimatePresence>
           </div>

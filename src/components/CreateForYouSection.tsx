@@ -4,12 +4,13 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
 type Item = {
-  label: string;
+  key: "wardrobes" | "corner" | "islands" | "systems" | "modules" | "projects";
   image: string | null;
   side?: "left" | "right";
   shape?: "pill" | "circle";
@@ -17,15 +18,16 @@ type Item = {
 };
 
 const items: Item[] = [
-  { label: "Гардеробні", image: images.createForYou.wardrobes, side: "right", shape: "pill" },
-  { label: "Кутові", image: images.createForYou.corner, side: "left", shape: "pill", compact: true },
-  { label: "Острівні", image: null },
-  { label: "Системи", image: images.createForYou.systems, side: "right", shape: "pill" },
-  { label: "Модулі", image: null },
-  { label: "Проєкти", image: images.createForYou.projects, side: "left", shape: "circle" },
+  { key: "wardrobes", image: images.createForYou.wardrobes, side: "right", shape: "pill" },
+  { key: "corner", image: images.createForYou.corner, side: "left", shape: "pill", compact: true },
+  { key: "islands", image: null },
+  { key: "systems", image: images.createForYou.systems, side: "right", shape: "pill" },
+  { key: "modules", image: null },
+  { key: "projects", image: images.createForYou.projects, side: "left", shape: "circle" },
 ];
 
 export default function CreateForYouSection() {
+  const t = useTranslations("CreateForYou");
   const sectionRef = useRef<HTMLDivElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const rowsRef = useRef<HTMLDivElement>(null);
@@ -109,13 +111,13 @@ export default function CreateForYouSection() {
           ref={eyebrowRef}
           className="mb-[73px] text-lg tracking-[0.25em] text-brown-850 uppercase"
         >
-          Ми створимо для вас
+          {t("eyebrow")}
         </p>
 
         <div ref={rowsRef} className="flex flex-col items-center">
           {items.map((item) => (
             <div
-              key={item.label}
+              key={item.key}
               className="flex items-center justify-center gap-3 md:gap-5"
             >
               {item.image && item.side === "left" && (
@@ -131,7 +133,7 @@ export default function CreateForYouSection() {
                 >
                   <Image
                     src={item.image}
-                    alt={item.label}
+                    alt={t(item.key)}
                     fill
                     sizes="200px"
                     className="object-cover"
@@ -140,7 +142,7 @@ export default function CreateForYouSection() {
               )}
 
               <h2 className="text-[13vw] leading-[0.98] font-medium tracking-tight text-accent sm:text-6xl md:text-[74px]">
-                {item.label}
+                {t(item.key)}
               </h2>
 
               {item.image && item.side === "right" && (
@@ -156,7 +158,7 @@ export default function CreateForYouSection() {
                 >
                   <Image
                     src={item.image}
-                    alt={item.label}
+                    alt={t(item.key)}
                     fill
                     sizes="200px"
                     className="object-cover"

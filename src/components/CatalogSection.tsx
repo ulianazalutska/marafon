@@ -4,16 +4,17 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Series names (Lite/Comfort/Signature) are product names, kept identical
+// across locales — only description/features live in messages/*.json.
 const series = [
   {
     key: "lite",
     name: "Lite",
-    description: "Базова серія, ламінатні фасади, класична фурнітура.",
-    features: ["Ламінат", "Стандартні петлі", "1.2–3 м"],
     image: images.catalog.lite,
     dotTop: "37%",
     dotLeft: "27%",
@@ -21,8 +22,6 @@ const series = [
   {
     key: "comfort",
     name: "Comfort",
-    description: "Електрокарниз, LED-підсвітка полиць, безшумні доводчики.",
-    features: ["Шпон дерева", "LED-підсвітка", "Електрокарниз"],
     image: images.catalog.comfort,
     dotTop: "78%",
     dotLeft: "33%",
@@ -30,15 +29,14 @@ const series = [
   {
     key: "signature",
     name: "Signature",
-    description: "Масив дерева, скло, повний технологічний пакет.",
-    features: ["Масив/скло", "Розумна підсвітка", "До 6 м завдовжки"],
     image: images.catalog.signature,
     dotTop: "24%",
     dotLeft: "82%",
   },
-];
+] as const;
 
 export default function CatalogSection() {
+  const t = useTranslations("Catalog");
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -106,7 +104,7 @@ export default function CatalogSection() {
               letterSpacing: "0.04em",
             }}
           >
-            Три серії — під вашу кімнату і бюджет
+            {t("heading")}
           </h2>
           <p
             className="font-normal text-ink md:mr-48"
@@ -117,11 +115,11 @@ export default function CatalogSection() {
               letterSpacing: "0.04em",
             }}
           >
-            Кожен модуль адаптуємо під
+            {t("subtitleLine1")}
             <br />
-            метраж кімнати та кількість
+            {t("subtitleLine2")}
             <br />
-            речей, які потрібно розмістити
+            {t("subtitleLine3")}
           </p>
         </div>
 
@@ -135,7 +133,7 @@ export default function CatalogSection() {
                 <div className="absolute inset-0 overflow-hidden bg-brown-950">
                   <Image
                     src={item.image}
-                    alt={`Гардеробна серії ${item.name}`}
+                    alt={`${t("altPrefix")} ${item.name}`}
                     fill
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -190,10 +188,10 @@ export default function CatalogSection() {
                       className="mt-2 font-normal leading-relaxed"
                       style={{ fontSize: "10px", letterSpacing: "0.04em", color: "var(--color-ink)" }}
                     >
-                      {item.description}
+                      {t(`series.${item.key}.description`)}
                     </p>
                     <ul className="mt-3 flex flex-wrap gap-1.5">
-                      {item.features.map((f) => (
+                      {(t.raw(`series.${item.key}.features`) as string[]).map((f) => (
                         <li
                           key={f}
                           className="px-2 py-0.5 text-[11px] tracking-wide text-white"

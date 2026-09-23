@@ -5,30 +5,28 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const swatches = [
-  { name: "Дуб Cognac", image: images.technologyMaterials.dubCognac },
-  { name: "Горіх Espresso", image: images.technologyMaterials.horihEspresso },
-  { name: "Ламінат Sand", image: images.technologyMaterials.laminatSand },
-  { name: "Емаль Forest", image: images.technologyMaterials.emalForest },
-  { name: "Дуб Chestnut", image: images.technologyMaterials.dubChestnut },
-  { name: "Скло Stone", image: images.technologyMaterials.skloStone },
-];
-
-const techSpecs = [
-  { label: "Електрокарниз", value: "Плавний підйом штанги одним дотиком" },
-  { label: "Підсвітка", value: "Автоматичне LED-освітлення при відкритті" },
-  { label: "Доводчики", value: "Безшумне закривання дверей і шухляд" },
-  { label: "Дзеркало", value: "Вбудоване, з регульованим світлом" },
-  { label: "Гаджети", value: "Бездротова зарядка та розетка в шухляді" },
+const swatchImages = [
+  images.technologyMaterials.dubCognac,
+  images.technologyMaterials.horihEspresso,
+  images.technologyMaterials.laminatSand,
+  images.technologyMaterials.emalForest,
+  images.technologyMaterials.dubChestnut,
+  images.technologyMaterials.skloStone,
 ];
 
 const SLIDE_VH = 115;
 
 export default function TechnologySection() {
+  const t = useTranslations("Technology");
+  const techSpecs = t.raw("specs") as { label: string; value: string }[];
+  const swatchNames = t.raw("swatches") as string[];
+  const swatches = swatchNames.map((name, i) => ({ name, image: swatchImages[i] }));
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -137,7 +135,7 @@ export default function TechnologySection() {
       <div className="relative h-[38vh] min-h-[280px] w-full overflow-hidden md:h-[42vh]">
         <Image
           src={images.technologyBanner}
-          alt="Технології та оздоблення ARMADERO"
+          alt={t("bannerAlt")}
           fill
           sizes="100vw"
           className="object-cover"
@@ -146,10 +144,10 @@ export default function TechnologySection() {
         <div className="absolute inset-0 bg-gradient-to-b from-brown-950/70 via-brown-950/15 to-transparent" />
         <div className="relative z-10 mx-auto flex h-full max-w-[1600px] flex-col justify-end px-6 pt-10 md:px-10 md:pb-14">
           <span className="text-[21px] font-normal tracking-[0.06em] text-cream/90 uppercase">
-            Технології та оздоблення
+            {t("bannerEyebrow")}
           </span>
           <h2 className="mt-3 text-[103px] leading-[0.95] font-medium tracking-[0.04em] text-cream">
-            Оздоблення
+            {t("bannerHeading")}
           </h2>
         </div>
       </div>
@@ -162,11 +160,10 @@ export default function TechnologySection() {
           <div ref={contentRef} className="pt-12 pb-24 md:pt-16">
           <motion.div style={{ y: leftLagY }}>
             <h3 className="text-[43px] font-normal tracking-[0.02em] text-ink">
-              Технології в кожному модулі
+              {t("heading1")}
             </h3>
             <p className="mt-4 max-w-md text-[23px] font-normal tracking-[0.02em] text-ink">
-              Електрокарниз, підсвітка і доводчики керуються одним дотиком —
-              усе сховано у фасаді, нічого зайвого на очах.
+              {t("intro1")}
             </p>
 
             <div className="mt-10">
@@ -189,7 +186,7 @@ export default function TechnologySection() {
             <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden rounded-[10px]">
               <Image
                 src={images.technologySketch}
-                alt="Технічне креслення модуля ARMADERO"
+                alt={t("sketchAlt")}
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
                 className="object-cover"
@@ -201,7 +198,7 @@ export default function TechnologySection() {
             <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden rounded-[10px] md:hidden">
               <Image
                 src={images.technology[0]}
-                alt="Гардеробна ARMADERO"
+                alt={t("mobileImageAlt")}
                 fill
                 sizes="100vw"
                 className="object-cover"
@@ -210,16 +207,13 @@ export default function TechnologySection() {
             </div>
 
             <h3 className="mt-16 text-[43px] font-normal tracking-[0.02em] text-ink">
-              Матеріали та оздоблення
+              {t("heading2")}
             </h3>
             <span className="mt-6 block text-[17px] font-normal tracking-[0.02em] text-ink">
-              з чого зроблено:
+              {t("materialsLabel")}
             </span>
             <p className="mt-2 max-w-md text-[22px] font-normal tracking-[0.02em] text-ink">
-              ЛДСП, шпон і масив дерева — кожна фактура підібрана так, щоб
-              залишатися бездоганною роками. 40+ варіантів оздоблення дають
-              змогу зібрати гардеробну, що виглядає так, ніби її створювали
-              саме під вашу кімнату.
+              {t("materialsText")}
             </p>
 
             <div className="mt-10">
@@ -289,7 +283,7 @@ export default function TechnologySection() {
                 >
                   <Image
                     src={src}
-                    alt={`Гардеробна ARMADERO — ракурс ${i + 1}`}
+                    alt={`${t("slideAltPrefix")} ${i + 1}`}
                     fill
                     sizes="50vw"
                     className="object-cover"

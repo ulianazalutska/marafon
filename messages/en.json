@@ -15,5 +15,77 @@
     "leftHeadlineLine1": "A wardrobe built for",
     "leftHeadlineLine2": "your space and lifestyle",
     "cta": "Design your wardrobe"
+  },
+  "CreateForYou": {
+    "eyebrow": "We'll create for you",
+    "wardrobes": "Wardrobes",
+    "corner": "Corner",
+    "islands": "Islands",
+    "systems": "Systems",
+    "modules": "Modules",
+    "projects": "Projects"
+  },
+  "Catalog": {
+    "heading": "Three series — for your room and your budget",
+    "subtitleLine1": "We adapt every module to",
+    "subtitleLine2": "your room's size and the amount",
+    "subtitleLine3": "of things you need to store",
+    "altPrefix": "Wardrobe, series",
+    "series": {
+      "lite": {
+        "description": "Base series — laminate fronts, classic hardware.",
+        "features": ["Laminate", "Standard hinges", "1.2–3 m"]
+      },
+      "comfort": {
+        "description": "Motorized rail, LED shelf lighting, silent soft-close hinges.",
+        "features": ["Wood veneer", "LED lighting", "Motorized rail"]
+      },
+      "signature": {
+        "description": "Solid wood, glass, the full technology package.",
+        "features": ["Solid wood/glass", "Smart lighting", "Up to 6 m long"]
+      }
+    }
+  },
+  "Portfolio": {
+    "heading": "120+ wardrobes built across Ukraine",
+    "subtitle": "Every project is a configuration tailored to the client's room",
+    "altPrefix": "Wardrobe",
+    "counterOf": "of",
+    "projects": [
+      { "area": "8 m²", "sections": "6 sections", "series": "Comfort", "note": "Family with two kids" },
+      { "area": "5 m²", "sections": "4 sections", "series": "Signature", "note": "Studio apartment" },
+      { "area": "12 m²", "sections": "9 sections", "series": "Signature", "note": "House near Kyiv" },
+      { "area": "7 m²", "sections": "5 sections", "series": "Comfort", "note": "Penthouse" },
+      { "area": "4 m²", "sections": "3 sections", "series": "Lite", "note": "Bachelor apartment" },
+      { "area": "15 m²", "sections": "12 sections", "series": "Signature", "note": "Private island wardrobe" }
+    ]
+  },
+  "Technology": {
+    "bannerEyebrow": "Technology & finishes",
+    "bannerHeading": "Finishes",
+    "bannerAlt": "ARMADERO technology and finishes",
+    "heading1": "Technology in every module",
+    "intro1": "The motorized rail, lighting, and soft-close hinges are all controlled with a single touch — hidden inside the front panel, nothing extra on show.",
+    "specs": [
+      { "label": "Motorized rail", "value": "Smooth one-touch rod lift" },
+      { "label": "Lighting", "value": "Automatic LED lighting on open" },
+      { "label": "Soft-close hinges", "value": "Silent closing for doors and drawers" },
+      { "label": "Mirror", "value": "Built-in, with adjustable light" },
+      { "label": "Gadgets", "value": "Wireless charging and an outlet in the drawer" }
+    ],
+    "sketchAlt": "ARMADERO module technical drawing",
+    "mobileImageAlt": "ARMADERO wardrobe",
+    "heading2": "Materials & finishes",
+    "materialsLabel": "what it's made of:",
+    "materialsText": "Moisture-resistant chipboard, veneer, and solid wood — every texture is chosen to stay flawless for years. 40+ finish options let you build a wardrobe that looks like it was designed specifically for your room.",
+    "swatches": [
+      "Oak Cognac",
+      "Walnut Espresso",
+      "Laminate Sand",
+      "Enamel Forest",
+      "Oak Chestnut",
+      "Glass Stone"
+    ],
+    "slideAltPrefix": "ARMADERO wardrobe — angle"
   }
 }
