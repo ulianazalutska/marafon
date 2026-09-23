@@ -52,7 +52,7 @@ export const images = {
     "/portfolio-carousel/wardrobe-5.webp",
     "/portfolio-carousel/wardrobe-6.webp",
   ],
-  material: "https://images.unsplash.com/photo-1708962000105-849e984e69a8",
+  material: "/technology/materials/sample-fabric.webp",
 };
 
 // Мозаїка для вхідної анімації: [0] — наше hero-фото (розкривається на весь

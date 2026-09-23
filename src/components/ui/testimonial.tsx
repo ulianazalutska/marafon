@@ -5,15 +5,16 @@ import Image from "next/image";
 import { useRef } from "react";
 import type { Variants } from "framer-motion";
 
-// Стокові портрети (randomuser.me, безкоштовні для демо) — цей лендинг є
-// портфоліо-кейсом вигаданого бренду, реальних клієнтів ARMADERO не існує.
+// Стокові портрети (спочатку randomuser.me, тепер завантажені локально —
+// безкоштовні для демо) — цей лендинг є портфоліо-кейсом вигаданого бренду,
+// реальних клієнтів ARMADERO не існує.
 const testimonials = [
   {
     name: "Олена Ковальчук",
     role: "Київ",
     text: "Замовляли гардеробну на всю стіну спальні. Прийшли за 5 тижнів, зібрали за день. Тепер усі речі мають своє місце.",
     tone: "light" as const,
-    photo: "https://randomuser.me/api/portraits/women/68.jpg",
+    photo: "/testimonials/olena-kovalchuk.webp",
   },
   {
     name: "Ігор Тарасенко",
@@ -27,35 +28,35 @@ const testimonials = [
     role: "Одеса",
     text: "Доводчики працюють безшумно, підсвітка полиць вмикається автоматично — саме те, чого не вистачало. Рекомендую серію Signature.",
     tone: "dark" as const,
-    photo: "https://randomuser.me/api/portraits/women/32.jpg",
+    photo: "/testimonials/maryna-bondar.webp",
   },
   {
     name: "Дмитро Савчук",
     role: "Дніпро",
     text: "Виїзд майстра для заміру зробили безкоштовно й швидко. Конфігуратор на сайті допоміг одразу побачити, як гардеробна виглядатиме.",
     tone: "dark" as const,
-    photo: "https://randomuser.me/api/portraits/men/76.jpg",
+    photo: "/testimonials/dmytro-savchuk.webp",
   },
   {
     name: "Олег Петренко",
     role: "Запоріжжя",
     text: "Замовили другий модуль через рік, щоб доповнити гардеробну. Колір і оздоблення підібрали ідентично — різниці зовсім не видно.",
     tone: "dark" as const,
-    photo: "https://randomuser.me/api/portraits/men/23.jpg",
+    photo: "/testimonials/oleh-petrenko.webp",
   },
   {
     name: "Наталія Гриценко",
     role: "Харків",
     text: "Обрали серію Comfort — якість фурнітури на рівні імпортних брендів, але з локальним сервісом і гарантією.",
     tone: "accent" as const,
-    photo: "https://randomuser.me/api/portraits/women/12.jpg",
+    photo: "/testimonials/nataliia-hrytsenko.webp",
   },
   {
     name: "Андрій Мельник",
     role: "Вінниця",
     text: "Монтаж зробили за один візит, показали, як користуватись висувними системами. Через рік — жодних нарікань до механізмів.",
     tone: "light" as const,
-    photo: "https://randomuser.me/api/portraits/men/85.jpg",
+    photo: "/testimonials/andrii-melnyk.webp",
   },
 ];
 
