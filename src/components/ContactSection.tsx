@@ -84,7 +84,7 @@ export default function ContactSection() {
       <div ref={imageWrapRef} className="absolute inset-0 -top-[12%] h-[124%]">
         <Image
           src={images.panoramaContact}
-          alt="Гардеробна система VELLARO"
+          alt="Гардеробна система ARMADERO"
           fill
           sizes="100vw"
           className="object-cover"

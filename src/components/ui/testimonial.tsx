@@ -6,7 +6,7 @@ import { useRef } from "react";
 import type { Variants } from "framer-motion";
 
 // Стокові портрети (randomuser.me, безкоштовні для демо) — цей лендинг є
-// портфоліо-кейсом вигаданого бренду, реальних клієнтів VELLARO не існує.
+// портфоліо-кейсом вигаданого бренду, реальних клієнтів ARMADERO не існує.
 const testimonials = [
   {
     name: "Олена Ковальчук",

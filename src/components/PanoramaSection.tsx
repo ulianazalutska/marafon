@@ -16,12 +16,12 @@ type PanoramaSectionProps = {
 
 export default function PanoramaSection({
   image = images.panorama,
-  alt = "Атмосфера домашнього кінозалу VELLARO",
+  alt = "Атмосфера гардеробної ARMADERO",
   title = (
     <>
-      Атмосфера <span className="italic">вашого</span>
+      Атмосфера <span className="italic">вашої</span>
       <br />
-      кінозалу
+      гардеробної
     </>
   ),
 }: PanoramaSectionProps) {

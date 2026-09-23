@@ -63,7 +63,7 @@ export default function TechnologySection() {
           scrollTrigger: {
             trigger: contentRef.current,
             start: "top 78%",
-            toggleActions: "play none none reverse",
+            toggleActions: "play none none none",
           },
         }
       );
@@ -83,7 +83,7 @@ export default function TechnologySection() {
             scrollTrigger: {
               trigger: contentRef.current,
               start: "top 78%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             },
           }
         );
@@ -103,7 +103,7 @@ export default function TechnologySection() {
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top 75%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             },
           }
         );
@@ -137,7 +137,7 @@ export default function TechnologySection() {
       <div className="relative h-[38vh] min-h-[280px] w-full overflow-hidden md:h-[42vh]">
         <Image
           src={images.technologyBanner}
-          alt="Технології та оздоблення VELLARO"
+          alt="Технології та оздоблення ARMADERO"
           fill
           sizes="100vw"
           className="object-cover"
@@ -189,7 +189,7 @@ export default function TechnologySection() {
             <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden rounded-[10px]">
               <Image
                 src={images.technologySketch}
-                alt="Технічне креслення модуля VELLARO"
+                alt="Технічне креслення модуля ARMADERO"
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
                 className="object-cover"
@@ -201,7 +201,7 @@ export default function TechnologySection() {
             <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden rounded-[10px] md:hidden">
               <Image
                 src={images.technology[0]}
-                alt="Гардеробна VELLARO"
+                alt="Гардеробна ARMADERO"
                 fill
                 sizes="100vw"
                 className="object-cover"
@@ -289,7 +289,7 @@ export default function TechnologySection() {
                 >
                   <Image
                     src={src}
-                    alt={`Гардеробна VELLARO — ракурс ${i + 1}`}
+                    alt={`Гардеробна ARMADERO — ракурс ${i + 1}`}
                     fill
                     sizes="50vw"
                     className="object-cover"

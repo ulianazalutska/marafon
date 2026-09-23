@@ -1,5 +1,5 @@
 // Тимчасові фото з Unsplash (безкоштовні, для шаблону) — лишились тільки
-// для hero. Решта вже реальні згенеровані фото VELLARO.
+// для hero. Решта вже реальні згенеровані фото ARMADERO.
 export const images = {
   hero: "/hero/hero-img-2.png",
   heroPreviewVideo: "/hero/preview.mp4",

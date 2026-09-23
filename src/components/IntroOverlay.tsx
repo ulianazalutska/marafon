@@ -54,7 +54,7 @@ export default function IntroOverlay() {
       });
 
       // Wait for the custom font (Rajdhani, loaded in layout.tsx) before
-      // starting: the "VELLARO" wordmark fades in via opacity almost
+      // starting: the "ARMADERO" wordmark fades in via opacity almost
       // immediately, and without this it can render in the browser's bold
       // fallback font for a moment before swapping to the intended thin,
       // letter-spaced style once the font finishes downloading — a visible

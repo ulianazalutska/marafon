@@ -44,7 +44,7 @@ export default function ProcessFinaleSection() {
       >
         <Image
           src={images.processFinale}
-          alt="Гардеробна VELLARO на заході сонця"
+          alt="Гардеробна ARMADERO на заході сонця"
           fill
           sizes="100vw"
           className="object-cover"
