@@ -170,13 +170,13 @@ export default function ProcessSection() {
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <h2
             ref={headingRef}
-            className="max-w-3xl text-6xl leading-[1.05] font-bold text-ink md:text-[96px] md:leading-[1.04] md:font-medium md:tracking-[0.02em]"
+            className="max-w-3xl text-[48px] leading-[1.1] font-medium text-ink min-[768px]:text-[68px] min-[768px]:leading-[1.04] min-[768px]:font-medium min-[768px]:tracking-[0.02em] min-[1341px]:text-[96px]"
           >
             {t("heading")}
           </h2>
           <p
             ref={subtitleRef}
-            className="max-w-lg text-lg text-ink md:w-[422px] md:max-w-[422px] md:pt-3 md:text-[32px] md:leading-[38px] md:font-normal md:tracking-[0.02em]"
+            className="max-w-lg w-full text-lg text-ink min-[768px]:max-w-none min-[768px]:flex-1 min-[768px]:pt-3 min-[768px]:text-[24px] min-[768px]:leading-[29px] min-[768px]:font-normal min-[768px]:tracking-[0.02em] min-[1249px]:max-w-[380px] min-[1249px]:flex-none min-[1249px]:w-[380px] min-[1341px]:w-[422px] min-[1341px]:max-w-[422px] min-[1341px]:text-[32px] min-[1341px]:leading-[38px]"
           >
             {t("subtitle")}
           </p>
@@ -250,12 +250,12 @@ export default function ProcessSection() {
                   ref={(el) => {
                     desktopTopRefs.current[i] = el;
                   }}
-                  className="grid gap-10 md:grid-cols-2"
+                  className="mx-auto grid w-full max-w-[1800px] gap-10 md:grid-cols-2"
                 >
-                  <h3 className="text-[46px] font-medium tracking-[0.02em] text-ink">
+                  <h3 className="text-[34px] font-medium tracking-[0.02em] text-ink min-[1341px]:text-[46px]">
                     {s.title}
                   </h3>
-                  <p className="max-w-[520px] text-[23px] font-normal tracking-[0.02em] text-ink">
+                  <p className="max-w-[520px] text-[18px] font-normal tracking-[0.02em] text-ink min-[1341px]:text-[23px]">
                     {s.text}
                   </p>
                 </div>
@@ -264,9 +264,9 @@ export default function ProcessSection() {
                   ref={(el) => {
                     desktopBottomRefs.current[i] = el;
                   }}
-                  className="grid items-end gap-10 md:grid-cols-2"
+                  className="mx-auto grid w-full max-w-[1800px] items-end gap-10 md:grid-cols-2"
                 >
-                  <span className="text-[190px] leading-none font-semibold text-accent/46 tracking-[0.02em]">
+                  <span className="text-[120px] leading-none font-semibold text-accent/46 tracking-[0.02em] min-[1341px]:text-[190px]">
                     {s.n}
                   </span>
 

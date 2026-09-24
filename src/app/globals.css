@@ -60,6 +60,16 @@ body {
   animation: pulse-ring 4.5s cubic-bezier(0.3, 0.6, 0.4, 1) infinite;
 }
 
+/* Hides the scrollbar on touch-swipe galleries (TechnologySection) while
+   keeping native scroll/snap behavior intact. */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Chrome's UA stylesheet sets cursor:default on <button>, unlike <a>,
    which is pointer by default — this normalizes every button site-wide. */
 button {

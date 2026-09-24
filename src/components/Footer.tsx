@@ -113,7 +113,7 @@ export default function Footer() {
 
         <div
           ref={navRef}
-          className="flex flex-col flex-wrap gap-[120px] sm:flex-row"
+          className="flex flex-col flex-wrap gap-12 sm:flex-row sm:gap-[120px]"
         >
           <ul className="flex flex-col gap-[20px]">
             {socials.map((s) => (
@@ -130,7 +130,7 @@ export default function Footer() {
             ))}
           </ul>
 
-          <div className="w-[192px] text-ink">
+          <div className="w-[192px] max-w-full text-ink">
             <p className="text-[16px] leading-[19px] font-light tracking-[0.04em] text-brown-850">
               {t("address")}
             </p>
@@ -150,7 +150,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="w-[261px]">
+          <div className="w-[261px] max-w-full">
             <h3 className="text-[clamp(22px,3.5vw,30px)] leading-[1.15] font-normal tracking-[0.02em] text-brown-850">
               {t("newsletterHeading")}
             </h3>
@@ -247,15 +247,16 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto flex max-w-[1600px] flex-col-reverse items-center justify-between gap-3 border-t border-brown-300/60 py-6 text-xs text-ink md:flex-row">
-        <span className="text-[15px] font-light tracking-[0em] text-brown-850">
-          {t("copyright")}
+        <span className="text-center text-[15px] font-light tracking-[0em] text-brown-850">
+          {t("copyrightLine1")} <br className="md:hidden" />
+          {t("copyrightLine2")}
         </span>
         <span className="text-[15px] font-light tracking-[0em] text-brown-850">
           {t("designCredit")}
         </span>
       </div>
 
-      <div className="relative h-[clamp(170px,15vw,280px)] overflow-hidden bg-brown-100">
+      <div className="relative h-[clamp(60px,15vw,280px)] overflow-hidden bg-brown-100">
         <p className="absolute top-[10px] left-1/2 -translate-x-1/2 whitespace-nowrap font-logo text-[26vw] leading-[0.8] font-semibold tracking-[-0.04em] text-white">
           Armadero
         </p>

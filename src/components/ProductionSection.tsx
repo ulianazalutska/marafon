@@ -58,11 +58,11 @@ export default function ProductionSection() {
     <section
       id="production"
       ref={sectionRef}
-      className="relative overflow-hidden bg-cream py-[300px] text-ink"
+      className="relative overflow-hidden bg-cream py-24 text-ink md:py-[300px]"
     >
-      <div className="mx-auto flex max-w-[1600px] flex-col items-center gap-14 px-6 md:flex-row md:items-center md:justify-between md:gap-0 md:px-10">
-        <div ref={collageRef} className="relative w-[525px] max-w-full">
-          <div className="relative h-[656px] w-[525px] max-w-full overflow-hidden rounded-[10px]">
+      <div className="mx-auto flex max-w-[1600px] flex-col items-start gap-32 px-6 md:flex-row md:items-center md:justify-between md:gap-0 md:px-10">
+        <div ref={collageRef} className="relative w-[75%] max-w-[360px] md:w-[525px] md:max-w-full">
+          <div className="relative aspect-[525/656] w-full max-w-full overflow-hidden rounded-[10px] md:aspect-auto md:h-[656px] md:w-[525px]">
             <Image
               src={images.production.main}
               alt={t("mainAlt")}
@@ -71,7 +71,7 @@ export default function ProductionSection() {
               className="object-cover"
             />
           </div>
-          <div className="absolute right-0 bottom-0 h-[344px] w-[459px] max-w-full translate-x-[27%] translate-y-[40%] overflow-hidden rounded-[25px] border-[15px] border-white">
+          <div className="absolute right-0 bottom-0 aspect-[459/344] w-[87%] max-w-[459px] translate-x-[27%] translate-y-[40%] overflow-hidden rounded-[25px] border-[15px] border-white md:aspect-auto md:h-[344px] md:w-[459px]">
             <Image
               src={images.production.detail}
               alt={t("detailAlt")}

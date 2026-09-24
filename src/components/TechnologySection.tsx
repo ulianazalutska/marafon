@@ -32,6 +32,7 @@ export default function TechnologySection() {
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activeSwatch, setActiveSwatch] = useState<string | null>(null);
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
 
   // Легкий пружинний "доганяючий" лаг для обох колонок — власне відчуття
   // плавної інерції в межах цієї секції, без підключення smooth-scroll на
@@ -89,7 +90,7 @@ export default function TechnologySection() {
 
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 768px)", () => {
+      mm.add("(min-width: 1237px)", () => {
         gsap.fromTo(
           imageRefs.current[0],
           { autoAlpha: 0, scale: 1.05 },
@@ -142,7 +143,7 @@ export default function TechnologySection() {
           style={{ borderRadius: "10px" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-brown-950/70 via-brown-950/15 to-transparent" />
-        <div className="relative z-10 mx-auto flex h-full max-w-[1600px] flex-col justify-end px-6 pt-10 md:px-10 md:pb-14">
+        <div className="relative z-10 mx-auto flex h-full max-w-[1600px] flex-col justify-end px-6 pt-10 pb-7 md:px-10 md:pb-14">
           <span className="text-[21px] font-normal tracking-[0.06em] text-cream/90 uppercase">
             {t("bannerEyebrow")}
           </span>
@@ -153,7 +154,7 @@ export default function TechnologySection() {
       </div>
 
       <div className="mx-auto max-w-[1600px] px-6 pb-16 md:px-10 md:pb-24">
-        <div className="grid items-start gap-x-8 md:grid-cols-2">
+        <div className="grid items-start gap-x-8 min-[1237px]:grid-cols-2">
           {/* Ліва колонка: спек-картка моделі. Зовнішній div лишається для
               GSAP fade-in (contentRef), внутрішній motion.div — для
               незалежного пружинного лагу від скролу. */}
@@ -170,7 +171,7 @@ export default function TechnologySection() {
               {techSpecs.map((s) => (
                 <div
                   key={s.label}
-                  className="spec-row flex items-baseline justify-between border-b border-brown-300/40 py-4"
+                  className="spec-row flex flex-col gap-1 border-b border-brown-300/40 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
                 >
                   <span className="text-[23px] font-medium tracking-normal text-ink">
                     {s.label}
@@ -194,16 +195,41 @@ export default function TechnologySection() {
               />
             </div>
 
-            {/* Мобільна версія: одне фото під текстом, без sticky-стеку */}
-            <div className="relative mt-10 aspect-[4/5] w-full overflow-hidden rounded-[10px] md:hidden">
-              <Image
-                src={images.technology[0]}
-                alt={t("mobileImageAlt")}
-                fill
-                sizes="100vw"
-                className="object-cover"
-                style={{ borderRadius: "10px" }}
-              />
+            {/* Мобільна версія: свайп-галерея замість sticky-стеку (той
+                скрол-ефект працює лише при вертикальному скролі сторінки,
+                на мобільному для нього просто немає місця над fold) */}
+            <div className="relative mt-10 min-[1237px]:hidden">
+              <div
+                onScroll={(e) => {
+                  if (e.currentTarget.scrollLeft > 10) setShowSwipeHint(false);
+                }}
+                className="scrollbar-hide -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-1"
+              >
+                {images.technology.map((src, i) => (
+                  <div
+                    key={src}
+                    className="relative aspect-[4/5] w-[78%] shrink-0 snap-center overflow-hidden rounded-[10px]"
+                  >
+                    <Image
+                      src={src}
+                      alt={`${t("slideAltPrefix")} ${i + 1}`}
+                      fill
+                      sizes="78vw"
+                      className="object-cover"
+                      style={{ borderRadius: "10px" }}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {showSwipeHint && (
+                <div className="pointer-events-none absolute right-9 bottom-4 flex items-center gap-1.5 rounded-full bg-ink/70 px-3 py-1.5 text-cream transition-opacity duration-300">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 6l-6 6 6 6M15 6l6 6-6 6" />
+                  </svg>
+                  <span className="text-[13px] tracking-[0.02em]">{t("swipeHint")}</span>
+                </div>
+              )}
             </div>
 
             <h3 className="mt-16 text-[clamp(28px,4.5vw,43px)] font-normal tracking-[0.02em] text-ink">
@@ -254,7 +280,7 @@ export default function TechnologySection() {
           {/* Права колонка: один sticky-контейнер, фото зсуваються одне
               поверх іншого через GSAP scrub. */}
           <div
-            className="relative hidden md:-mt-32 md:block md:pl-[70px]"
+            className="relative hidden min-[1237px]:-mt-32 min-[1237px]:block min-[1237px]:pl-[70px]"
             style={{ height: `${images.technology.length * SLIDE_VH}vh` }}
           >
             {images.technology.map((_, i) => (

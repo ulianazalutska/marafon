@@ -114,21 +114,21 @@ export default function CreateForYouSection() {
           {t("eyebrow")}
         </p>
 
-        <div ref={rowsRef} className="flex flex-col items-center">
+        <div ref={rowsRef} className="flex flex-col items-center gap-y-3 md:gap-y-0">
           {items.map((item) => (
             <div
               key={item.key}
-              className="flex items-center justify-center gap-3 md:gap-5"
+              className="flex items-center justify-center gap-2 min-[375px]:gap-3 md:gap-5"
             >
               {item.image && item.side === "left" && (
                 <span
                   data-roundel
                   className={`relative shrink-0 overflow-hidden bg-brown-300/30 ${
                     item.shape === "circle"
-                      ? "h-14 w-14 rounded-full md:h-24 md:w-24"
+                      ? "h-11 w-11 rounded-full min-[375px]:h-14 min-[375px]:w-14 md:h-24 md:w-24"
                       : item.compact
-                        ? "h-[52px] w-28 rounded-full md:h-[88px] md:w-48"
-                        : "h-14 w-28 rounded-full md:h-24 md:w-48"
+                        ? "h-10 w-20 rounded-full min-[375px]:h-[52px] min-[375px]:w-28 md:h-[88px] md:w-48"
+                        : "h-11 w-20 rounded-full min-[375px]:h-14 min-[375px]:w-28 md:h-24 md:w-48"
                   }`}
                 >
                   <Image
@@ -150,10 +150,10 @@ export default function CreateForYouSection() {
                   data-roundel
                   className={`relative shrink-0 overflow-hidden bg-brown-300/30 ${
                     item.shape === "circle"
-                      ? "h-14 w-14 rounded-full md:h-24 md:w-24"
+                      ? "h-11 w-11 rounded-full min-[375px]:h-14 min-[375px]:w-14 md:h-24 md:w-24"
                       : item.compact
-                        ? "h-[52px] w-28 rounded-full md:h-[88px] md:w-48"
-                        : "h-14 w-28 rounded-full md:h-24 md:w-48"
+                        ? "h-10 w-20 rounded-full min-[375px]:h-[52px] min-[375px]:w-28 md:h-[88px] md:w-48"
+                        : "h-11 w-20 rounded-full min-[375px]:h-14 min-[375px]:w-28 md:h-24 md:w-48"
                   }`}
                 >
                   <Image

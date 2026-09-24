@@ -24,8 +24,8 @@ export default function FaqSection() {
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
         <h2
-          className="mb-14 font-normal"
-          style={{ fontSize: "45px", letterSpacing: "0.04em", color: "var(--color-ink)" }}
+          className="mb-14 text-[30px] font-normal md:text-[45px]"
+          style={{ letterSpacing: "0.04em", color: "var(--color-ink)" }}
         >
           {t("heading")}
         </h2>

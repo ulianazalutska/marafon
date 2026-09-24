@@ -96,7 +96,7 @@ function Slide({
           className="pointer-events-none object-cover"
         />
       </div>
-      <p className="pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] whitespace-nowrap text-ink">
+      <p className="min-h-[70px] pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] text-ink md:min-h-[65px] md:whitespace-nowrap max-[1270px]:text-[17px] max-[767px]:text-[19px]">
         {p.area}, {p.sections}, {p.series} — {p.note}
       </p>
     </motion.div>
@@ -166,21 +166,21 @@ export default function PortfolioSection() {
       ref={sectionRef}
       className="relative mt-[225px] overflow-hidden bg-cream pb-[225px] text-ink"
     >
-      <div className="flex flex-col gap-10 md:flex-row md:gap-6">
+      <div className="mx-auto flex max-w-[1800px] flex-col gap-10 md:flex-row md:gap-6">
         {/* Фіксований текстовий блок зліва */}
         <div
           ref={textRef}
           className="relative z-30 flex shrink-0 flex-col justify-between gap-10 px-6 md:w-[40%] md:px-0 md:pl-10"
         >
           <div>
-            <h2 className="max-w-xl text-[clamp(28px,5vw,45px)] leading-[1.2] font-normal tracking-[0.04em] text-ink mb-[21px]">
+            <h2 className="max-w-xl text-[clamp(28px,5vw,45px)] leading-[1.2] font-normal tracking-[0.04em] text-ink mb-[21px] max-[1270px]:text-[26px] max-[767px]:text-[30px]">
               {t("heading")}
             </h2>
-            <p className="mt-4 max-w-[429px] text-[clamp(17px,2.5vw,24px)] leading-[1.2] font-normal tracking-[0.04em] text-ink">
+            <p className="mt-4 max-w-[429px] text-[clamp(17px,2.5vw,24px)] leading-[1.2] font-normal tracking-[0.04em] text-ink max-[1270px]:text-[16px] max-[767px]:text-[18px]">
               {t("subtitle")}
             </p>
           </div>
-          <p className="text-[21px] leading-[25px] tracking-[0.04em] tabular-nums text-accent">
+          <p className="text-[21px] leading-[25px] tracking-[0.04em] tabular-nums text-accent max-[1270px]:text-[17px] max-[767px]:text-[19px]">
             {index + 1} {t("counterOf")} {total}
           </p>
         </div>
@@ -189,7 +189,7 @@ export default function PortfolioSection() {
         <div className="min-w-0 flex-1 px-6 md:px-0">
           <div
             ref={stageRef}
-            className="relative h-[calc(58vh+40px)] w-[90%] md:h-[532px] md:w-[655px]"
+            className="relative h-[calc(58vh+40px)] w-[90%] md:w-full lg:h-[532px] lg:w-[655px]"
           >
             {/* Наступне фото визирає статичною смужкою праворуч, разом зі своїм підписом */}
             {index + 1 < total && (
@@ -204,7 +204,7 @@ export default function PortfolioSection() {
                     className="pointer-events-none object-cover"
                   />
                 </div>
-                <p className="pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] whitespace-nowrap text-ink">
+                <p className="min-h-[70px] pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] text-ink md:min-h-[65px] md:whitespace-nowrap max-[1270px]:text-[17px] max-[767px]:text-[19px]">
                   {projects[index + 1].area}, {projects[index + 1].sections},{" "}
                   {projects[index + 1].series} — {projects[index + 1].note}
                 </p>

@@ -60,8 +60,8 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
                   </div>
 
                   <motion.h3
-                    className="text-left font-medium"
-                    style={{ fontSize: "30px", letterSpacing: "0.04em", lineHeight: "36px" }}
+                    className="text-left text-[20px] leading-[26px] font-medium md:text-[30px] md:leading-[36px]"
+                    style={{ letterSpacing: "0.04em" }}
                     animate={{
                       x: isActive || isHovered ? 4 : 0,
                       color: "#362F2B",
@@ -136,7 +136,7 @@ export function UniqueAccordion({ items }: { items: AccordionItem[] }) {
                     className="overflow-hidden"
                   >
                     <motion.p
-                      className="py-6 pr-12 pl-16 text-xl leading-relaxed text-ink"
+                      className="py-6 pr-6 pl-6 text-xl leading-relaxed text-ink md:pr-12 md:pl-16"
                       initial={{ y: -10 }}
                       animate={{ y: 0 }}
                       exit={{ y: -10 }}

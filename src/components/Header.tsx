@@ -204,7 +204,7 @@ export default function Header() {
           type="button"
           onClick={() => setIsMenuOpen(true)}
           style={{ color: uiColor }}
-          className="ml-auto flex text-[29px] font-medium tracking-[0.02em] min-[597px]:ml-0 min-[1067px]:hidden"
+          className="ml-auto flex text-[22px] font-normal tracking-[0.02em] min-[597px]:ml-0 min-[597px]:text-[29px] min-[597px]:font-medium min-[1067px]:hidden"
         >
           {t("menu")}
         </motion.button>

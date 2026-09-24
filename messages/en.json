@@ -17,7 +17,9 @@
   "Hero": {
     "headlineLine1": "Details that shape",
     "headlineLine2": "your space",
-    "subtext": "From the first measurement to installation — design, materials, and details in one solution",
+    "subtextLine1": "From the first measurement to installation —",
+    "subtextLine2": "design, materials, and details",
+    "subtextLine3": "in one solution",
     "videoCaption": "Light. Motion. Comfort.",
     "leftHeadlineLine1": "A wardrobe built for",
     "leftHeadlineLine2": "your space and lifestyle",
@@ -81,7 +83,7 @@
       { "label": "Gadgets", "value": "Wireless charging and an outlet in the drawer" }
     ],
     "sketchAlt": "ARMADERO module technical drawing",
-    "mobileImageAlt": "ARMADERO wardrobe",
+    "swipeHint": "Swipe",
     "heading2": "Materials & finishes",
     "materialsLabel": "what it's made of:",
     "materialsText": "Moisture-resistant chipboard, veneer, and solid wood — every texture is chosen to stay flawless for years. 40+ finish options let you build a wardrobe that looks like it was designed specifically for your room.",
@@ -227,7 +229,8 @@
     "newsletterAriaLabel": "Subscribe to the newsletter",
     "newsletterThanks": "Thanks for subscribing!",
     "newsletterError": "Couldn't subscribe. Please try again.",
-    "copyright": "A wardrobe systems and interior studio. All rights reserved",
+    "copyrightLine1": "A wardrobe systems and interior studio.",
+    "copyrightLine2": "All rights reserved",
     "designCredit": "Website design by Zalutska"
   },
   "LegalHeader": {

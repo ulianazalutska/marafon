@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
@@ -40,6 +40,18 @@ export default function CatalogSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const [openKey, setOpenKey] = useState<string | null>(null);
+
+  // Hover не працює на тач-екранах (планшет/телефон) — там інфо-бокс
+  // відкривається тапом по крапці, і закривається тапом деінде на сторінці.
+  useEffect(() => {
+    if (!openKey) return;
+    const closeOnOutsideClick = (e: MouseEvent) => {
+      if (!gridRef.current?.contains(e.target as Node)) setOpenKey(null);
+    };
+    window.addEventListener("click", closeOnOutsideClick);
+    return () => window.removeEventListener("click", closeOnOutsideClick);
+  }, [openKey]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -94,26 +106,17 @@ export default function CatalogSection() {
       <div className="mx-auto max-w-[1600px] px-6">
         <div
           ref={headingRef}
-          className="mb-[48px] flex flex-col justify-between gap-4 md:flex-row md:items-center"
+          className="mb-[48px] flex flex-col justify-between gap-4 min-[768px]:flex-row min-[768px]:items-center min-[768px]:gap-20 min-[1021px]:gap-4"
         >
           <h2
-            className="max-w-xl font-normal text-ink"
-            style={{
-              fontSize: "45px",
-              lineHeight: "54px",
-              letterSpacing: "0.04em",
-            }}
+            className="max-w-[380px] text-[33px] leading-[39px] font-normal text-ink min-[768px]:max-w-xl min-[768px]:text-[34px] min-[768px]:leading-[40px] min-[1021px]:text-[45px] min-[1021px]:leading-[54px]"
+            style={{ letterSpacing: "0.04em" }}
           >
             {t("heading")}
           </h2>
           <p
-            className="font-normal text-ink md:mr-48"
-            style={{
-              width: "460px",
-              fontSize: "24px",
-              lineHeight: "29px",
-              letterSpacing: "0.04em",
-            }}
+            className="w-full text-[21px] leading-[26px] font-normal text-ink min-[768px]:w-[540px] min-[768px]:text-[20px] min-[768px]:leading-[25px] min-[1021px]:text-[24px] min-[1021px]:leading-[29px] min-[1228px]:mr-48 min-[1228px]:w-[460px]"
+            style={{ letterSpacing: "0.04em" }}
           >
             {t("subtitleLine1")}
             <br />
@@ -124,7 +127,9 @@ export default function CatalogSection() {
         </div>
 
         <div ref={gridRef} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {series.map((item) => (
+          {series.map((item) => {
+            const isOpen = openKey === item.key;
+            return (
             <div key={item.key} className="flex flex-col">
               <a
                 href="#contact"
@@ -141,9 +146,10 @@ export default function CatalogSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-brown-950/90 via-transparent to-transparent" />
                 </div>
 
-                {/* Пульсуюча точка + інфо-блок на hover */}
+                {/* Пульсуюча точка + інфо-блок: на десктопі hover, на
+                    тач-екранах (планшет/телефон, де hover не працює) — тап */}
                 <div
-                  className="group/dot absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center"
+                  className="group/dot absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
                   style={{ top: item.dotTop, left: item.dotLeft }}
                 >
                   <span className="pulse-ring absolute inline-flex h-11 w-11 rounded-full border border-cream/70" />
@@ -155,18 +161,34 @@ export default function CatalogSection() {
                     className="pulse-ring absolute inline-flex h-11 w-11 rounded-full border border-cream/70"
                     style={{ animationDelay: "3s" }}
                   />
-                  <span className="relative flex h-[33px] w-[33px] items-center justify-center rounded-full bg-cream shadow-md transition-all duration-300 group-hover/dot:h-2.5 group-hover/dot:w-2.5">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setOpenKey(isOpen ? null : item.key);
+                    }}
+                    aria-expanded={isOpen}
+                    aria-label={item.name}
+                    className={`relative flex h-[33px] w-[33px] cursor-pointer items-center justify-center rounded-full bg-cream shadow-md transition-all duration-300 group-hover/dot:h-2.5 group-hover/dot:w-2.5 ${
+                      isOpen ? "h-2.5 w-2.5" : ""
+                    }`}
+                  >
                     <Image
                       src="/icons/plus.svg"
                       alt=""
                       width={15}
                       height={16}
-                      className="transition-opacity duration-150 group-hover/dot:opacity-0"
+                      className={`transition-opacity duration-150 group-hover/dot:opacity-0 ${
+                        isOpen ? "opacity-0" : ""
+                      }`}
                     />
-                  </span>
+                  </button>
 
                   <div
                     className={`pointer-events-none absolute top-1/2 w-56 -translate-y-1/2 bg-[#FFFFFF] p-4 opacity-0 shadow-xl transition-opacity duration-200 group-hover/dot:opacity-100 md:w-64 ${
+                      isOpen ? "opacity-100" : ""
+                    } ${
                       item.key === "signature"
                         ? "right-full mr-3"
                         : "left-full ml-3"
@@ -215,7 +237,8 @@ export default function CatalogSection() {
                 </h3>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

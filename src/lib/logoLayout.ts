@@ -48,12 +48,18 @@ export function getHeroLogoLayout(viewportWidth: number, viewportHeight: number)
   }
 
   const fontSizeRatio = viewportWidth <= 1066 ? 0.15 : 0.135;
-  const fontSize = viewportWidth * fontSizeRatio;
+  // Hero content lives in a max-w-[1600px] centered box on wide screens
+  // (matches Header's container) so the wordmark doesn't keep growing
+  // unbounded on ultra-wide monitors — sized/positioned off that capped
+  // width, not the raw viewport, past 1600px.
+  const effectiveWidth = Math.min(viewportWidth, 1600);
+  const fontSize = effectiveWidth * fontSizeRatio;
   const top = viewportHeight - fontSize;
   const trackingRatio = 0.18;
   const tracking = fontSize * trackingRatio;
 
-  let left = viewportWidth * 0.086;
+  const sideMargin = (viewportWidth - effectiveWidth) / 2;
+  let left = sideMargin + effectiveWidth * 0.086;
   if (viewportWidth <= 1066) {
     const textWidth = measureLogoWidth(fontSize, tracking);
     if (textWidth !== null) {
