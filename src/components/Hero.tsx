@@ -81,7 +81,7 @@ export default function Hero() {
         fill
         priority
         quality={100}
-        sizes="100vw"
+        sizes="(min-width: 1600px) 1600px, 100vw"
         className="object-cover"
       />
       <div className="absolute inset-0 bg-black/8" />
@@ -105,7 +105,7 @@ export default function Hero() {
         {/* Від першого заміру до монтажу — теж лише з 597px */}
         <p
           ref={rightTextRef}
-          className="absolute hidden w-[38vw] left-[56%] top-[35%] text-[19px] leading-[23px] font-medium tracking-[0.02em] text-white min-[847px]:block min-[1006px]:left-[64%] min-[1006px]:w-[32vw]"
+          className="absolute hidden w-[38vw] left-[56%] top-[35%] text-[19px] leading-[23px] font-medium tracking-[0.02em] text-white min-[847px]:block min-[1006px]:left-[64%] min-[1006px]:w-[32vw] min-[1191px]:text-[21px] min-[1191px]:leading-[26px]"
         >
           {t("subtextLine1")}
           <br />
@@ -159,7 +159,7 @@ export default function Hero() {
           ref={leftBlockRef}
           className="absolute top-[40%] left-[6%] min-[597px]:top-[48%] min-[597px]:left-[10%] min-[1067px]:left-[15%]"
         >
-          <p className="max-w-[230px] text-[19px] leading-[1.35] font-medium tracking-[0.02em] text-white min-[597px]:max-w-none">
+          <p className="max-w-[230px] text-[19px] leading-[1.35] font-medium tracking-[0.02em] text-white min-[597px]:max-w-none min-[1191px]:text-[21px]">
             {t("leftHeadlineLine1")}
             <br className="hidden min-[597px]:inline" /> {t("leftHeadlineLine2")}
           </p>

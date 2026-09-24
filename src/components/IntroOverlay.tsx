@@ -34,7 +34,45 @@ export default function IntroOverlay() {
       return;
     }
 
-    document.body.style.overflow = "hidden";
+    // Block scrolling by intercepting the input events themselves rather
+    // than toggling overflow:hidden — overflow:hidden collapses the
+    // scrollbar, and scrollbar-gutter:stable (globals.css) keeps that
+    // column's width reserved as an empty strip the whole time it's hidden,
+    // then pops the real scrollbar into it the instant overflow is restored.
+    // Leaving overflow untouched keeps the scrollbar always rendered in that
+    // column, so there's nothing to pop in.
+    const preventScrollKeys = new Set([
+      "ArrowUp",
+      "ArrowDown",
+      "PageUp",
+      "PageDown",
+      "Home",
+      "End",
+      " ",
+    ]);
+    const blockWheel = (e: WheelEvent) => e.preventDefault();
+    const blockTouchMove = (e: TouchEvent) => e.preventDefault();
+    const blockKeys = (e: KeyboardEvent) => {
+      if (preventScrollKeys.has(e.key)) e.preventDefault();
+    };
+    // Backstop for dragging the scrollbar thumb itself: that moves scrollY
+    // directly, without ever firing wheel/touchmove/keydown, so it isn't
+    // caught by the preventDefault listeners above. Snapping back to 0 on
+    // every scroll event closes that hole; checking scrollY first avoids
+    // this scrollTo call re-triggering itself forever.
+    const blockScrollDrag = () => {
+      if (window.scrollY !== 0) window.scrollTo(0, 0);
+    };
+    window.addEventListener("wheel", blockWheel, { passive: false });
+    window.addEventListener("touchmove", blockTouchMove, { passive: false });
+    window.addEventListener("keydown", blockKeys);
+    window.addEventListener("scroll", blockScrollDrag, { passive: true });
+    const unblockScroll = () => {
+      window.removeEventListener("wheel", blockWheel);
+      window.removeEventListener("touchmove", blockTouchMove);
+      window.removeEventListener("keydown", blockKeys);
+      window.removeEventListener("scroll", blockScrollDrag);
+    };
 
     const ctx = gsap.context(() => {
       const letters = typeRef.current?.querySelectorAll("span") ?? [];
@@ -42,11 +80,25 @@ export default function IntroOverlay() {
       const heroTile = tiles[0];
       const otherTiles = tiles.slice(1);
 
+      // mosaicLayout's `height` is authored in vh, which only reads as
+      // intended on desktop's wide-relative-to-tall viewports. On a phone
+      // (narrow but very tall) 1vh is several times larger than 1vw, so the
+      // same numbers stretch every tile into a tall, narrow sliver. Using
+      // vw for height too — same value, different unit — keeps each tile's
+      // originally authored aspect ratio instead of it being distorted by
+      // the viewport's own aspect ratio.
+      if (window.innerWidth <= 596) {
+        mosaicRefs.current.forEach((tile, i) => {
+          if (!tile) return;
+          tile.style.height = `${mosaicLayout[i].height}vw`;
+        });
+      }
+
       const tl = gsap.timeline({
         paused: true,
         delay: 0.3,
         onComplete: () => {
-          document.body.style.overflow = "";
+          unblockScroll();
           sessionStorage.setItem(SEEN_KEY, "true");
           setVisible(false);
           window.dispatchEvent(new Event(INTRO_DONE_EVENT));
@@ -80,7 +132,14 @@ export default function IntroOverlay() {
       // the swap to Header's real (until now invisible) logo at the end is
       // pixel-identical instead of a visible jump.
       const heroLogoLayout = getHeroLogoLayout(window.innerWidth, window.innerHeight);
-      const typingFontSize = Math.min(window.innerWidth * 0.045, 64);
+      const isMobile = window.innerWidth <= 596;
+      // On narrow phones the 0.045 ratio renders barely-legible text (e.g.
+      // ~17px at 390px wide) — a separate, larger ratio for mobile that
+      // still stays close to the final header-logo size (32px, see
+      // getHeaderLogoLayout) it morphs into at the end of the animation.
+      const typingFontSize = isMobile
+        ? Math.min(window.innerWidth * 0.075, 32)
+        : Math.min(window.innerWidth * 0.045, 64);
       // Same tracking RATIO as the hero-state logo (0.18em), just at the
       // smaller typing font-size — not the 0.4em it used to be. That match
       // matters once the flight step below fixes font-size/letter-spacing
@@ -203,7 +262,7 @@ export default function IntroOverlay() {
     }, overlayRef);
 
     return () => {
-      document.body.style.overflow = "";
+      unblockScroll();
       ctx.revert();
     };
   }, []);
