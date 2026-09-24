@@ -77,7 +77,7 @@ export default function Footer() {
     <footer className="bg-cream text-ink">
       <div className="mx-auto flex max-w-[1600px] flex-col gap-y-12 px-6 py-16 md:py-20 lg:flex-row lg:items-start lg:justify-between">
         <div ref={introRef} className="w-full lg:w-[520px] lg:shrink-0">
-          <h2 className="relative text-[45px] leading-[54px] font-normal tracking-[0.04em] text-brown-850">
+          <h2 className="relative text-[clamp(28px,5vw,45px)] leading-[1.2] font-normal tracking-[0.04em] text-brown-850">
             <span className="relative -ml-1 inline-block">
               <span
                 aria-hidden
@@ -151,7 +151,7 @@ export default function Footer() {
           </div>
 
           <div className="w-[261px]">
-            <h3 className="text-[30px] leading-[30px] font-normal tracking-[0.02em] text-brown-850">
+            <h3 className="text-[clamp(22px,3.5vw,30px)] leading-[1.15] font-normal tracking-[0.02em] text-brown-850">
               {t("newsletterHeading")}
             </h3>
             <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-brown-850">

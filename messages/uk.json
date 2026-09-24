@@ -5,6 +5,8 @@
     "ogImageAlt": "Гардеробна система Armadero"
   },
   "Header": {
+    "menu": "Меню",
+    "close": "Закрити",
     "nav": {
       "catalog": "Каталог",
       "portfolio": "Портфоліо",

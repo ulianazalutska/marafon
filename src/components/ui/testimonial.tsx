@@ -130,7 +130,7 @@ export default function ClientFeedback() {
             animationNum={0}
             customVariants={revealVariants}
             timelineRef={testimonialRef}
-            className="text-[45px] font-normal tracking-[0.02em]"
+            className="text-[clamp(28px,5vw,45px)] font-normal tracking-[0.02em]"
           >
             {t("heading")}
           </TimelineContent>

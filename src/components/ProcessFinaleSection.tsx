@@ -57,7 +57,7 @@ export default function ProcessFinaleSection() {
       <div className="absolute inset-0 bg-gradient-to-t from-brown-950/85 via-brown-950/25 to-brown-950/35" />
 
       <div className="relative flex flex-col items-center gap-8 px-6 text-center">
-        <h2 className="w-[571px] max-w-full text-[64px] leading-[77px] font-semibold tracking-[0.02em] text-white">
+        <h2 className="w-[571px] max-w-full text-[clamp(32px,8vw,64px)] leading-[1.2] font-semibold tracking-[0.02em] text-white">
           {t("line1")}
           <br />
           {t("line2Prefix")}<span className="italic">{t("line2Italic")}</span>

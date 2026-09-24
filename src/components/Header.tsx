@@ -5,8 +5,9 @@ import gsap from "gsap";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, LOGO_ARRIVED_EVENT, LANG_SWITCH_KEY } from "@/lib/intro";
-import { getHeroLogoLayout } from "@/lib/logoLayout";
+import { getHeroLogoLayout, getHeaderLogoLayout } from "@/lib/logoLayout";
 import { LOCALE_COOKIE, type Locale } from "@/i18n/config";
+import MobileMenu from "@/components/MobileMenu";
 
 export default function Header() {
   const t = useTranslations("Header");
@@ -33,6 +34,7 @@ export default function Header() {
   const { scrollY } = useScroll();
   const [viewportHeight, setViewportHeight] = useState(900);
   const [viewportWidth, setViewportWidth] = useState(1440);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Gates the nav entrance: stays hidden while IntroOverlay is still
   // covering the page, then slides in once it's gone — but only on the
@@ -118,16 +120,11 @@ export default function Header() {
   const heroTop = heroLogoLayout.top;
   const heroTrackingRatio = heroLogoLayout.trackingRatio;
 
-  const headerFontSize = 27;
-  // На маленькому розмірі (20px) той самий em-трекінг, що на величезному
-  // hero-написі, виглядає розхлябано — літери надто дрібні для такого
-  // проміжку. У шапці лого має бути компактним логотипом, тож тут
-  // помітно менший коефіцієнт (0.08em), а не пропорція hero.
-  const headerTrackingRatio = 0.08;
-  const headerWidth = 8 * headerFontSize * 0.9; // наближена ширина "ARMADERO" при цьому трекінгу
-  const headerCenterOffset = 100; // трохи правіше від точного центру шапки
-  const headerLeft = viewportWidth / 2 - headerWidth / 2 + headerCenterOffset;
-  const headerTop = 40 - headerFontSize / 2;
+  const headerLogoLayout = getHeaderLogoLayout(viewportWidth);
+  const headerFontSize = headerLogoLayout.fontSize;
+  const headerTrackingRatio = headerLogoLayout.trackingRatio;
+  const headerLeft = headerLogoLayout.left;
+  const headerTop = headerLogoLayout.top;
 
   const logoFontSize = useTransform(scrollY, [0, threshold], [heroFontSize, headerFontSize]);
   const logoLeft = useTransform(scrollY, [0, threshold], [heroLeft, headerLeft]);
@@ -189,7 +186,7 @@ export default function Header() {
       <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-6">
         <nav
           ref={navRef}
-          className="hidden items-center gap-8 text-[19px] tracking-[0.02em] md:flex"
+          className="hidden items-center gap-8 text-[19px] tracking-[0.02em] min-[1067px]:flex"
         >
           {links.map((link) => (
             <motion.a
@@ -202,6 +199,15 @@ export default function Header() {
             </motion.a>
           ))}
         </nav>
+
+        <motion.button
+          type="button"
+          onClick={() => setIsMenuOpen(true)}
+          style={{ color: uiColor }}
+          className="ml-auto flex text-[29px] font-medium tracking-[0.02em] min-[597px]:ml-0 min-[1067px]:hidden"
+        >
+          {t("menu")}
+        </motion.button>
 
         <motion.p
           id="header-logo"
@@ -222,7 +228,7 @@ export default function Header() {
           <motion.a
             href="tel:+380442001515"
             style={{ color: uiColor, opacity: phoneOpacity }}
-            className="hidden items-center gap-2 text-[19px] tracking-[0.02em] md:flex"
+            className="hidden items-center gap-2 text-[19px] tracking-[0.02em] min-[1067px]:flex"
           >
             <svg
               width="15"
@@ -239,7 +245,7 @@ export default function Header() {
           </motion.a>
           <motion.div
             style={{ color: uiColor }}
-            className="hidden items-center gap-1 text-[19px] tracking-[0.02em] md:flex"
+            className="hidden items-center gap-1 text-[29px] font-medium tracking-[0.02em] min-[597px]:flex min-[1067px]:text-[19px] min-[1067px]:font-normal"
           >
             <button
               type="button"
@@ -261,6 +267,8 @@ export default function Header() {
           </motion.div>
         </div>
       </div>
+
+      <MobileMenu open={isMenuOpen} onClose={() => setIsMenuOpen(false)} links={links} />
     </motion.header>
   );
 }

@@ -5,6 +5,8 @@
     "ogImageAlt": "Armadero wardrobe system"
   },
   "Header": {
+    "menu": "Menu",
+    "close": "Close",
     "nav": {
       "catalog": "Catalog",
       "portfolio": "Portfolio",

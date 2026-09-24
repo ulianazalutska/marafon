@@ -86,10 +86,10 @@ export default function ProductionSection() {
           <p className="mb-4 text-[18px] font-normal tracking-[0.06em] text-accent uppercase">
             {t("eyebrow")}
           </p>
-          <h2 className="mb-6 text-[43px] leading-[1.05] font-medium tracking-[0.02em] text-ink">
+          <h2 className="mb-6 text-[clamp(28px,4.5vw,43px)] leading-[1.1] font-medium tracking-[0.02em] text-ink">
             {t("heading")}
           </h2>
-          <p className="w-[530px] max-w-full text-[22px] font-normal leading-[30px] tracking-[0.02em] text-ink">
+          <p className="w-[530px] max-w-full text-[clamp(16px,2.3vw,22px)] font-normal leading-[1.35] tracking-[0.02em] text-ink">
             {t("text")}
           </p>
         </div>

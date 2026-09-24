@@ -72,7 +72,7 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative mt-[255px] aspect-[1916/821] w-full overflow-hidden"
+      className="relative mt-[120px] flex min-h-screen w-full items-center justify-center overflow-hidden py-16 md:mt-[255px]"
     >
       <div ref={imageWrapRef} className="absolute inset-0 -top-[12%] h-[124%]">
         <Image
@@ -86,17 +86,16 @@ export default function ContactSection() {
 
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brown-950/80 via-transparent to-brown-950/20" />
 
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 min-h-[600px] w-[460px] -translate-x-1/2 -translate-y-1/2">
-          <div
-            ref={cardRef}
-            className="h-full min-h-[600px] w-[460px] rounded-[24px] bg-white px-[52px] py-[56px] shadow-[0_30px_60px_-15px_rgba(28,20,13,0.45)]"
-          >
-            <h2 className="text-center text-[28px] font-normal tracking-[0.04em] text-ink">
-              {t("heading")}
-            </h2>
+      <div className="relative z-10 w-full px-6">
+        <div
+          ref={cardRef}
+          className="mx-auto w-full max-w-[460px] rounded-[24px] bg-white px-6 py-10 shadow-[0_30px_60px_-15px_rgba(28,20,13,0.45)] sm:px-10 md:min-h-[600px] md:px-[52px] md:py-[56px]"
+        >
+          <h2 className="text-center text-[clamp(22px,5vw,28px)] font-normal tracking-[0.04em] text-ink">
+            {t("heading")}
+          </h2>
 
-            <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
                   key="success"
@@ -255,7 +254,6 @@ export default function ContactSection() {
                 </motion.form>
               )}
             </AnimatePresence>
-          </div>
         </div>
       </div>
     </section>

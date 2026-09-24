@@ -86,22 +86,22 @@ export default function Hero() {
       />
       <div className="absolute inset-0 bg-black/8" />
 
-      {/* Деталі, що формують ваш простір */}
+      {/* Деталі, що формують ваш простір — на мобільному (≤596) немає
+          місця під цей блок, ховається повністю */}
       <h1
         ref={topTextRef}
-        className="absolute text-left text-[25px] leading-[1.3] font-medium tracking-[0.02em] text-white"
-        style={{ left: "57%", top: "3.5%", width: "20vw" }}
+        className="absolute hidden text-left text-[27px] leading-[32px] font-medium tracking-[0.02em] text-white min-[597px]:block min-[1067px]:text-[25px]"
+        style={{ left: "50%", top: "3%", width: "max-content" }}
       >
         {t("headlineLine1")}
         <br />
         {t("headlineLine2")}
       </h1>
 
-      {/* Від першого заміру до монтажу */}
+      {/* Від першого заміру до монтажу — теж лише з 597px */}
       <p
         ref={rightTextRef}
-        className="absolute text-[19px] leading-[1.5] font-medium tracking-[0.02em] text-white"
-        style={{ left: "68.4%", top: "34%", width: "16vw" }}
+        className="absolute hidden w-[32vw] left-[64%] top-[37%] text-[19px] leading-[23px] font-medium tracking-[0.02em] text-white min-[597px]:block min-[1067px]:w-[16vw] min-[1067px]:left-[68.4%] min-[1067px]:top-[34%]"
       >
         {t("subtext")}
       </p>
@@ -109,8 +109,7 @@ export default function Hero() {
       {/* Відео-прев'ю картка */}
       <div
         ref={videoCardRef}
-        className="absolute rounded-[1.75rem] bg-white p-[9px] pb-[17px] shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)]"
-        style={{ left: "79.2%", top: "43.2%", width: "9vw" }}
+        className="absolute top-[63%] left-[60%] w-[150px] rounded-[33px] bg-white p-[9px] pb-[15px] shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)] min-[597px]:top-[48%] min-[597px]:left-[79.2%] min-[597px]:w-[160px] min-[1067px]:top-[43.2%] min-[1067px]:w-[9vw] min-[1067px]:rounded-[1.75rem] min-[1067px]:pb-[17px]"
       >
         <button
           onClick={togglePlay}
@@ -148,18 +147,20 @@ export default function Hero() {
       </div>
 
       {/* Гардеробна, створена під ваш простір */}
-      <div ref={leftBlockRef} className="absolute" style={{ left: "15%", top: "48%" }}>
-        <p className="text-[19px] leading-[1.35] font-medium tracking-[0.02em] text-white">
+      <div
+        ref={leftBlockRef}
+        className="absolute top-[40%] left-[6%] min-[597px]:top-[48%] min-[597px]:left-[10%] min-[1067px]:left-[15%]"
+      >
+        <p className="max-w-[230px] text-[19px] leading-[1.35] font-medium tracking-[0.02em] text-white min-[597px]:max-w-none">
           {t("leftHeadlineLine1")}
-          <br />
-          {t("leftHeadlineLine2")}
+          <br className="hidden min-[597px]:inline" /> {t("leftHeadlineLine2")}
         </p>
         <a
           href="#contact"
-          className="group mt-6 ml-23 inline-flex items-center gap-3 rounded-full bg-accent py-[8px] pr-[7px] pl-[10px] text-[19px] font-normal text-white transition-opacity hover:opacity-90"
+          className="group mt-6 ml-0 inline-flex items-center gap-2.5 rounded-full bg-accent py-[7px] pr-[6px] pl-[9px] text-[17px] font-normal text-white transition-opacity hover:opacity-90 min-[597px]:ml-23 min-[1067px]:gap-3 min-[1067px]:py-[8px] min-[1067px]:pr-[7px] min-[1067px]:pl-[10px] min-[1067px]:text-[19px]"
         >
           {t("cta")}
-          <span className="flex h-[31px] w-[31px] items-center justify-center overflow-hidden rounded-full bg-white">
+          <span className="flex h-[28px] w-[28px] items-center justify-center overflow-hidden rounded-full bg-white min-[1067px]:h-[31px] min-[1067px]:w-[31px]">
             <svg
               width="13.67"
               height="13.67"

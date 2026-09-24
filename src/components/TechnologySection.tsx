@@ -146,7 +146,7 @@ export default function TechnologySection() {
           <span className="text-[21px] font-normal tracking-[0.06em] text-cream/90 uppercase">
             {t("bannerEyebrow")}
           </span>
-          <h2 className="mt-3 text-[103px] leading-[0.95] font-medium tracking-[0.04em] text-cream">
+          <h2 className="mt-3 text-[clamp(40px,9vw,103px)] leading-[0.95] font-medium tracking-[0.04em] text-cream">
             {t("bannerHeading")}
           </h2>
         </div>
@@ -159,10 +159,10 @@ export default function TechnologySection() {
               незалежного пружинного лагу від скролу. */}
           <div ref={contentRef} className="pt-12 pb-24 md:pt-16">
           <motion.div style={{ y: leftLagY }}>
-            <h3 className="text-[43px] font-normal tracking-[0.02em] text-ink">
+            <h3 className="text-[clamp(28px,4.5vw,43px)] font-normal tracking-[0.02em] text-ink">
               {t("heading1")}
             </h3>
-            <p className="mt-4 max-w-md text-[23px] font-normal tracking-[0.02em] text-ink">
+            <p className="mt-4 max-w-md text-[clamp(17px,2.3vw,23px)] font-normal tracking-[0.02em] text-ink">
               {t("intro1")}
             </p>
 
@@ -206,13 +206,13 @@ export default function TechnologySection() {
               />
             </div>
 
-            <h3 className="mt-16 text-[43px] font-normal tracking-[0.02em] text-ink">
+            <h3 className="mt-16 text-[clamp(28px,4.5vw,43px)] font-normal tracking-[0.02em] text-ink">
               {t("heading2")}
             </h3>
             <span className="mt-6 block text-[17px] font-normal tracking-[0.02em] text-ink">
               {t("materialsLabel")}
             </span>
-            <p className="mt-2 max-w-md text-[22px] font-normal tracking-[0.02em] text-ink">
+            <p className="mt-2 max-w-md text-[clamp(16px,2.2vw,22px)] font-normal tracking-[0.02em] text-ink">
               {t("materialsText")}
             </p>
 

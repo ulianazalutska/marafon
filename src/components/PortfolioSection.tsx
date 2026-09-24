@@ -173,10 +173,10 @@ export default function PortfolioSection() {
           className="relative z-30 flex shrink-0 flex-col justify-between gap-10 px-6 md:w-[40%] md:px-0 md:pl-10"
         >
           <div>
-            <h2 className="max-w-xl text-[45px] leading-[54px] font-normal tracking-[0.04em] text-ink mb-[21px]">
+            <h2 className="max-w-xl text-[clamp(28px,5vw,45px)] leading-[1.2] font-normal tracking-[0.04em] text-ink mb-[21px]">
               {t("heading")}
             </h2>
-            <p className="mt-4 max-w-[429px] text-[24px] leading-[29px] font-normal tracking-[0.04em] text-ink">
+            <p className="mt-4 max-w-[429px] text-[clamp(17px,2.5vw,24px)] leading-[1.2] font-normal tracking-[0.04em] text-ink">
               {t("subtitle")}
             </p>
           </div>
