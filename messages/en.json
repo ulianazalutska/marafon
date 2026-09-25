@@ -7,11 +7,13 @@
   "Header": {
     "menu": "Menu",
     "close": "Close",
+    "skipToContent": "Skip to main content",
     "nav": {
       "catalog": "Catalog",
       "portfolio": "Portfolio",
       "production": "Production",
-      "contact": "Contact"
+      "contact": "Contact",
+      "ariaLabel": "Main navigation"
     }
   },
   "Hero": {
@@ -227,8 +229,10 @@
     "newsletterSubtitle": "Get news and roundups every month",
     "newsletterPlaceholder": "john@example.com",
     "newsletterAriaLabel": "Subscribe to the newsletter",
+    "newsletterEmailLabel": "Email for the newsletter",
     "newsletterThanks": "Thanks for subscribing!",
     "newsletterError": "Couldn't subscribe. Please try again.",
+    "opensInNewTab": "(opens in a new tab)",
     "copyrightLine1": "A wardrobe systems and interior studio.",
     "copyrightLine2": "All rights reserved",
     "designCredit": "Website design by Zalutska"

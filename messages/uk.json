@@ -7,11 +7,13 @@
   "Header": {
     "menu": "Меню",
     "close": "Закрити",
+    "skipToContent": "Перейти до основного контенту",
     "nav": {
       "catalog": "Каталог",
       "portfolio": "Портфоліо",
       "production": "Виробництво",
-      "contact": "Контакти"
+      "contact": "Контакти",
+      "ariaLabel": "Основна навігація"
     }
   },
   "Hero": {
@@ -227,8 +229,10 @@
     "newsletterSubtitle": "Отримуйте новини та підбірки щомісяця",
     "newsletterPlaceholder": "andriymel@gmail.com",
     "newsletterAriaLabel": "Підписатися на розсилку",
+    "newsletterEmailLabel": "Email для розсилки",
     "newsletterThanks": "Дякуємо за підписку!",
     "newsletterError": "Не вдалося підписатись. Спробуйте ще раз.",
+    "opensInNewTab": "(відкривається в новій вкладці)",
     "copyrightLine1": "Студія гардеробних систем та інтер'єру.",
     "copyrightLine2": "Усі права захищено",
     "designCredit": "Website design by Zalutska"

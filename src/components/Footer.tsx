@@ -125,6 +125,7 @@ export default function Footer() {
                   className="text-[18px] font-light tracking-[0.04em] text-brown-850 transition-colors hover:text-ink"
                 >
                   {s.label}
+                  <span className="sr-only"> {t("opensInNewTab")}</span>
                 </a>
               </li>
             ))}
@@ -201,7 +202,11 @@ export default function Footer() {
                 className="absolute -left-[9999px] h-0 w-0 opacity-0"
                 aria-hidden="true"
               />
+              <label htmlFor="newsletter-email" className="sr-only">
+                {t("newsletterEmailLabel")}
+              </label>
               <input
+                id="newsletter-email"
                 type="email"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
@@ -233,12 +238,12 @@ export default function Footer() {
               </button>
             </form>
             {newsletterSent && (
-              <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-accent">
+              <p role="status" className="mt-2 text-[12px] font-light tracking-[0.04em] text-accent">
                 {t("newsletterThanks")}
               </p>
             )}
             {newsletterError && (
-              <p className="mt-2 text-[12px] font-light tracking-[0.04em] text-red-600">
+              <p role="alert" className="mt-2 text-[12px] font-light tracking-[0.04em] text-red-600">
                 {t("newsletterError")}
               </p>
             )}

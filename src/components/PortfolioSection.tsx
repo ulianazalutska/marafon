@@ -180,7 +180,10 @@ export default function PortfolioSection() {
               {t("subtitle")}
             </p>
           </div>
-          <p className="text-[21px] leading-[25px] tracking-[0.04em] tabular-nums text-accent max-[1270px]:text-[17px] max-[767px]:text-[19px]">
+          <p
+            aria-live="polite"
+            className="text-[21px] leading-[25px] tracking-[0.04em] tabular-nums text-accent max-[1270px]:text-[17px] max-[767px]:text-[19px]"
+          >
             {index + 1} {t("counterOf")} {total}
           </p>
         </div>
@@ -189,7 +192,14 @@ export default function PortfolioSection() {
         <div className="min-w-0 flex-1 px-6 md:px-0">
           <div
             ref={stageRef}
-            className="relative h-[calc(58vh+40px)] w-[90%] md:w-full lg:h-[532px] lg:w-[655px]"
+            tabIndex={0}
+            role="group"
+            aria-label={t("heading")}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowRight" && index < total - 1) handleCommit("next");
+              else if (e.key === "ArrowLeft" && index > 0) handleCommit("prev");
+            }}
+            className="relative h-[calc(58vh+40px)] w-[90%] outline-none focus-visible:ring-2 focus-visible:ring-accent md:w-full lg:h-[532px] lg:w-[655px]"
           >
             {/* Наступне фото визирає статичною смужкою праворуч, разом зі своїм підписом */}
             {index + 1 < total && (

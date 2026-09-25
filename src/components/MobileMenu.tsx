@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { LOCALE_COOKIE, type Locale } from "@/i18n/config";
@@ -10,7 +10,11 @@ type MobileMenuProps = {
   open: boolean;
   onClose: () => void;
   links: { href: string; label: string }[];
+  triggerRef: RefObject<HTMLButtonElement | null>;
 };
+
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 const listVariants: Variants = {
   hidden: {},
@@ -79,9 +83,11 @@ function LogoReveal({ open }: { open: boolean }) {
   );
 }
 
-export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
+export default function MobileMenu({ open, onClose, links, triggerRef }: MobileMenuProps) {
   const t = useTranslations("Header");
   const locale = useLocale();
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const switchLocale = (next: Locale) => {
     if (next === locale) return;
@@ -99,21 +105,64 @@ export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
     const previousHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
+
+    // Фон (решта сторінки) лишається в DOM під панеллю — без цього Tab і
+    // скрін-рідер віртуальний курсор все одно потрапляють у контент, який
+    // візуально повністю накритий меню.
+    const mainEl = document.querySelector("main");
+    const footerEl = document.querySelector("footer");
+    // Гамбургер-кнопка та лишений видимим (597–1067px) UA/EN-перемикач
+    // сидять поруч із самою панеллю меню як діти <header> — inert саме на
+    // їхньому спільному батьківському div, а не на всьому <header>, бо
+    // <MobileMenu> — сестринський елемент цього div, а не його нащадок:
+    // inert на <header> зробив би inert і саму щойно відкриту панель.
+    const triggerEl = triggerRef.current;
+    const headerContentEl = triggerEl?.parentElement ?? null;
+    [mainEl, footerEl, headerContentEl].forEach((el) => el?.setAttribute("inert", ""));
+
+    // Фокус іде в панель одразу при відкритті (на кнопку закриття — перший
+    // логічний пункт), а при закритті повертається на гамбургер-кнопку, що
+    // відкрила меню: інакше клавіатурний фокус лишається "висіти" в
+    // елементі, якого вже нема в акцесибіліті-дереві.
+    closeButtonRef.current?.focus();
+
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusable = panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+      if (!focusable || focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousBodyOverflow;
       document.documentElement.style.overflow = previousHtmlOverflow;
+      [mainEl, footerEl, headerContentEl].forEach((el) => el?.removeAttribute("inert"));
       window.removeEventListener("keydown", onKeyDown);
+      triggerEl?.focus();
     };
-  }, [open, onClose]);
+  }, [open, onClose, triggerRef]);
 
   return (
     <AnimatePresence>
       {open && (
         <motion.div
+          ref={panelRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t("menu")}
+          id="mobile-menu"
           variants={panelVariants}
           initial="hidden"
           animate="visible"
@@ -123,6 +172,7 @@ export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
           <div className="flex items-center justify-between">
             <LogoReveal open={open} />
             <button
+              ref={closeButtonRef}
               type="button"
               onClick={onClose}
               className="text-[19px] tracking-[0.02em] text-white transition-opacity hover:opacity-80"
@@ -132,6 +182,7 @@ export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
           </div>
 
           <motion.nav
+            aria-label={t("nav.ariaLabel")}
             variants={listVariants}
             initial="hidden"
             animate="visible"
@@ -163,6 +214,7 @@ export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
                 stroke="currentColor"
                 strokeWidth="1.8"
                 className="shrink-0"
+                aria-hidden="true"
               >
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
               </svg>

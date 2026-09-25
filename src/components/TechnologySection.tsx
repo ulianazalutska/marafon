@@ -200,10 +200,13 @@ export default function TechnologySection() {
                 на мобільному для нього просто немає місця над fold) */}
             <div className="relative mt-10 min-[1237px]:hidden">
               <div
+                tabIndex={0}
+                role="group"
+                aria-label={t("heading1")}
                 onScroll={(e) => {
                   if (e.currentTarget.scrollLeft > 10) setShowSwipeHint(false);
                 }}
-                className="scrollbar-hide -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-1"
+                className="scrollbar-hide -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-1 outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
                 {images.technology.map((src, i) => (
                   <div
@@ -250,6 +253,7 @@ export default function TechnologySection() {
                     key={s.name}
                     type="button"
                     onClick={() => setActiveSwatch(active ? null : s.name)}
+                    aria-pressed={active}
                     className={`spec-row flex w-full items-center justify-between border-b border-brown-300/40 py-4 text-left transition-colors ${
                       active ? "text-ink" : ""
                     }`}

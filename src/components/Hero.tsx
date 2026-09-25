@@ -127,6 +127,7 @@ export default function Hero() {
               ref={videoRef}
               src={images.heroPreviewVideo}
               poster={images.heroPreviewPoster}
+              preload="none"
               muted
               loop
               playsInline

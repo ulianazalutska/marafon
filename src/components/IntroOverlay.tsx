@@ -67,11 +67,21 @@ export default function IntroOverlay() {
     window.addEventListener("touchmove", blockTouchMove, { passive: false });
     window.addEventListener("keydown", blockKeys);
     window.addEventListener("scroll", blockScrollDrag, { passive: true });
+
+    // This overlay is opaque and covers the whole viewport, but Header/main
+    // underneath aren't otherwise hidden from assistive tech — without this,
+    // Tab during the ~2-3s animation reaches links a sighted user can't see
+    // (the overlay visually covers them). `inert` pulls them out of both the
+    // tab order and the accessibility tree until the intro hands off.
+    const inertTargets = [document.querySelector("header"), document.querySelector("main")];
+    inertTargets.forEach((el) => el?.setAttribute("inert", ""));
+
     const unblockScroll = () => {
       window.removeEventListener("wheel", blockWheel);
       window.removeEventListener("touchmove", blockTouchMove);
       window.removeEventListener("keydown", blockKeys);
       window.removeEventListener("scroll", blockScrollDrag);
+      inertTargets.forEach((el) => el?.removeAttribute("inert"));
     };
 
     const ctx = gsap.context(() => {

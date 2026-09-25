@@ -56,6 +56,7 @@ export default function Header() {
   // skippable imperative step after mount.
   const navRef = useRef<HTMLElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (sessionStorage.getItem(INTRO_SEEN_KEY) === "true") return;
@@ -186,6 +187,7 @@ export default function Header() {
       <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-6">
         <nav
           ref={navRef}
+          aria-label={t("nav.ariaLabel")}
           className="hidden items-center gap-8 text-[19px] tracking-[0.02em] min-[1067px]:flex"
         >
           {links.map((link) => (
@@ -201,8 +203,12 @@ export default function Header() {
         </nav>
 
         <motion.button
+          ref={menuButtonRef}
           type="button"
           onClick={() => setIsMenuOpen(true)}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
+          aria-haspopup="dialog"
           style={{ color: uiColor }}
           className="ml-auto flex text-[22px] font-normal tracking-[0.02em] min-[597px]:ml-0 min-[597px]:text-[29px] min-[597px]:font-medium min-[1067px]:hidden"
         >
@@ -238,6 +244,7 @@ export default function Header() {
               stroke="currentColor"
               strokeWidth="1.8"
               className="shrink-0"
+              aria-hidden="true"
             >
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
             </svg>
@@ -268,7 +275,12 @@ export default function Header() {
         </div>
       </div>
 
-      <MobileMenu open={isMenuOpen} onClose={() => setIsMenuOpen(false)} links={links} />
+      <MobileMenu
+        open={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        links={links}
+        triggerRef={menuButtonRef}
+      />
     </motion.header>
   );
 }

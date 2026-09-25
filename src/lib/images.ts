@@ -52,7 +52,6 @@ export const images = {
     "/portfolio-carousel/wardrobe-5.webp",
     "/portfolio-carousel/wardrobe-6.webp",
   ],
-  material: "/technology/materials/sample-fabric.webp",
 };
 
 // Мозаїка для вхідної анімації: [0] — наше hero-фото (розкривається на весь
@@ -70,7 +69,6 @@ export const mosaicImages = [
   images.portfolioCarousel[4],
   images.portfolioCarousel[5],
   images.production.main,
-  images.material,
   images.createForYou.wardrobes,
   images.createForYou.systems,
   images.process.install,

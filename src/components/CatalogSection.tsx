@@ -131,20 +131,26 @@ export default function CatalogSection() {
             const isOpen = openKey === item.key;
             return (
             <div key={item.key} className="flex flex-col">
-              <a
-                href="#contact"
-                className="group relative flex aspect-[4/5] flex-col text-cream"
-              >
-                <div className="absolute inset-0 overflow-hidden bg-brown-950">
-                  <Image
-                    src={item.image}
-                    alt={`${t("altPrefix")} ${item.name}`}
-                    fill
-                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brown-950/90 via-transparent to-transparent" />
-                </div>
+              {/* group живе тут, а не на <a>: раніше кнопка інфо-попапа була
+                  вкладена всередину <a href> (невалідне HTML-вкладення
+                  interactive-в-interactive, ламає Tab/скрін-рідери). Тепер
+                  <a> і кнопка — сестринські елементи в спільному
+                  relative-боксі того самого розміру (aspect-[4/5], як
+                  раніше мав сам <a>), тож геометрія й group-hover
+                  (зум фото, попап) лишаються піксель-в-піксель тими самими. */}
+              <div className="group relative aspect-[4/5] text-cream">
+                <a href="#contact" className="absolute inset-0 block">
+                  <div className="absolute inset-0 overflow-hidden bg-brown-950">
+                    <Image
+                      src={item.image}
+                      alt={`${t("altPrefix")} ${item.name}`}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-brown-950/90 via-transparent to-transparent" />
+                  </div>
+                </a>
 
                 {/* Пульсуюча точка + інфо-блок: на десктопі hover, на
                     тач-екранах (планшет/телефон, де hover не працює) — тап */}
@@ -163,12 +169,9 @@ export default function CatalogSection() {
                   />
                   <button
                     type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setOpenKey(isOpen ? null : item.key);
-                    }}
+                    onClick={() => setOpenKey(isOpen ? null : item.key)}
                     aria-expanded={isOpen}
+                    aria-controls={`catalog-info-${item.key}`}
                     aria-label={item.name}
                     className={`relative flex h-[33px] w-[33px] cursor-pointer items-center justify-center rounded-full bg-cream shadow-md transition-all duration-300 group-hover/dot:h-2.5 group-hover/dot:w-2.5 ${
                       isOpen ? "h-2.5 w-2.5" : ""
@@ -186,6 +189,9 @@ export default function CatalogSection() {
                   </button>
 
                   <div
+                    id={`catalog-info-${item.key}`}
+                    role="region"
+                    aria-label={item.name}
                     className={`pointer-events-none absolute top-1/2 w-56 -translate-y-1/2 bg-[#FFFFFF] p-4 opacity-0 shadow-xl transition-opacity duration-200 group-hover/dot:opacity-100 md:w-64 ${
                       isOpen ? "opacity-100" : ""
                     } ${
@@ -225,7 +231,7 @@ export default function CatalogSection() {
                     </ul>
                   </div>
                 </div>
-              </a>
+              </div>
 
               {/* Підпис під карткою */}
               <div className="pt-3">

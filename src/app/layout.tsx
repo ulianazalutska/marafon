@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Exo_2, Rajdhani } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { buildStructuredData } from "@/lib/structuredData";
 import "./globals.css";
 
 const exo2 = Exo_2({
@@ -32,6 +33,9 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL("https://armadero.ua"),
     title,
     description,
+    alternates: {
+      canonical: "/",
+    },
     openGraph: {
       title,
       description,
@@ -53,6 +57,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const locale = await getLocale();
   const messages = await getMessages();
+  const tMeta = await getTranslations("Meta");
+  const tFaq = await getTranslations("Faq");
+  const structuredData = buildStructuredData({
+    locale,
+    description: tMeta("description"),
+    faqItems: tFaq.raw("items") as { q: string; a: string }[],
+  });
 
   return (
     <html
@@ -61,6 +72,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
+        <script
+          type="application/ld+json"
+          // JSON.stringify саме перед вставкою: без сторонніх/користувацьких
+          // даних всередині (усе з наших же messages/*.json), тому XSS-ризику
+          // немає, але екрануємо "<" про всяк випадок, щоб браузер не
+          // сплутав вміст з кінцем тега <script>.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
         {/*
           <html> has suppressHydrationWarning because the script below sets
           a style attribute on it before React hydrates — without that prop,

@@ -99,6 +99,7 @@ export default function ContactSection() {
               {submitted ? (
                 <motion.div
                   key="success"
+                  role="status"
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
@@ -227,7 +228,7 @@ export default function ContactSection() {
                   </p>
 
                   {error && (
-                    <p className="text-center text-[13px] text-red-600">
+                    <p role="alert" className="text-center text-[13px] text-red-600">
                       {t("errorMessage")}
                     </p>
                   )}
