@@ -215,8 +215,11 @@ export default function Header() {
           {t("menu")}
         </motion.button>
 
-        <motion.p
+        <motion.button
           id="header-logo"
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label={t("nav.ariaLabel")}
           style={{
             fontSize: logoFontSize,
             left: logoLeft,
@@ -224,11 +227,12 @@ export default function Header() {
             letterSpacing: logoTracking,
             color: logoColor,
             opacity: logoReady ? 1 : 0,
+            pointerEvents: logoReady ? "auto" : "none",
           }}
-          className="pointer-events-none fixed z-50 leading-none font-medium whitespace-nowrap font-logo"
+          className="fixed z-50 cursor-pointer leading-none font-medium whitespace-nowrap font-logo"
         >
           ARMADERO
-        </motion.p>
+        </motion.button>
 
         <div ref={langRef} className="flex items-center gap-5">
           <motion.a

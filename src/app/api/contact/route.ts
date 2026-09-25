@@ -16,7 +16,7 @@ const ratelimit =
   process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
     ? new Ratelimit({
         redis: Redis.fromEnv(),
-        limiter: Ratelimit.slidingWindow(5, "10 m"),
+        limiter: Ratelimit.slidingWindow(10, "10 m"),
         prefix: "armadero:contact",
       })
     : null;
@@ -43,17 +43,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Server is not configured" }, { status: 500 });
   }
 
-  if (ratelimit) {
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-    const { success } = await ratelimit.limit(ip);
-    if (!success) {
-      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
-    }
-  }
-
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+
+  if (ratelimit) {
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    // Keyed per form type so testing/spamming the newsletter field can't
+    // burn the budget for real leads, and vice versa.
+    const key = `${ip}:${body.type === "newsletter" ? "newsletter" : "contact"}`;
+    const { success } = await ratelimit.limit(key);
+    if (!success) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
   }
 
   // Honeypot: bots fill every field, real users never see or touch this one.
