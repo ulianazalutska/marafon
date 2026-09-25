@@ -224,6 +224,7 @@
     "linkAbout": "Production",
     "linkPrivacy": "Privacy Policy",
     "linkTerms": "Terms of Use",
+    "linkCookies": "Cookies",
     "address": "51 Antonovycha St, 2nd floor, 01015 Kyiv, Ukraine",
     "newsletterHeading": "Subscribe to our Newsletter",
     "newsletterSubtitle": "Get news and roundups every month",
@@ -232,6 +233,7 @@
     "newsletterEmailLabel": "Email for the newsletter",
     "newsletterThanks": "Thanks for subscribing!",
     "newsletterError": "Couldn't subscribe. Check your email and try again.",
+    "newsletterConsent": "You can unsubscribe anytime by emailing hello@armadero.ua.",
     "opensInNewTab": "(opens in a new tab)",
     "copyrightLine1": "A wardrobe systems and interior studio.",
     "copyrightLine2": "All rights reserved",
@@ -248,7 +250,9 @@
     "s1heading": "1. General provisions",
     "s1body": "This Privacy Policy explains how ARMADERO (\"we\", \"the Company\") processes the personal data of armadero.ua visitors and clients who submit a request to order a wardrobe system. We follow the Law of Ukraine \"On Personal Data Protection\" No. 2297-VI and other applicable Ukrainian data protection legislation.",
     "s2heading": "2. What data we collect",
-    "s2body": "Through the request form and the newsletter signup form in the footer, we may collect: your name, phone number, email address, and any message text you voluntarily provide. The site does not use analytics or advertising cookies — the browser's technically necessary sessionStorage is used only to avoid replaying the intro animation within one session, and shares no data with third parties.",
+    "s2body": "Through the request form and the newsletter signup form in the footer, we may collect: your name, phone number, email address, and any message text you voluntarily provide. The site does not use analytics or advertising cookies: the only cookie we set (locale) stores your chosen site language, and the browser's sessionStorage is used only to avoid replaying the intro animation within one session. No data is shared with third parties.",
+    "s2cookiesPrefix": "For more on cookies, see our",
+    "s2cookiesLinkText": "Cookies page",
     "s3heading": "3. Purpose of processing",
     "s3body": "Data from the request form is used solely to contact you, discuss your order's details, arrange a measuring visit, and prepare a quote. Data from the newsletter form is used to send news and product roundups about Armadero. We do not sell or share your personal data with third parties for marketing purposes.",
     "s4heading": "4. Legal basis and retention",
@@ -286,5 +290,26 @@
     "s6heading": "6. Contact",
     "s6prefix": "For questions about these Terms, email",
     "s6suffix": "or call the phone number listed in the site's footer."
+  },
+  "Cookies": {
+    "metaTitle": "Cookies — Armadero",
+    "metaDescription": "Which cookies armadero.ua uses and why.",
+    "title": "Cookie Policy",
+    "updated": "Last updated: September 25, 2026",
+    "s1heading": "1. What cookies are",
+    "s1body": "Cookies are small text files a site stores in your browser to remember certain settings between visits.",
+    "s2heading": "2. The cookie we use",
+    "s2body": "armadero.ua uses a single cookie — locale. It stores your chosen site language (Ukrainian/English) so we don't ask you to pick it again on your next visit. It lasts 1 year. This cookie is technically necessary for the language switcher and is not used for analytics, advertising, or behavioral tracking.",
+    "s3heading": "3. Analytics and advertising cookies",
+    "s3body": "The site does not use Google Analytics, the Facebook pixel, or any other analytics or advertising cookies, and shares no data with ad networks.",
+    "s4heading": "4. Managing cookies",
+    "s4body": "You can delete or block the locale cookie at any time through your browser settings — this will only reset the site's language preference and won't affect any other functionality.",
+    "s5heading": "5. Contact",
+    "s5prefix": "For questions about cookies, email"
+  },
+  "CookieBanner": {
+    "message": "This site uses only a technically necessary cookie to remember your language preference. No analytics or advertising cookies are used.",
+    "linkText": "Learn more",
+    "accept": "Got it"
   }
 }

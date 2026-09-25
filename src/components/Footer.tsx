@@ -20,6 +20,7 @@ export default function Footer() {
     { href: "/#production", label: t("linkAbout") },
     { href: "/privacy", label: t("linkPrivacy") },
     { href: "/terms", label: t("linkTerms") },
+    { href: "/cookies", label: t("linkCookies") },
   ];
 
   const introRef = useRef<HTMLDivElement>(null);
@@ -247,6 +248,9 @@ export default function Footer() {
                 {t("newsletterError")}
               </p>
             )}
+            <p className="mt-2 text-[11px] font-light tracking-[0.02em] text-brown-850/70">
+              {t("newsletterConsent")}
+            </p>
           </div>
         </div>
       </div>

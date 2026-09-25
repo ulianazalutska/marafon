@@ -4,16 +4,15 @@ import LegalHeader from "@/components/LegalHeader";
 import Footer from "@/components/Footer";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("Privacy");
+  const t = await getTranslations("Cookies");
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
   };
 }
 
-export default async function PrivacyPage() {
-  const t = await getTranslations("Privacy");
-  const rightsItems = t.raw("s5items") as string[];
+export default async function CookiesPage() {
+  const t = await getTranslations("Cookies");
 
   return (
     <>
@@ -35,13 +34,6 @@ export default async function PrivacyPage() {
           <section>
             <h2 className="text-xl font-medium text-ink">{t("s2heading")}</h2>
             <p className="mt-3">{t("s2body")}</p>
-            <p className="mt-3">
-              {t("s2cookiesPrefix")}{" "}
-              <a href="/cookies" className="underline">
-                {t("s2cookiesLinkText")}
-              </a>
-              .
-            </p>
           </section>
 
           <section>
@@ -50,33 +42,14 @@ export default async function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-medium text-ink">
-              {t("s4heading")}
-            </h2>
+            <h2 className="text-xl font-medium text-ink">{t("s4heading")}</h2>
             <p className="mt-3">{t("s4body")}</p>
           </section>
 
           <section>
             <h2 className="text-xl font-medium text-ink">{t("s5heading")}</h2>
-            <p className="mt-3">{t("s5intro")}</p>
-            <ul className="mt-3 list-disc space-y-1.5 pl-5">
-              {rightsItems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
             <p className="mt-3">
-              {t("s5outro")}{" "}
-              <a href="mailto:hello@armadero.ua" className="underline">
-                hello@armadero.ua
-              </a>
-              .
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-medium text-ink">{t("s6heading")}</h2>
-            <p className="mt-3">
-              {t("s6prefix")}{" "}
+              {t("s5prefix")}{" "}
               <a href="mailto:hello@armadero.ua" className="underline">
                 hello@armadero.ua
               </a>

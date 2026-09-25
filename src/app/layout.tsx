@@ -3,6 +3,7 @@ import { Exo_2, Rajdhani } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { buildStructuredData } from "@/lib/structuredData";
+import CookieBanner from "@/components/CookieBanner";
 import "./globals.css";
 
 const exo2 = Exo_2({
@@ -133,6 +134,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-cream text-ink font-sans">
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
+          <CookieBanner />
         </NextIntlClientProvider>
       </body>
     </html>
