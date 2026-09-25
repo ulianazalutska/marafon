@@ -32,6 +32,12 @@ No test runner is configured. Verify UI changes by running the dev server and ch
 
 `ProcessSection.tsx` implements a reusable-looking but currently one-off pattern: full-viewport panels in normal document flow, each riding up over the previous one via a synchronized GSAP `y`-transform (see `OVERLAP_VH` constant and per-panel `ScrollTrigger`s keyed off the first panel's start). Known gotcha already fixed once: the **last** panel must not receive the same "ride up and get covered" treatment as interior panels (condition `i > 0 && i < TOTAL_PANELS - 1`), otherwise it exits the viewport before the next real section arrives, leaving a visible gap. Reuse this pattern (rather than reinventing it) if another section needs the same stacked-scroll effect.
 
+## Deployment
+
+Hosted on Vercel, connected to the `ulianazalutska/marafon` GitHub repo — every push to `main` auto-deploys. Current production URL: https://marafon-oyn2foml2-ulianazalutska.vercel.app
+
+Required env vars (set in Vercel project settings, values in local `.env.local`): `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TELEGRAM_TOPIC_LEADS`, `TELEGRAM_TOPIC_NEWSLETTER`, `GOOGLE_SHEETS_URL`, `GOOGLE_SHEETS_SECRET`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` — all consumed by `src/app/api/contact/route.ts`.
+
 ## Known environment quirk (debugging note)
 
 If GSAP ScrollTrigger scrub animations appear frozen while driving the page through the `claude-in-chrome` browser automation tool, check `document.hidden` in the console first — a background/inactive automated tab can cause Chrome to pause `requestAnimationFrame`, stalling GSAP's ticker even though the underlying trigger state (`start`/`end`/`progress`, checkable via a forced `ScrollTrigger.update()`) is correct. This is a test-environment artifact, not necessarily a real bug — confirm with an actual manual scroll before changing animation logic.
