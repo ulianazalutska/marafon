@@ -25,7 +25,7 @@
     "videoCaption": "Light. Motion. Comfort.",
     "leftHeadlineLine1": "A wardrobe built for",
     "leftHeadlineLine2": "your space and lifestyle",
-    "cta": "Design your wardrobe"
+    "cta": "Leave a request"
   },
   "CreateForYou": {
     "eyebrow": "We'll create for you",
@@ -73,7 +73,7 @@
   },
   "Technology": {
     "bannerEyebrow": "Technology & finishes",
-    "bannerHeading": "Finishes",
+    "bannerHeading": "Configurations",
     "bannerAlt": "ARMADERO technology and finishes",
     "heading1": "Technology in every module",
     "intro1": "The motorized rail, lighting, and soft-close hinges are all controlled with a single touch — hidden inside the front panel, nothing extra on show.",
@@ -154,7 +154,7 @@
       {
         "name": "Dmytro Savchuk",
         "role": "Dnipro",
-        "text": "The measuring visit was free and fast. The site's configurator let us see right away what the wardrobe would look like."
+        "text": "The measuring visit was free and fast. The site's catalog helped us pick the right series right away."
       },
       {
         "name": "Oleh Petrenko",
@@ -201,27 +201,27 @@
   "Contact": {
     "imageAlt": "ARMADERO wardrobe system",
     "heading": "Get in touch",
-    "successMessage": "Thank you! Your request has been sent — we'll get back to you shortly.",
+    "successMessage": "Thank you! Your request has been sent — we'll get back to you within one business day.",
     "backToForm": "Back to the form",
     "fields": {
       "name": { "label": "Name", "placeholder": "John Smith" },
       "phone": { "label": "Phone", "placeholder": "+1 555 0100" },
       "email": { "label": "Email", "placeholder": "john@example.com" }
     },
-    "messageLabel": "Message",
-    "messagePlaceholder": "Write here",
+    "messageLabel": "Message (optional)",
+    "messagePlaceholder": "Tell us about your room size and preferences",
     "consentPrefix": "By submitting the form, you agree to the",
     "consentTerms": "terms of use",
     "consentAnd": "and",
     "consentPrivacy": "privacy policy",
-    "errorMessage": "Couldn't send your request. Please try again.",
+    "errorMessage": "Couldn't send your request. Please try again or call us: +380 44 200 15 15.",
     "submitting": "Sending...",
     "submit": "Send request"
   },
   "Footer": {
     "headlinePrefix": "Order your",
     "headlineSuffix": "Armadero wardrobe",
-    "linkAbout": "About us",
+    "linkAbout": "Production",
     "linkPrivacy": "Privacy Policy",
     "linkTerms": "Terms of Use",
     "address": "51 Antonovycha St, 2nd floor, 01015 Kyiv, Ukraine",
@@ -231,7 +231,7 @@
     "newsletterAriaLabel": "Subscribe to the newsletter",
     "newsletterEmailLabel": "Email for the newsletter",
     "newsletterThanks": "Thanks for subscribing!",
-    "newsletterError": "Couldn't subscribe. Please try again.",
+    "newsletterError": "Couldn't subscribe. Check your email and try again.",
     "opensInNewTab": "(opens in a new tab)",
     "copyrightLine1": "A wardrobe systems and interior studio.",
     "copyrightLine2": "All rights reserved",
