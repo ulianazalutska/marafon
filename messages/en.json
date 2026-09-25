@@ -311,5 +311,11 @@
     "message": "This site uses only a technically necessary cookie to remember your language preference. No analytics or advertising cookies are used.",
     "linkText": "Learn more",
     "accept": "Got it"
+  },
+  "NotFound": {
+    "metaTitle": "Page Not Found — Armadero",
+    "title": "Page not found",
+    "body": "The link may be outdated or the page may have moved. Let's get you back home.",
+    "cta": "Back to home"
   }
 }
