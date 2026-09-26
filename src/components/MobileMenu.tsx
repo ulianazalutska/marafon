@@ -28,15 +28,40 @@ const itemVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
 };
 
+// Телефон/UA-EN з'являються останніми, вже після того як штора (0.65s)
+// повністю розкрилась — інакше вони показувались на середині розкриття.
+const footerVariants: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, delay: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 // Вихід швидший за вхід (типове правило UX для оверлеїв): штора
 // розкривається довше (0.65s), закривається помітно швидше (0.35s).
-const panelVariants: Variants = {
+//
+// Анімується лише фон-"штора" (окремий елемент нижче, transform-origin:
+// top), а не сама панель з контентом: clip-path на весь екран — layout-
+// важка властивість, яку мобільні браузери часто не композитять на GPU,
+// через що при відкритті смикались NAV-пункти. scaleY — суто transform,
+// завжди на GPU-шарі.
+// Контент (лого, NAV, футер меню) фейдиться окремо, швидше за 0.35s
+// закриття штори — інакше він лишався б статично видимим, поки штора
+// стискається, і зникав різким стрибком в останньому кадрі.
+const contentVariants: Variants = {
+  hidden: { opacity: 0, transition: { duration: 0.2, ease: [0.65, 0, 0.35, 1] } },
+  visible: { opacity: 1, transition: { duration: 0.2, delay: 0.3 } },
+};
+
+const curtainVariants: Variants = {
   hidden: {
-    clipPath: "inset(0% 0% 100% 0%)",
+    scaleY: 0,
     transition: { duration: 0.35, ease: [0.65, 0, 0.35, 1] },
   },
   visible: {
-    clipPath: "inset(0% 0% 0% 0%)",
+    scaleY: 1,
     transition: { duration: 0.65, ease: [0.65, 0, 0.35, 1] },
   },
 };
@@ -157,18 +182,30 @@ export default function MobileMenu({ open, onClose, links, triggerRef }: MobileM
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
+        <div
           ref={panelRef}
           role="dialog"
           aria-modal="true"
           aria-label={t("menu")}
           id="mobile-menu"
-          variants={panelVariants}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          className="fixed inset-0 z-[60] flex flex-col bg-ink px-6 pt-6 pb-8 min-[1067px]:hidden"
+          className="fixed inset-0 z-[60] flex flex-col px-6 pt-6 pb-8 min-[1067px]:hidden"
         >
+          <motion.div
+            variants={curtainVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            style={{ transformOrigin: "top" }}
+            className="absolute inset-0 -z-10 bg-ink"
+          />
+
+          <motion.div
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="flex flex-1 flex-col"
+          >
           <div className="flex items-center justify-between">
             <LogoReveal open={open} />
             <button
@@ -201,7 +238,12 @@ export default function MobileMenu({ open, onClose, links, triggerRef }: MobileM
             ))}
           </motion.nav>
 
-          <div className="mt-auto flex items-center justify-between text-white">
+          <motion.div
+            variants={footerVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-auto flex items-center justify-between text-white"
+          >
             <a
               href="tel:+380442001515"
               className="flex items-center gap-2 text-[17px] tracking-[0.02em] transition-opacity hover:opacity-80"
@@ -239,8 +281,9 @@ export default function MobileMenu({ open, onClose, links, triggerRef }: MobileM
                 EN
               </button>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );
