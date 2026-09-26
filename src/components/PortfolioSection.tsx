@@ -91,6 +91,7 @@ function Slide({
           src={images.portfolioCarousel[index]}
           alt={`${altPrefix} ${p.area}, ${p.sections}`}
           fill
+          priority={index === 0}
           draggable={false}
           sizes="(min-width: 768px) 55vw, 90vw"
           className="pointer-events-none object-cover"

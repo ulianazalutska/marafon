@@ -24,12 +24,17 @@ export default function StackedIntro({ children }: { children: ReactNode }) {
     window.addEventListener("pagehide", saveScrollY);
 
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: pinnedRef.current,
-        start: "top top",
-        end: "bottom top",
-        pin: true,
-        pinSpacing: false,
+      // Pin+ride-up is desktop-only: on tablets/phones it fights native
+      // scroll momentum and visibly janks, so below this breakpoint
+      // CreateForYouSection just scrolls in normally, no pin.
+      gsap.matchMedia().add("(min-width: 1024px)", () => {
+        ScrollTrigger.create({
+          trigger: pinnedRef.current,
+          start: "top top",
+          end: "bottom top",
+          pin: true,
+          pinSpacing: false,
+        });
       });
     });
 
@@ -85,7 +90,7 @@ export default function StackedIntro({ children }: { children: ReactNode }) {
       <div ref={pinnedRef} className="relative z-0">
         {pinned}
       </div>
-      <div className="relative z-10 overflow-hidden rounded-t-[2.5rem] shadow-[0_-40px_60px_-20px_rgba(0,0,0,0.4)]">
+      <div className="relative z-10 overflow-hidden shadow-[0_-40px_60px_-20px_rgba(0,0,0,0.4)] lg:rounded-t-[2.5rem]">
         {overlay}
       </div>
     </>
