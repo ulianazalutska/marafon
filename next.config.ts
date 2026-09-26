@@ -8,7 +8,10 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
   images: {
-    qualities: [75, 100],
+    // 85 — sweet spot for hero/intro full-bleed photos: JPEG/WebP quality
+    // curves are nearly flat between 75-90 in file size, but 75 alone
+    // visibly softens large photographic banners on high-DPI phones.
+    qualities: [75, 85],
   },
   // Файли з public/<фото-теки>/ і корінна mp4-прев'юшка не проходять через
   // next/image (напряму по <video src>/og:image/PWA-іконках), тому без цього

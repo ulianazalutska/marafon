@@ -24,8 +24,8 @@ const listVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.35, ease: "easeOut" } },
 };
 
 // Телефон/UA-EN з'являються останніми, вже після того як штора (0.65s)
