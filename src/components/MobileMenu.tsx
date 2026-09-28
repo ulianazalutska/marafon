@@ -234,7 +234,7 @@ export default function MobileMenu({ open, onClose, links, triggerRef }: MobileM
                 href={link.href}
                 onClick={onClose}
                 variants={itemVariants}
-                className="text-[29px] font-medium tracking-[0.02em] text-white transition-opacity hover:opacity-80"
+                className="text-[29px] font-medium tracking-[0.02em] text-white hover:opacity-80"
               >
                 {link.label}
               </motion.a>
