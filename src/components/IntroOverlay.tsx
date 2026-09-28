@@ -309,7 +309,13 @@ export default function IntroOverlay() {
   if (!visible) return null;
 
   return (
-    <div ref={overlayRef} className="fixed inset-0 z-[100] overflow-hidden bg-cream">
+    // max-[596px]:hidden matches the isMobileViewport check above (JS hides
+    // it too, via display:none on overlayRef) — but the server has no way
+    // to know viewport size, so it always renders this markup. Without the
+    // CSS rule, phones flash the opaque overlay for a frame on first paint
+    // (SSR HTML paints before hydration/JS runs) before the layout effect
+    // gets a chance to hide it.
+    <div ref={overlayRef} className="fixed inset-0 z-[100] overflow-hidden bg-cream max-[596px]:hidden">
       <div
         ref={typeRef}
         aria-hidden="true"
