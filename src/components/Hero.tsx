@@ -108,14 +108,15 @@ export default function Hero() {
           of what would otherwise be a needlessly large desktop photo
           downloaded and cropped client-side. <source> here is picked by the
           browser's own HTML preload scanner before any JS runs, same as a
-          bare <Image priority> would be. */}
+          bare <Image preload fetchPriority="high"> would be. */}
       <picture>
         <source media="(max-width: 767px)" srcSet={images.heroMobile} />
         <Image
           src={images.hero}
           alt=""
           fill
-          priority
+          preload
+          fetchPriority="high"
           quality={85}
           sizes="100vw"
           className="object-cover"
