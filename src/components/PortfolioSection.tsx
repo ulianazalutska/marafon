@@ -134,12 +134,12 @@ export default function PortfolioSection() {
                 if (e.key === "ArrowRight" && index < total - 1) scrollToIndex(index + 1);
                 else if (e.key === "ArrowLeft" && index > 0) scrollToIndex(index - 1);
               }}
-              className="flex h-full w-full overflow-x-hidden scroll-smooth outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="flex h-full w-full overflow-x-hidden scroll-smooth outline-none focus-visible:ring-2 focus-visible:ring-accent md:gap-4"
             >
               {projects.map((p, i) => (
                 <div
                   key={i}
-                  className="flex h-full w-full flex-none flex-col"
+                  className="flex h-full w-full flex-none flex-col md:w-[calc(100%-70px)]"
                 >
                   <div className="relative flex-1">
                     <Image
