@@ -7,6 +7,17 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  experimental: {
+    // Inlines the (small, Tailwind-atomic) CSS bundle into <style> in the
+    // initial HTML instead of a blocking <link> — this is a one-page site
+    // where most loads are first-time visitors, exactly the case this flag
+    // is meant for (see inlineCss docs: "Enable if you use atomic CSS and
+    // want to optimize first-load performance for new visitors"). Trade-off
+    // is returning visitors re-download the CSS instead of hitting cache,
+    // but that's a smaller cost here than the render-blocking request it
+    // removes. Production builds only — no effect in `next dev`.
+    inlineCss: true,
+  },
   images: {
     // 85 — sweet spot for hero/intro full-bleed photos: JPEG/WebP quality
     // curves are nearly flat between 75-90 in file size, but 75 alone
