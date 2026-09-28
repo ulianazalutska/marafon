@@ -116,12 +116,13 @@ export default function PortfolioSection() {
           </p>
         </div>
 
-        {/* Фото тримається праворуч, у своєму блоці. Слайд вужчий за stage,
-            тому наступне фото завжди трохи "підглядає" з правого краю. */}
-        <div className="min-w-0 flex-1 px-6 md:px-0">
+        {/* Фото тримається праворуч, у своєму блоці. На мобільному —
+            full-bleed на всю ширину екрана (без px, на відміну від
+            текстового блоку зліва), від md — у межах своєї колонки. */}
+        <div className="min-w-0 flex-1 md:px-0">
           <div
             ref={stageRef}
-            className="relative h-[calc(58vh+40px)] w-[90%] md:w-full lg:h-[532px]"
+            className="relative h-[calc(58vh+40px)] w-full lg:h-[532px]"
           >
             <div
               ref={trackRef}
