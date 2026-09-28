@@ -153,7 +153,7 @@ export default function PortfolioSection() {
                       className="pointer-events-none object-cover"
                     />
                   </div>
-                  <p className="min-h-[70px] pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] text-ink md:min-h-[65px] md:whitespace-nowrap max-[1270px]:text-[17px] max-[767px]:text-[19px]">
+                  <p className="min-h-[70px] px-6 pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] text-ink md:min-h-[65px] md:px-0 md:whitespace-nowrap max-[1270px]:text-[17px] max-[767px]:text-[19px]">
                     {p.area}, {p.sections}, {p.series} — {p.note}
                   </p>
                 </div>
