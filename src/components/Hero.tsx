@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useTranslations } from "next-intl";
@@ -40,19 +40,39 @@ export default function Hero() {
   // away is what gives phones the same slide/fade-in entrance desktop gets
   // after its intro, instead of the content just appearing with no
   // animation at all.
-  useEffect(() => {
+  //
+  // useLayoutEffect (not useEffect) specifically so `tl.from()`'s hidden
+  // starting values apply before the browser's first paint. On desktop this
+  // never mattered visually (IntroOverlay's opaque cover sat on top of
+  // whatever flashed underneath), but mobile has no such cover — a plain
+  // useEffect let the very first frame paint everything at rest, THEN snap
+  // to hidden, THEN animate back in, a visible flash before the entrance.
+  useLayoutEffect(() => {
     const introSeen = sessionStorage.getItem(INTRO_SEEN_KEY) === "true";
     const armadero = getArmaderoGlobal();
-    const playImmediately = Boolean(armadero.langSwitch || armadero.mobileIntroSkip);
+    const mobileIntroSkip = Boolean(armadero.mobileIntroSkip);
+    const playImmediately = Boolean(armadero.langSwitch || mobileIntroSkip);
     if (introSeen && !playImmediately) return;
 
     let tl: gsap.core.Timeline | undefined;
     const ctx = gsap.context(() => {
-      tl = gsap.timeline({ paused: true, delay: 0.1 });
+      // topTextRef/rightTextRef are `hidden` below 847px (see their
+      // classNames) — on phones only leftBlock (text+CTA) and videoCard are
+      // actually visible, and the desktop hand-off's order (video card
+      // before the left text+CTA) reads backwards there against Header's
+      // logo+nav sliding in from the top just before: swap them so phones
+      // get "text+CTA from the left, then the video card from the right".
+      tl = gsap.timeline({ paused: true, delay: mobileIntroSkip ? 0.35 : 0.1 });
       tl.from(topTextRef.current, { y: -28, opacity: 0, duration: 0.8, ease: "power3.out" })
-        .from(rightTextRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1")
-        .from(videoCardRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.15")
-        .from(leftBlockRef.current, { x: -28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1");
+        .from(rightTextRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1");
+
+      if (mobileIntroSkip) {
+        tl.from(leftBlockRef.current, { x: -28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1")
+          .from(videoCardRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.15");
+      } else {
+        tl.from(videoCardRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.15")
+          .from(leftBlockRef.current, { x: -28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1");
+      }
     });
 
     if (introSeen && playImmediately) {

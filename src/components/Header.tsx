@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
@@ -58,7 +58,12 @@ export default function Header() {
   const langRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
+  // useLayoutEffect (not useEffect): the gsap.set(...opacity:0) below must
+  // land before the browser's first paint, or the nav flashes fully visible
+  // for a frame before snapping hidden then animating back in. Desktop
+  // never showed that flash (IntroOverlay's opaque cover sat on top of it),
+  // but mobile has no such cover once IntroOverlay bails out for it.
+  useLayoutEffect(() => {
     const introSeen = sessionStorage.getItem(INTRO_SEEN_KEY) === "true";
     // mobileIntroSkip: IntroOverlay never plays (and never fires an
     // INTRO_DONE_EVENT anything here could still catch — see its comment)
