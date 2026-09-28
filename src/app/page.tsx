@@ -8,11 +8,26 @@ import CreateForYouSection from "@/components/CreateForYouSection";
 import StackedIntro from "@/components/StackedIntro";
 import PanoramaSection from "@/components/PanoramaSection";
 import CatalogSection from "@/components/CatalogSection";
+import LazyMount from "@/components/LazyMount";
 
-// Секції нижче першого екрана виносимо в окремі JS-чанки (той самий SSR HTML,
-// той самий вигляд — next/dynamic за замовчуванням не вимикає SSR, лише
-// ділить бандл), щоб головний чанк, який браузер парсить перед гідратацією
-// Header/Hero, був меншим.
+// Секції нижче першого екрана: код-спліт через next/dynamic (ssr: false) +
+// LazyMount навколо кожної (див. LazyMount.tsx) означає їхній import() —
+// і мережевий запит по чанк — не стається, поки секція не наблизиться до
+// вʼюпорту, а не одразу при гідратації. На throttled мобільному зʼєднанні
+// саме ці ~200 KB JS, які раніше вантажились одночасно з hero-фото,
+// конкурували з ним за пропускну здатність і тримали LCP на позначці 5+с.
+//
+// PortfolioSection (#portfolio, Header nav), ProductionSection (#production,
+// Header nav + Footer) і ContactSection (#contact, Header nav + CTAs in
+// Hero/CatalogSection/ProcessFinaleSection) — NOT lazy: an anchor link
+// clicked before IntersectionObserver has mounted its target just scrolls
+// nowhere (no element with that id exists in the DOM yet). For the contact
+// form especially, that's a straight-up broken conversion path.
+//
+// No `{ ssr: false }` on the rest: Next 16 disallows it directly in a
+// Server Component (this file), and it's redundant anyway — LazyMount is
+// itself a Client Component that renders `null` server-side (see its own
+// comment), so these never run during SSR regardless of this flag.
 const PortfolioSection = dynamic(() => import("@/components/PortfolioSection"));
 const TechnologySection = dynamic(() => import("@/components/TechnologySection"));
 const ProcessSection = dynamic(() => import("@/components/ProcessSection"));
@@ -48,15 +63,30 @@ export default async function Home() {
         <CatalogSection />
         <PanoramaSection title={null} />
         <PortfolioSection />
-        <TechnologySection />
-        <ProcessSection />
-        <ProcessFinaleSection />
+        <LazyMount>
+          <TechnologySection />
+        </LazyMount>
+        {/* ProcessSection's stacking-panel effect (see CLAUDE.md) needs
+            ProcessFinaleSection already in the DOM as "the next real
+            section" the instant its last panel finishes riding up — mounted
+            together in one LazyMount so they never arrive on separate
+            IntersectionObserver ticks and leave that gap. */}
+        <LazyMount>
+          <ProcessSection />
+          <ProcessFinaleSection />
+        </LazyMount>
         <ProductionSection />
-        <TestimonialsSection />
-        <FaqSection />
+        <LazyMount>
+          <TestimonialsSection />
+        </LazyMount>
+        <LazyMount>
+          <FaqSection />
+        </LazyMount>
         <ContactSection />
       </main>
-      <Footer />
+      <LazyMount>
+        <Footer />
+      </LazyMount>
     </MotionConfig>
   );
 }
