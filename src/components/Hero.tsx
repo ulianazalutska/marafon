@@ -117,7 +117,7 @@ export default function Hero() {
           fill
           priority
           quality={85}
-          sizes="(min-width: 1600px) 1600px, 100vw"
+          sizes="100vw"
           className="object-cover"
         />
       </picture>

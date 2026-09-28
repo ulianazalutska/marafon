@@ -1,7 +1,7 @@
 // Тимчасові фото з Unsplash (безкоштовні, для шаблону) — лишились тільки
 // для hero. Решта вже реальні згенеровані фото ARMADERO.
 export const images = {
-  hero: "/hero/hero-img-2.webp",
+  hero: "/hero/hero-desktop.webp",
   heroMobile: "/hero/hero-mobile.webp",
   heroPreviewVideo: "/hero/preview.mp4",
   heroPreviewPoster: "/hero/preview-poster.jpg",
