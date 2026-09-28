@@ -78,16 +78,23 @@ export default function Hero() {
       // before the left text+CTA) reads backwards there against Header's
       // logo+nav sliding in from the top just before: swap them so phones
       // get "text+CTA from the left, then the video card from the right".
+      // fromTo (not from): .from() captures its "end" state by reading the
+      // target's CURRENT style when the tween is created — which, now that
+      // each ref's resting className already matches these "from" values
+      // (see the SSR-flash fix above), would be captured as "end" too,
+      // making the tween animate from hidden to that same hidden state and
+      // never actually reveal anything. Explicit end values sidestep that
+      // entirely.
       tl = gsap.timeline({ paused: true, delay: mobileIntroSkip ? 0.35 : 0.1 });
-      tl.from(topTextRef.current, { y: -28, opacity: 0, duration: 0.8, ease: "power3.out" })
-        .from(rightTextRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1");
+      tl.fromTo(topTextRef.current, { y: -28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" })
+        .fromTo(rightTextRef.current, { x: 28, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "<0.1");
 
       if (mobileIntroSkip) {
-        tl.from(leftBlockRef.current, { x: -28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1")
-          .from(videoCardRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.15");
+        tl.fromTo(leftBlockRef.current, { x: -28, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "<0.1")
+          .fromTo(videoCardRef.current, { x: 28, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "<0.15");
       } else {
-        tl.from(videoCardRef.current, { x: 28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.15")
-          .from(leftBlockRef.current, { x: -28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1");
+        tl.fromTo(videoCardRef.current, { x: 28, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "<0.15")
+          .fromTo(leftBlockRef.current, { x: -28, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "<0.1");
       }
     });
 
@@ -118,7 +125,15 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden bg-brown-900">
+      {/* bg-brown-900 above: a dark wood-tone fallback behind the photo.
+          body's own background is pure white (--color-cream: #ffffff), so
+          before the hero photo finishes decoding there was nothing but that
+          white showing through — a stark white flash right before the
+          photo (and the text/CTA entrance riding in after it) appear,
+          worst on throttled mobile connections. Doesn't fully eliminate the
+          load gap, but replaces the flash with a neutral tone close to the
+          photo's own palette instead of a jarring white-to-photo cut. */}
       {/* Art-directed mobile source: a separately cropped/pre-sized (not
           next/image-runtime-resized) 1200x2600 file — the phone-width slice
           of what would otherwise be a needlessly large desktop photo
