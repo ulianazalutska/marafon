@@ -31,11 +31,22 @@ export default function IntroOverlay() {
     // sequence adds several extra image requests and ~2-3s of blocked
     // scroll before the real content (and its LCP candidate) can render —
     // an expensive trade for an animation on the viewport that can least
-    // afford it. Same bail-out path as a returning visit (display:none +
-    // both events fired synchronously), just gated on width instead of
-    // sessionStorage.
-    if (sessionStorage.getItem(SEEN_KEY) === "true" || window.innerWidth <= 596) {
+    // afford it.
+    const seen = sessionStorage.getItem(SEEN_KEY) === "true";
+    const isMobileViewport = window.innerWidth <= 596;
+    if (seen || isMobileViewport) {
       if (overlayRef.current) overlayRef.current.style.display = "none";
+      // Header/Hero gate their own entrance on this same flag: they only
+      // wait for LOGO_ARRIVED/INTRO_DONE when it's *not* set yet, and skip
+      // straight to rendering at rest when it is. Setting it here (not just
+      // firing the events below) routes the mobile bypass through that same
+      // "already seen" branch in both of them — otherwise their listeners,
+      // attached in an ordinary useEffect, aren't wired up yet by the time
+      // this useLayoutEffect fires (useLayoutEffect runs tree-wide before
+      // any useEffect does), so the events below would fire into nothing
+      // and leave their entrance animations permanently stuck at their
+      // hidden `from` state.
+      if (isMobileViewport) sessionStorage.setItem(SEEN_KEY, "true");
       window.dispatchEvent(new Event(LOGO_ARRIVED_EVENT));
       window.dispatchEvent(new Event(INTRO_DONE_EVENT));
       return;
