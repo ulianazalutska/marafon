@@ -121,7 +121,6 @@ export default function Hero() {
           className="object-cover"
         />
       </picture>
-      <div className="absolute inset-0 bg-black/8" />
 
       {/* Фото лишається full-bleed на всю ширину екрана, але текст/картка
           всередині обмежені тим самим max-w-[1600px], що й Header — інакше
