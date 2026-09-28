@@ -59,11 +59,17 @@ export default function Header() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const logoRef = useRef<HTMLButtonElement>(null);
 
-  // useLayoutEffect (not useEffect): the gsap.set(...opacity:0) below must
-  // land before the browser's first paint, or the nav flashes fully visible
-  // for a frame before snapping hidden then animating back in. Desktop
-  // never showed that flash (IntroOverlay's opaque cover sat on top of it),
-  // but mobile has no such cover once IntroOverlay bails out for it.
+  // useLayoutEffect (not useEffect) so this runs before the browser's first
+  // *client-rendered* paint — but that's not the same as the page's actual
+  // first paint. The nav/lang/menu button also start hidden via a plain
+  // opacity-0/-translate-y-5 class baked into the JSX below (see it there),
+  // matching this effect's own {opacity:0, y:-20} exactly: the SSR HTML the
+  // browser paints before any JS has run is already in that state, so
+  // there's nothing left for this effect to "snap" — it only has to arrange
+  // the animation and, on a plain repeat visit, undo that default class.
+  // Desktop never needed this (IntroOverlay's opaque cover sits on top of
+  // the whole thing regardless), but mobile has no such cover once
+  // IntroOverlay bails out for it.
   useLayoutEffect(() => {
     const introSeen = sessionStorage.getItem(INTRO_SEEN_KEY) === "true";
     // mobileIntroSkip: IntroOverlay never plays (and never fires an
@@ -72,13 +78,28 @@ export default function Header() {
     // just appearing with no entrance at all. Play it immediately in that
     // case rather than waiting for an event that already fired.
     const mobileIntroSkip = Boolean(getArmaderoGlobal().mobileIntroSkip);
-    if (introSeen && !mobileIntroSkip) return;
+    if (introSeen && !mobileIntroSkip) {
+      // Ordinary repeat visit: no entrance animation plays, so the
+      // opacity-0/-translate-y-5 default (there for first-load's benefit)
+      // needs an explicit, instant undo — otherwise the nav would stay
+      // invisible forever on every reload after the first. menuButtonRef
+      // carries the same default class (see below) but was never part of
+      // this animation on a non-mobile-skip path, so it needs the same undo
+      // here even though it's not one of the two actually being reset.
+      gsap.set([navRef.current, langRef.current, menuButtonRef.current], { opacity: 1, y: 0 });
+      return;
+    }
 
     // navRef is the desktop link row (css-hidden below 1067px) — the actual
     // visible mobile control is menuButtonRef ("Меню"), which only needs to
     // join this animation on the mobile path; on the real desktop hand-off
     // it'd be redundant (already hidden by CSS there) so it's left out to
-    // keep that path's behavior exactly as before.
+    // keep that path's behavior exactly as before. But at *tablet* widths
+    // (>596, so not mobileIntroSkip, but <1067 so menuButtonRef is the
+    // visible control, not navRef) it still carries the default hidden
+    // class from JSX and isn't in `targets` to ever get animated back in —
+    // undo the default immediately so it doesn't stay invisible there.
+    if (!mobileIntroSkip) gsap.set(menuButtonRef.current, { opacity: 1, y: 0 });
     const targets = mobileIntroSkip
       ? [navRef.current, langRef.current, menuButtonRef.current]
       : [navRef.current, langRef.current];
@@ -228,7 +249,7 @@ export default function Header() {
         <nav
           ref={navRef}
           aria-label={t("nav.ariaLabel")}
-          className="hidden items-center gap-8 text-[19px] tracking-[0.02em] min-[1067px]:flex"
+          className="hidden items-center gap-8 text-[19px] tracking-[0.02em] opacity-0 -translate-y-5 min-[1067px]:flex"
         >
           {links.map((link) => (
             <motion.a
@@ -250,7 +271,7 @@ export default function Header() {
           aria-controls="mobile-menu"
           aria-haspopup="dialog"
           style={{ color: uiColor }}
-          className="ml-auto flex text-[22px] font-normal tracking-[0.02em] min-[597px]:ml-0 min-[597px]:text-[29px] min-[597px]:font-medium min-[1067px]:hidden"
+          className="ml-auto flex text-[22px] font-normal tracking-[0.02em] opacity-0 -translate-y-5 min-[597px]:ml-0 min-[597px]:text-[29px] min-[597px]:font-medium min-[1067px]:hidden"
         >
           {t("menu")}
         </motion.button>
@@ -275,7 +296,7 @@ export default function Header() {
           ARMADERO
         </motion.button>
 
-        <div ref={langRef} className="flex items-center gap-5">
+        <div ref={langRef} className="flex items-center gap-5 opacity-0 -translate-y-5">
           <motion.a
             href="tel:+380442001515"
             style={{ color: uiColor, opacity: phoneOpacity }}

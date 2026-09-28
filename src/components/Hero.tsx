@@ -41,18 +41,34 @@ export default function Hero() {
   // after its intro, instead of the content just appearing with no
   // animation at all.
   //
-  // useLayoutEffect (not useEffect) specifically so `tl.from()`'s hidden
-  // starting values apply before the browser's first paint. On desktop this
-  // never mattered visually (IntroOverlay's opaque cover sat on top of
-  // whatever flashed underneath), but mobile has no such cover — a plain
-  // useEffect let the very first frame paint everything at rest, THEN snap
-  // to hidden, THEN animate back in, a visible flash before the entrance.
+  // useLayoutEffect (not useEffect) so this runs before the browser's first
+  // *client-rendered* paint — but the page's actual first paint is the raw
+  // SSR HTML, before any JS runs at all. The four elements below also carry
+  // a plain opacity-0/-translate default class baked into their JSX (see
+  // each ref's className), matching tl.from()'s own starting values exactly
+  // — so that SSR HTML is already in the hidden state, and there's nothing
+  // left for this effect to visibly "snap": it only arranges the animation
+  // and, on a path where no animation plays, undoes the default class.
+  // Desktop's normal first-load never needed this (IntroOverlay's opaque
+  // cover sits on top of whatever's underneath regardless), but mobile has
+  // no such cover once IntroOverlay bails out for it — and a desktop
+  // language-switch reload (playImmediately via langSwitch, not
+  // mobileIntroSkip) skips IntroOverlay entirely too (see its own
+  // seen-key check), so it shared the exact same flash.
   useLayoutEffect(() => {
     const introSeen = sessionStorage.getItem(INTRO_SEEN_KEY) === "true";
     const armadero = getArmaderoGlobal();
     const mobileIntroSkip = Boolean(armadero.mobileIntroSkip);
     const playImmediately = Boolean(armadero.langSwitch || mobileIntroSkip);
-    if (introSeen && !playImmediately) return;
+    if (introSeen && !playImmediately) {
+      // No animation plays on an ordinary repeat visit — undo the default
+      // hidden class instantly, or these would stay invisible forever.
+      gsap.set(
+        [topTextRef.current, rightTextRef.current, leftBlockRef.current, videoCardRef.current],
+        { opacity: 1, x: 0, y: 0 }
+      );
+      return;
+    }
 
     let tl: gsap.core.Timeline | undefined;
     const ctx = gsap.context(() => {
@@ -131,7 +147,7 @@ export default function Hero() {
             місця під цей блок, ховається повністю */}
         <h1
           ref={topTextRef}
-          className="absolute hidden top-[3%] left-[48%] text-left text-[27px] leading-[32px] font-medium tracking-[0.02em] text-white min-[847px]:block min-[978px]:left-[54%] min-[1067px]:left-[58%] min-[1067px]:text-[25px] min-[1167px]:left-[50%]"
+          className="absolute hidden top-[3%] left-[48%] text-left text-[27px] leading-[32px] font-medium tracking-[0.02em] text-white opacity-0 -translate-y-7 min-[847px]:block min-[978px]:left-[54%] min-[1067px]:left-[58%] min-[1067px]:text-[25px] min-[1167px]:left-[50%]"
           style={{ width: "max-content" }}
         >
           {t("headlineLine1")}
@@ -142,7 +158,7 @@ export default function Hero() {
         {/* Від першого заміру до монтажу — теж лише з 597px */}
         <p
           ref={rightTextRef}
-          className="absolute hidden w-[38vw] left-[56%] top-[35%] text-[19px] leading-[23px] font-medium tracking-[0.02em] text-white min-[847px]:block min-[1006px]:left-[64%] min-[1006px]:w-[32vw] min-[1191px]:text-[21px] min-[1191px]:leading-[26px]"
+          className="absolute hidden w-[38vw] left-[56%] top-[35%] text-[19px] leading-[23px] font-medium tracking-[0.02em] text-white opacity-0 translate-x-7 min-[847px]:block min-[1006px]:left-[64%] min-[1006px]:w-[32vw] min-[1191px]:text-[21px] min-[1191px]:leading-[26px]"
         >
           {t("subtextLine1")}
           <br />
@@ -154,7 +170,7 @@ export default function Hero() {
         {/* Відео-прев'ю картка */}
         <div
           ref={videoCardRef}
-          className="absolute top-[63%] left-[60%] w-[150px] rounded-[33px] bg-white p-[9px] pb-[15px] shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)] min-[597px]:top-[48%] min-[597px]:left-[75%] min-[597px]:w-[160px] min-[1006px]:left-[79.2%] min-[1067px]:top-[43.2%] min-[1067px]:w-[clamp(180px,11vw,220px)] min-[1067px]:rounded-[1.75rem] min-[1067px]:pb-[17px]"
+          className="absolute top-[63%] left-[60%] w-[150px] rounded-[33px] bg-white p-[9px] pb-[15px] opacity-0 translate-x-7 shadow-[0_20px_45px_-15px_rgba(0,0,0,0.3)] min-[597px]:top-[48%] min-[597px]:left-[75%] min-[597px]:w-[160px] min-[1006px]:left-[79.2%] min-[1067px]:top-[43.2%] min-[1067px]:w-[clamp(180px,11vw,220px)] min-[1067px]:rounded-[1.75rem] min-[1067px]:pb-[17px]"
         >
           <button
             onClick={togglePlay}
@@ -196,7 +212,7 @@ export default function Hero() {
         {/* Гардеробна, створена під ваш простір */}
         <div
           ref={leftBlockRef}
-          className="absolute top-[40%] left-[6%] min-[597px]:top-[48%] min-[597px]:left-[10%] min-[1067px]:left-[15%]"
+          className="absolute top-[40%] left-[6%] opacity-0 -translate-x-7 min-[597px]:top-[48%] min-[597px]:left-[10%] min-[1067px]:left-[15%]"
         >
           <p className="max-w-[230px] text-[19px] leading-[1.35] font-medium tracking-[0.02em] text-white min-[597px]:max-w-none min-[1191px]:text-[21px]">
             {t("leftHeadlineLine1")}
