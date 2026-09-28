@@ -103,15 +103,24 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      <Image
-        src={images.hero}
-        alt=""
-        fill
-        priority
-        quality={85}
-        sizes="(min-width: 1600px) 1600px, 100vw"
-        className="object-cover"
-      />
+      {/* Art-directed mobile source: a separately cropped/pre-sized (not
+          next/image-runtime-resized) 1200x2600 file — the phone-width slice
+          of what would otherwise be a needlessly large desktop photo
+          downloaded and cropped client-side. <source> here is picked by the
+          browser's own HTML preload scanner before any JS runs, same as a
+          bare <Image priority> would be. */}
+      <picture>
+        <source media="(max-width: 767px)" srcSet={images.heroMobile} />
+        <Image
+          src={images.hero}
+          alt=""
+          fill
+          priority
+          quality={85}
+          sizes="(min-width: 1600px) 1600px, 100vw"
+          className="object-cover"
+        />
+      </picture>
       <div className="absolute inset-0 bg-black/8" />
 
       {/* Фото лишається full-bleed на всю ширину екрана, але текст/картка
