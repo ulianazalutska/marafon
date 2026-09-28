@@ -158,6 +158,7 @@ export default function Hero() {
         >
           <button
             onClick={togglePlay}
+            aria-label={playing ? t("pauseVideo") : t("playVideo")}
             className="group relative block aspect-[174/185] w-full cursor-pointer overflow-hidden rounded-[1.25rem] bg-brown-900"
           >
             <video
