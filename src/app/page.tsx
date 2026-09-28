@@ -34,8 +34,12 @@ export default async function Home() {
       >
         {t("skipToContent")}
       </a>
-      <Header />
+      {/* Before Header: useLayoutEffect fires tree-wide in JSX/mount order,
+          and IntroOverlay's is what sets the mobileIntroSkip flag Header's
+          own entrance effect reads — it has to run first, or Header reads
+          it one render too early (stale `false`) on phones. */}
       <IntroOverlay />
+      <Header />
       <main id="main-content">
         <StackedIntro>
           <Hero />

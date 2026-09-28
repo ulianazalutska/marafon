@@ -57,6 +57,7 @@ export default function Header() {
   const navRef = useRef<HTMLElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const logoRef = useRef<HTMLButtonElement>(null);
 
   // useLayoutEffect (not useEffect): the gsap.set(...opacity:0) below must
   // land before the browser's first paint, or the nav flashes fully visible
@@ -73,10 +74,31 @@ export default function Header() {
     const mobileIntroSkip = Boolean(getArmaderoGlobal().mobileIntroSkip);
     if (introSeen && !mobileIntroSkip) return;
 
-    const targets = [navRef.current, langRef.current];
+    // navRef is the desktop link row (css-hidden below 1067px) — the actual
+    // visible mobile control is menuButtonRef ("Меню"), which only needs to
+    // join this animation on the mobile path; on the real desktop hand-off
+    // it'd be redundant (already hidden by CSS there) so it's left out to
+    // keep that path's behavior exactly as before.
+    const targets = mobileIntroSkip
+      ? [navRef.current, langRef.current, menuButtonRef.current]
+      : [navRef.current, langRef.current];
     gsap.set(targets, { opacity: 0, y: -20 });
-    const reveal = () =>
+    // logoRef: only the `y` offset, never `opacity` — the logo's visibility
+    // is owned by the logoReady effect below (it stays a bare, untransitioned
+    // opacity flip on the desktop hand-off, deliberately — see its own
+    // comment). Layering a `y` transform here is safe alongside that:
+    // framer-motion never sets `transform` on this element (it drives
+    // top/left/fontSize instead), so there's nothing to fight over. Desktop
+    // skips this entirely — its logo arrives already in place via the
+    // typed-wordmark morph, a slide on top of that would fight it.
+    if (mobileIntroSkip) gsap.set(logoRef.current, { y: -20 });
+
+    const reveal = () => {
       gsap.to(targets, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" });
+      if (mobileIntroSkip) {
+        gsap.to(logoRef.current, { y: 0, duration: 0.8, ease: "power3.out" });
+      }
+    };
 
     if (mobileIntroSkip) {
       reveal();
@@ -234,6 +256,7 @@ export default function Header() {
         </motion.button>
 
         <motion.button
+          ref={logoRef}
           id="header-logo"
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
