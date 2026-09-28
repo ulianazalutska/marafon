@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, LOGO_ARRIVED_EVENT, LANG_SWITCH_KEY } from "@/lib/intro";
+import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, LOGO_ARRIVED_EVENT, LANG_SWITCH_KEY, getArmaderoGlobal } from "@/lib/intro";
 import { getHeroLogoLayout, getHeaderLogoLayout } from "@/lib/logoLayout";
 import { LOCALE_COOKIE, type Locale } from "@/i18n/config";
 import MobileMenu from "@/components/MobileMenu";
@@ -59,12 +59,25 @@ export default function Header() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (sessionStorage.getItem(INTRO_SEEN_KEY) === "true") return;
+    const introSeen = sessionStorage.getItem(INTRO_SEEN_KEY) === "true";
+    // mobileIntroSkip: IntroOverlay never plays (and never fires an
+    // INTRO_DONE_EVENT anything here could still catch — see its comment)
+    // on phones, but the nav should still get its usual slide-in instead of
+    // just appearing with no entrance at all. Play it immediately in that
+    // case rather than waiting for an event that already fired.
+    const mobileIntroSkip = Boolean(getArmaderoGlobal().mobileIntroSkip);
+    if (introSeen && !mobileIntroSkip) return;
 
     const targets = [navRef.current, langRef.current];
     gsap.set(targets, { opacity: 0, y: -20 });
     const reveal = () =>
       gsap.to(targets, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" });
+
+    if (mobileIntroSkip) {
+      reveal();
+      return;
+    }
+
     window.addEventListener(INTRO_DONE_EVENT, reveal, { once: true });
     return () => window.removeEventListener(INTRO_DONE_EVENT, reveal);
   }, []);

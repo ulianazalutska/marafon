@@ -5,7 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
-import { INTRO_SEEN_KEY, INTRO_DONE_EVENT } from "@/lib/intro";
+import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, getArmaderoGlobal } from "@/lib/intro";
 
 export default function Hero() {
   const t = useTranslations("Hero");
@@ -31,12 +31,20 @@ export default function Hero() {
   // toggle), but replaying just the text entrance confirms the switch
   // visibly. Nothing to hand off from in that case, so it plays immediately
   // instead of waiting for INTRO_DONE_EVENT.
+  //
+  // Same "play immediately" path for mobileIntroSkip: IntroOverlay bails
+  // out on phones without ever running its mosaic/typing sequence (LCP —
+  // see its own comment), which means there's no INTRO_DONE_EVENT this can
+  // usefully wait for either (it already fired, before this effect's
+  // listener existed — see IntroOverlay's comment on why). Playing right
+  // away is what gives phones the same slide/fade-in entrance desktop gets
+  // after its intro, instead of the content just appearing with no
+  // animation at all.
   useEffect(() => {
     const introSeen = sessionStorage.getItem(INTRO_SEEN_KEY) === "true";
-    const langSwitch = Boolean(
-      (window as unknown as { __armadero?: { langSwitch?: boolean } }).__armadero?.langSwitch
-    );
-    if (introSeen && !langSwitch) return;
+    const armadero = getArmaderoGlobal();
+    const playImmediately = Boolean(armadero.langSwitch || armadero.mobileIntroSkip);
+    if (introSeen && !playImmediately) return;
 
     let tl: gsap.core.Timeline | undefined;
     const ctx = gsap.context(() => {
@@ -47,7 +55,7 @@ export default function Hero() {
         .from(leftBlockRef.current, { x: -28, opacity: 0, duration: 0.8, ease: "power3.out" }, "<0.1");
     });
 
-    if (introSeen && langSwitch) {
+    if (introSeen && playImmediately) {
       tl?.play();
       return () => ctx.revert();
     }

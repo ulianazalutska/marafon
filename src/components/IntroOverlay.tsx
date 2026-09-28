@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { mosaicImages } from "@/lib/images";
 import { mosaicLayout } from "@/lib/mosaicLayout";
-import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, LOGO_ARRIVED_EVENT } from "@/lib/intro";
+import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, LOGO_ARRIVED_EVENT, getArmaderoGlobal } from "@/lib/intro";
 import { getHeroLogoLayout } from "@/lib/logoLayout";
 
 const LOGO_TEXT = "ARMADERO";
@@ -31,22 +31,33 @@ export default function IntroOverlay() {
     // sequence adds several extra image requests and ~2-3s of blocked
     // scroll before the real content (and its LCP candidate) can render —
     // an expensive trade for an animation on the viewport that can least
-    // afford it.
+    // afford it. Header/Hero still get their usual slide/fade-in entrance,
+    // just triggered right away instead of handed off from the intro (see
+    // `mobileIntroSkip` below and its read sites in Header.tsx/Hero.tsx).
     const seen = sessionStorage.getItem(SEEN_KEY) === "true";
     const isMobileViewport = window.innerWidth <= 596;
     if (seen || isMobileViewport) {
       if (overlayRef.current) overlayRef.current.style.display = "none";
-      // Header/Hero gate their own entrance on this same flag: they only
-      // wait for LOGO_ARRIVED/INTRO_DONE when it's *not* set yet, and skip
-      // straight to rendering at rest when it is. Setting it here (not just
-      // firing the events below) routes the mobile bypass through that same
-      // "already seen" branch in both of them — otherwise their listeners,
-      // attached in an ordinary useEffect, aren't wired up yet by the time
-      // this useLayoutEffect fires (useLayoutEffect runs tree-wide before
-      // any useEffect does), so the events below would fire into nothing
-      // and leave their entrance animations permanently stuck at their
-      // hidden `from` state.
-      if (isMobileViewport) sessionStorage.setItem(SEEN_KEY, "true");
+      // Header/Hero gate their own entrance on SEEN_KEY: they only wait for
+      // LOGO_ARRIVED/INTRO_DONE when it's *not* set yet, and skip straight
+      // to rendering at rest (no entrance animation at all) when it is —
+      // correct for an ordinary repeat visit, but on a first-ever mobile
+      // load that would mean the page just appears with no entrance at all.
+      // mobileIntroSkip is the flag that tells them apart: "seen" for real
+      // (render at rest) vs. "skipped for being on a phone" (play the
+      // entrance now instead of waiting for the event, which the effects
+      // below can't catch anyway — see comment further below).
+      if (isMobileViewport) {
+        sessionStorage.setItem(SEEN_KEY, "true");
+        getArmaderoGlobal().mobileIntroSkip = true;
+      }
+      // Dispatched for completeness/other listeners, but Header/Hero don't
+      // actually rely on catching these for the mobile case above: this
+      // useLayoutEffect runs tree-wide before any useEffect does, so by the
+      // time their listeners (attached in an ordinary useEffect) exist,
+      // these have already fired into nothing. mobileIntroSkip is a plain
+      // synchronous global instead, already set above, so their effects can
+      // just read it directly rather than racing an event.
       window.dispatchEvent(new Event(LOGO_ARRIVED_EVENT));
       window.dispatchEvent(new Event(INTRO_DONE_EVENT));
       return;
