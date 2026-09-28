@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import type { PanInfo, Variants } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
@@ -13,107 +11,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 type Project = { area: string; sections: string; series: string; note: string };
 
-const SWIPE_DISTANCE = 100;
-const SWIPE_VELOCITY = 450;
-
-// Фото завжди сидить в межах свого блоку праворуч (без стрічки на всю
-// ширину). "Наступне" завжди визирає статичною смужкою праворуч.
-//
-// Обидва напрямки — суцільний "штовхаючий" рух: нове фото заїжджає з того
-// самого місця, де щойно було старе (або де визирала смужка-підгляд), а
-// старе одночасно їде в протилежний бік і зникає геть за межі екрана. Рухи
-// дзеркальні одне одному, тому вперед і назад виглядають однаково плавно.
-const slideVariants: Variants = {
-  enter: (dir: "next" | "prev") =>
-    dir === "next"
-      ? { x: "calc(100% + 45px)", scale: 1, opacity: 1, zIndex: 20 }
-      : { x: "-260%", scale: 1, opacity: 1, zIndex: 20 },
-  center: {
-    x: 0,
-    scale: 1,
-    opacity: 1,
-    zIndex: 20,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-  },
-  exit: (dir: "next" | "prev") => ({
-    x: dir === "next" ? "-260%" : "calc(100% + 45px)",
-    scale: 1,
-    opacity: 1,
-    zIndex: 5,
-    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
-
-function Slide({
-  index,
-  total,
-  direction,
-  onCommit,
-  projects,
-  altPrefix,
-}: {
-  index: number;
-  total: number;
-  direction: "next" | "prev";
-  onCommit: (dir: "next" | "prev") => void;
-  projects: Project[];
-  altPrefix: string;
-}) {
-  const p = projects[index];
-
-  const handleDragEnd = (
-    _event: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
-    const goNext = info.offset.x < -SWIPE_DISTANCE || info.velocity.x < -SWIPE_VELOCITY;
-    const goPrev = info.offset.x > SWIPE_DISTANCE || info.velocity.x > SWIPE_VELOCITY;
-
-    if (goNext && index < total - 1) onCommit("next");
-    else if (goPrev && index > 0) onCommit("prev");
-  };
-
-  return (
-    <motion.div
-      className="absolute inset-0 flex cursor-grab flex-col active:cursor-grabbing"
-      drag="x"
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.5}
-      dragMomentum={false}
-      onDragEnd={handleDragEnd}
-      custom={direction}
-      variants={slideVariants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-    >
-      <div className="relative flex-1">
-        <Image
-          src={images.portfolioCarousel[index]}
-          alt={`${altPrefix} ${p.area}, ${p.sections}`}
-          fill
-          priority={index === 0}
-          draggable={false}
-          sizes="(min-width: 768px) 55vw, 90vw"
-          className="pointer-events-none object-cover"
-        />
-      </div>
-      <p className="min-h-[70px] pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] text-ink md:min-h-[65px] md:whitespace-nowrap max-[1270px]:text-[17px] max-[767px]:text-[19px]">
-        {p.area}, {p.sections}, {p.series} — {p.note}
-      </p>
-    </motion.div>
-  );
-}
-
 export default function PortfolioSection() {
   const t = useTranslations("Portfolio");
   const projects = t.raw("projects") as Project[];
   const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState<"next" | "prev">("next");
   const total = projects.length;
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -156,9 +63,29 @@ export default function PortfolioSection() {
     return () => ctx.revert();
   }, []);
 
-  const handleCommit = (dir: "next" | "prev") => {
-    setDirection(dir);
-    setIndex((i) => (dir === "next" ? Math.min(i + 1, total - 1) : Math.max(i - 1, 0)));
+  // Крок = відстань між лівими краями двох сусідніх слайдів (слайд вужчий за
+  // трек, тому це не дорівнює clientWidth — саме так формується "підглядання"
+  // наступного фото).
+  const getStep = () => {
+    const track = trackRef.current;
+    if (!track || track.children.length < 2) return track?.clientWidth ?? 0;
+    const a = track.children[0] as HTMLElement;
+    const b = track.children[1] as HTMLElement;
+    return b.offsetLeft - a.offsetLeft;
+  };
+
+  const scrollToIndex = (i: number) => {
+    const track = trackRef.current;
+    const step = getStep();
+    if (!track || !step) return;
+    track.scrollTo({ left: i * step, behavior: "smooth" });
+  };
+
+  const handleScroll = () => {
+    const track = trackRef.current;
+    const step = getStep();
+    if (!track || !step) return;
+    setIndex(Math.round(track.scrollLeft / step));
   };
 
   return (
@@ -167,7 +94,7 @@ export default function PortfolioSection() {
       ref={sectionRef}
       className="relative mt-[225px] overflow-hidden bg-cream pb-[225px] text-ink"
     >
-      <div className="mx-auto flex max-w-[1800px] flex-col gap-10 md:flex-row md:gap-6">
+      <div className="mx-auto flex max-w-[1800px] flex-col gap-10 md:flex-row md:gap-10">
         {/* Фіксований текстовий блок зліва */}
         <div
           ref={textRef}
@@ -189,50 +116,96 @@ export default function PortfolioSection() {
           </p>
         </div>
 
-        {/* Фото тримається праворуч, у своєму блоці. При переході вилітає вліво. */}
+        {/* Фото тримається праворуч, у своєму блоці. Слайд вужчий за stage,
+            тому наступне фото завжди трохи "підглядає" з правого краю. */}
         <div className="min-w-0 flex-1 px-6 md:px-0">
           <div
             ref={stageRef}
-            tabIndex={0}
-            role="group"
-            aria-label={t("heading")}
-            onKeyDown={(e) => {
-              if (e.key === "ArrowRight" && index < total - 1) handleCommit("next");
-              else if (e.key === "ArrowLeft" && index > 0) handleCommit("prev");
-            }}
-            className="relative h-[calc(58vh+40px)] w-[90%] outline-none focus-visible:ring-2 focus-visible:ring-accent md:w-full lg:h-[532px] lg:w-[655px]"
+            className="relative h-[calc(58vh+40px)] w-[90%] md:w-full lg:h-[532px]"
           >
-            {/* Наступне фото визирає статичною смужкою праворуч, разом зі своїм підписом */}
-            {index + 1 < total && (
-              <div className="absolute inset-0 z-0 flex translate-x-[calc(100%+45px)] flex-col overflow-hidden">
-                <div className="relative flex-1">
-                  <Image
-                    src={images.portfolioCarousel[index + 1]}
-                    alt={`${t("altPrefix")} ${projects[index + 1].area}, ${projects[index + 1].sections}`}
-                    fill
-                    draggable={false}
-                    sizes="787px"
-                    className="pointer-events-none object-cover"
-                  />
+            <div
+              ref={trackRef}
+              tabIndex={0}
+              role="group"
+              aria-label={t("heading")}
+              onScroll={handleScroll}
+              onKeyDown={(e) => {
+                if (e.key === "ArrowRight" && index < total - 1) scrollToIndex(index + 1);
+                else if (e.key === "ArrowLeft" && index > 0) scrollToIndex(index - 1);
+              }}
+              className="flex h-full w-full gap-4 overflow-x-hidden scroll-smooth outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              {projects.map((p, i) => (
+                <div
+                  key={i}
+                  className="flex h-full w-[calc(100%-70px)] flex-none flex-col"
+                >
+                  <div className="relative flex-1">
+                    <Image
+                      src={images.portfolioCarousel[i]}
+                      alt={`${t("altPrefix")} ${p.area}, ${p.sections}`}
+                      fill
+                      draggable={false}
+                      sizes="(min-width: 768px) 55vw, 90vw"
+                      priority={i === 0}
+                      loading={i === 0 ? undefined : "lazy"}
+                      className="pointer-events-none object-cover"
+                    />
+                  </div>
+                  <p className="min-h-[70px] pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] text-ink md:min-h-[65px] md:whitespace-nowrap max-[1270px]:text-[17px] max-[767px]:text-[19px]">
+                    {p.area}, {p.sections}, {p.series} — {p.note}
+                  </p>
                 </div>
-                <p className="min-h-[70px] pt-[20px] text-[21px] leading-[25px] tracking-[0.04em] text-ink md:min-h-[65px] md:whitespace-nowrap max-[1270px]:text-[17px] max-[767px]:text-[19px]">
-                  {projects[index + 1].area}, {projects[index + 1].sections},{" "}
-                  {projects[index + 1].series} — {projects[index + 1].note}
-                </p>
-              </div>
+              ))}
+            </div>
+
+            {index > 0 && (
+              <button
+                type="button"
+                onClick={() => scrollToIndex(index - 1)}
+                aria-label={t("prev")}
+                className="group absolute left-4 top-[calc((100%-70px)/2)] z-20 flex h-[31px] w-[31px] -translate-y-1/2 items-center justify-center rounded-full bg-cream shadow-md transition hover:bg-brown-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 21 16"
+                  fill="none"
+                  className="transition-transform duration-300 ease-out group-hover:-translate-x-[3px]"
+                >
+                  <path
+                    d="M20.499863 7.84557H1.1681M8.5142 15.1916L1.1681 7.84557L8.5142 0.499498"
+                    stroke="var(--color-accent)"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
             )}
 
-            <AnimatePresence initial={false} custom={direction}>
-              <Slide
-                key={index}
-                index={index}
-                total={total}
-                direction={direction}
-                onCommit={handleCommit}
-                projects={projects}
-                altPrefix={t("altPrefix")}
-              />
-            </AnimatePresence>
+            {index < total - 1 && (
+              <button
+                type="button"
+                onClick={() => scrollToIndex(index + 1)}
+                aria-label={t("next")}
+                className="group absolute right-4 top-[calc((100%-70px)/2)] z-20 flex h-[31px] w-[31px] -translate-y-1/2 items-center justify-center rounded-full bg-cream shadow-md transition hover:bg-brown-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 21 16"
+                  fill="none"
+                  className="transition-transform duration-300 ease-out group-hover:translate-x-[3px]"
+                >
+                  <path
+                    d="M0.500137 7.84557H19.8319M12.4858 15.1916L19.8319 7.84557L12.4858 0.499498"
+                    stroke="var(--color-accent)"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </div>

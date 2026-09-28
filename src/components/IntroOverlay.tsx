@@ -27,7 +27,14 @@ export default function IntroOverlay() {
     // — the server has no sessionStorage to know this in advance, so it
     // always renders the overlay markup; this is what removes it again on
     // repeat visits.
-    if (sessionStorage.getItem(SEEN_KEY) === "true") {
+    // Skipped on phones outright, session-seen or not: the mosaic/typing
+    // sequence adds several extra image requests and ~2-3s of blocked
+    // scroll before the real content (and its LCP candidate) can render —
+    // an expensive trade for an animation on the viewport that can least
+    // afford it. Same bail-out path as a returning visit (display:none +
+    // both events fired synchronously), just gated on width instead of
+    // sessionStorage.
+    if (sessionStorage.getItem(SEEN_KEY) === "true" || window.innerWidth <= 596) {
       if (overlayRef.current) overlayRef.current.style.display = "none";
       window.dispatchEvent(new Event(LOGO_ARRIVED_EVENT));
       window.dispatchEvent(new Event(INTRO_DONE_EVENT));

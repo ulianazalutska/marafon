@@ -62,6 +62,8 @@
     "subtitle": "Every project is a configuration tailored to the client's room",
     "altPrefix": "Wardrobe",
     "counterOf": "of",
+    "next": "Next photo",
+    "prev": "Previous photo",
     "projects": [
       { "area": "8 m²", "sections": "6 sections", "series": "Comfort", "note": "Family with two kids" },
       { "area": "5 m²", "sections": "4 sections", "series": "Signature", "note": "Studio apartment" },
