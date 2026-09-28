@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
+import { runWhenIdle } from "@/lib/deferredEffect";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +17,9 @@ export default function ProductionSection() {
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx: gsap.Context | undefined;
+    const cancelIdle = runWhenIdle(() => {
+      ctx = gsap.context(() => {
       gsap.fromTo(
         collageRef.current,
         { autoAlpha: 0, x: -60 },
@@ -49,9 +52,13 @@ export default function ProductionSection() {
           },
         }
       );
-    }, sectionRef);
+      }, sectionRef);
+    });
 
-    return () => ctx.revert();
+    return () => {
+      cancelIdle();
+      ctx?.revert();
+    };
   }, []);
 
   return (

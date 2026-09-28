@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
+import { runWhenIdle } from "@/lib/deferredEffect";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,24 +16,30 @@ export default function ProcessFinaleSection() {
   const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        imageRef.current,
-        { yPercent: -8 },
-        {
-          yPercent: 8,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        }
-      );
-    }, sectionRef);
+    let ctx: gsap.Context | undefined;
+    const cancelIdle = runWhenIdle(() => {
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          imageRef.current,
+          { yPercent: -8 },
+          {
+            yPercent: 8,
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      }, sectionRef);
+    });
 
-    return () => ctx.revert();
+    return () => {
+      cancelIdle();
+      ctx?.revert();
+    };
   }, []);
 
   return (

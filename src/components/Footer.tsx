@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
+import { runWhenIdle } from "@/lib/deferredEffect";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,7 +33,9 @@ export default function Footer() {
   const [newsletterError, setNewsletterError] = useState(false);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx: gsap.Context | undefined;
+    const cancelIdle = runWhenIdle(() => {
+      ctx = gsap.context(() => {
       gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
         gsap.fromTo(
           introRef.current,
@@ -69,9 +72,13 @@ export default function Footer() {
           }
         );
       });
+      });
     });
 
-    return () => ctx.revert();
+    return () => {
+      cancelIdle();
+      ctx?.revert();
+    };
   }, []);
 
   return (

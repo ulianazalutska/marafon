@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
+import { runWhenIdle } from "@/lib/deferredEffect";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,7 +24,9 @@ export default function PortfolioSection() {
   const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx: gsap.Context | undefined;
+    const cancelIdle = runWhenIdle(() => {
+      ctx = gsap.context(() => {
       gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
         gsap.fromTo(
           textRef.current,
@@ -58,9 +61,13 @@ export default function PortfolioSection() {
           }
         );
       });
-    }, sectionRef);
+      }, sectionRef);
+    });
 
-    return () => ctx.revert();
+    return () => {
+      cancelIdle();
+      ctx?.revert();
+    };
   }, []);
 
   // Крок = відстань між лівими краями двох сусідніх слайдів (слайд вужчий за

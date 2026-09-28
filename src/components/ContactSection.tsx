@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
+import { runWhenIdle } from "@/lib/deferredEffect";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,7 +33,9 @@ export default function ContactSection() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx: gsap.Context | undefined;
+    const cancelIdle = runWhenIdle(() => {
+      ctx = gsap.context(() => {
       gsap.fromTo(
         imageWrapRef.current,
         { yPercent: -8 },
@@ -63,9 +66,13 @@ export default function ContactSection() {
           },
         }
       );
-    }, sectionRef);
+      }, sectionRef);
+    });
 
-    return () => ctx.revert();
+    return () => {
+      cancelIdle();
+      ctx?.revert();
+    };
   }, []);
 
   return (

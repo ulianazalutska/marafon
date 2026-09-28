@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
+import { runWhenIdle } from "@/lib/deferredEffect";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,7 +51,9 @@ export default function TechnologySection() {
   const rightLagY = useTransform(smoothProgress, [0, 1], [26, -26]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx: gsap.Context | undefined;
+    const cancelIdle = runWhenIdle(() => {
+      ctx = gsap.context(() => {
       gsap.fromTo(
         contentRef.current,
         { autoAlpha: 0, y: 36 },
@@ -125,9 +128,13 @@ export default function TechnologySection() {
           );
         });
       });
-    }, sectionRef);
+      }, sectionRef);
+    });
 
-    return () => ctx.revert();
+    return () => {
+      cancelIdle();
+      ctx?.revert();
+    };
   }, []);
 
   return (
