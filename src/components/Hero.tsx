@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
+import { scrollToAnchor } from "@/lib/scrollToAnchor";
 import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, getArmaderoGlobal } from "@/lib/intro";
 
 export default function Hero() {
@@ -235,6 +236,11 @@ export default function Hero() {
           </p>
           <a
             href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              history.pushState(null, "", "#contact");
+              scrollToAnchor("contact");
+            }}
             className="group mt-6 ml-0 inline-flex items-center gap-2.5 rounded-full bg-accent py-[7px] pr-[6px] pl-[9px] text-[17px] font-normal text-white transition-opacity hover:opacity-90 min-[597px]:ml-23 min-[1067px]:gap-3 min-[1067px]:py-[8px] min-[1067px]:pr-[7px] min-[1067px]:pl-[10px] min-[1067px]:text-[19px]"
           >
             {t("cta")}
