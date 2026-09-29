@@ -35,7 +35,13 @@ export default function LazyMount({
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) {
+        const entry = entries[0];
+        // Секція, яку швидким скролом (напр. кнопка → #contact) проскочили
+        // повз rootMargin, лишається висотою 1px над вʼюпортом — і при
+        // скролі назад її "пропускає". Тому монтуємо і все, що вже вище.
+        const isAbove =
+          !!entry && !!entry.rootBounds && entry.boundingClientRect.bottom < entry.rootBounds.top;
+        if (entry?.isIntersecting || isAbove) {
           setVisible(true);
           observer.disconnect();
         }
