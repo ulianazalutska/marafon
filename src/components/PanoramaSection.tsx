@@ -54,7 +54,7 @@ export default function PanoramaSection({
       ref={sectionRef}
       className="relative h-[60vh] w-full overflow-hidden"
     >
-      <div ref={imageWrapRef} className="absolute inset-0 h-[124%] -top-[12%]">
+      <div ref={imageWrapRef} className="absolute inset-0 h-[124%] -top-[12%] will-change-transform">
         <Image
           src={image}
           alt={alt}

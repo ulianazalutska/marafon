@@ -81,7 +81,7 @@ export default function ContactSection() {
       ref={sectionRef}
       className="relative mt-[120px] flex min-h-screen w-full items-center justify-center overflow-hidden py-16 md:mt-[255px]"
     >
-      <div ref={imageWrapRef} className="absolute inset-0 -top-[12%] h-[124%]">
+      <div ref={imageWrapRef} className="absolute inset-0 -top-[12%] h-[124%] will-change-transform">
         <Image
           src={images.panoramaContact}
           alt={t("imageAlt")}
