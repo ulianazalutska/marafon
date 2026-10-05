@@ -54,9 +54,29 @@ export default function ProcessSection() {
       ScrollTrigger.refresh();
     };
 
+    // На телефоні адресна стрічка ховається/зʼявляється під час скролу й
+    // кидає resize — а ScrollTrigger.refresh() вище перераховує ВСІ тригери
+    // сторінки, тобто довгий reflow прямо посеред скролу. GSAP сам такі
+    // resize ігнорує (ignoreMobileResize), але цей ручний refresh його
+    // обходив. Тут той самий фільтр, що в GSAP: на тач-пристрої пропускаємо
+    // resize, якщо ширина та сама, а висота змінилась менш ніж на 25%.
+    const isTouchOnly = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    let baseWidth = window.innerWidth;
+    let baseHeight = window.innerHeight;
+    const onResize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      if (isTouchOnly && width === baseWidth && Math.abs(height - baseHeight) <= height * 0.25) {
+        return;
+      }
+      baseWidth = width;
+      baseHeight = height;
+      setWrapperHeights();
+    };
+
     setWrapperHeights();
-    window.addEventListener("resize", setWrapperHeights);
-    return () => window.removeEventListener("resize", setWrapperHeights);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   useEffect(() => {
