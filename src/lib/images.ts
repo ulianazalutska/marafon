@@ -3,7 +3,7 @@
 export const images = {
   hero: "/hero/hero-desktop.webp",
   heroMobile: "/hero/hero-mobile.webp",
-  heroPreviewVideo: "/hero/preview.mp4",
+  heroPreviewVideo: "/hero/preview-720.mp4",
   heroPreviewPoster: "/hero/preview-poster.jpg",
   catalog: {
     lite: "/catalog/lite-2.webp",
