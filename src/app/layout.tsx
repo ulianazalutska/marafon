@@ -12,9 +12,13 @@ const exo2 = Exo_2({
   variable: "--font-sans",
 });
 
+// Лише ваги, що реально використовуються з font-logo: 500 (лого в Header/
+// IntroOverlay/MobileMenu/LegalHeader) і 600 (Footer). next/font
+// передзавантажує КОЖНУ перелічену вагу (HTTP Link: rel=preload, пріоритет
+// High) — зайві 300/400/700 на телефоні конкурували з JS за канал.
 const rajdhani = Rajdhani({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["500", "600"],
   variable: "--font-logo",
 });
 
