@@ -155,8 +155,6 @@ export default function PortfolioSection() {
                       fill
                       draggable={false}
                       sizes="(min-width: 768px) 55vw, 90vw"
-                      priority={i === 0}
-                      loading={i === 0 ? undefined : "lazy"}
                       className="pointer-events-none object-cover"
                     />
                   </div>
