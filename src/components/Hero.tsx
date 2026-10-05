@@ -1,14 +1,48 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { preload } from "react-dom";
+import Image, { getImageProps } from "next/image";
 import gsap from "gsap";
 import { useTranslations } from "next-intl";
 import { images } from "@/lib/images";
 import { scrollToAnchor } from "@/lib/scrollToAnchor";
 import { INTRO_SEEN_KEY, INTRO_DONE_EVENT, getArmaderoGlobal } from "@/lib/intro";
 
+// Ті самі src/sizes/quality, що й у <Image> нижче (і в першій плитці
+// IntroOverlay) — тож srcSet ідентичний і браузер бере з кешу саме те, що
+// передзавантажив.
+const { props: heroDesktopImg } = getImageProps({
+  src: images.hero,
+  alt: "",
+  fill: true,
+  quality: 85,
+  sizes: "100vw",
+});
+
+// Відео-прев'ю показується максимум ~202px CSS (≈606px на 3x-екрані), а
+// оригінал постера — 1080x1920 JPEG ~84 KB без оптимізації. width 300 →
+// srcSet 1x/2x, а src — 2x-варіант (640px), його й беремо для poster.
+const { props: posterImg } = getImageProps({
+  src: images.heroPreviewPoster,
+  alt: "",
+  width: 300,
+  height: 533,
+  quality: 85,
+});
+
 export default function Hero() {
+  // Десктопне фото потрібне з 597px: там грає IntroOverlay (його перша
+  // плитка — це фото), а з 768px його показує й сам Hero. Нижче — лише
+  // мобільний <source>, і передзавантажувати десктопне там нема чого.
+  preload(heroDesktopImg.src, {
+    as: "image",
+    imageSrcSet: heroDesktopImg.srcSet,
+    imageSizes: heroDesktopImg.sizes,
+    fetchPriority: "high",
+    media: "(min-width: 597px)",
+  });
+
   const t = useTranslations("Hero");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -140,14 +174,17 @@ export default function Hero() {
           of what would otherwise be a needlessly large desktop photo
           downloaded and cropped client-side. <source> here is picked by the
           browser's own HTML preload scanner before any JS runs, same as a
-          bare <Image preload fetchPriority="high"> would be. */}
+          bare <Image preload fetchPriority="high"> would be.
+          loading="eager" замість preload: preload-<link> не знає про
+          <source media>, тож телефон тягнув і десктопне фото теж —
+          десктопне передзавантаження тепер з media, див. preload() вище. */}
       <picture>
         <source media="(max-width: 767px)" srcSet={images.heroMobile} />
         <Image
           src={images.hero}
           alt=""
           fill
-          preload
+          loading="eager"
           fetchPriority="high"
           quality={85}
           sizes="100vw"
@@ -196,7 +233,7 @@ export default function Hero() {
             <video
               ref={videoRef}
               src={images.heroPreviewVideo}
-              poster={images.heroPreviewPoster}
+              poster={posterImg.src}
               preload="none"
               muted
               loop

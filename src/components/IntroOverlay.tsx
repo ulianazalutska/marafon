@@ -351,8 +351,9 @@ export default function IntroOverlay() {
               // browser resolves this to the identical cached URL, so the
               // tile is full-res from the first frame (no blur once it
               // later stretches to fullscreen) and the real Hero underneath
-              // doesn't have to download a second copy.
-              <Image src={src} alt="" fill preload fetchPriority="high" quality={85} sizes="100vw" className="object-cover" />
+              // doesn't have to download a second copy. Передзавантаження
+              // (з media, щоб телефон його не тягнув) робить Hero.tsx.
+              <Image src={src} alt="" fill fetchPriority="high" quality={85} sizes="100vw" className="object-cover" />
             ) : (
               <Image src={src} alt="" fill sizes="24vw" className="object-cover" />
             )}
