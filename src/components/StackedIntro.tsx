@@ -69,7 +69,17 @@ export default function StackedIntro({ children }: { children: ReactNode }) {
     let remaining = pending.length;
     const onImageLoad = () => {
       remaining -= 1;
-      if (remaining === 0) ScrollTrigger.refresh();
+      if (remaining !== 0) return;
+      // Нижче 1024px піна немає (див. matchMedia вище) — шву, який цей
+      // refresh вирівнює, теж, а остання картинка на телефоні докачується
+      // ліниво, тобто зазвичай посеред скролу, і повний refresh усіх
+      // тригерів у той момент дає помітний ривок. refresh(true) — "safe"
+      // режим GSAP: якщо зараз скролять, чекає scrollEnd, інакше одразу.
+      if (window.matchMedia("(min-width: 1024px)").matches) {
+        ScrollTrigger.refresh();
+      } else {
+        ScrollTrigger.refresh(true);
+      }
     };
     if (pending.length === 0) {
       ScrollTrigger.refresh();
